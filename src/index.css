@@ -3,3 +3,12 @@
 /* body {
   font-family: 'Inter', sans-serif;
 } */
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+.scroll-section {
+  scroll-margin-top: 100px; /* Adjust if your navbar is fixed */
+}

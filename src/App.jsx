@@ -1,22 +1,42 @@
-import React from 'react'
-import Home from './components/Home.jsx'
-import Timeline from './components/Timeline.jsx'
-import Projects from './components/Projects.jsx'
-import Buildlogs from './components/Buildlogs.jsx'
-import MindSetSection from './components/MindSetSection.jsx'
-import Contact from './components/Contact.jsx'
+import React from 'react';
+import Home from './components/Home';
+import Timeline from './components/Timeline';
+import Projects from './components/Projects';
+import Buildlogs from './components/Buildlogs';
+import MindSetSection from './components/MindSetSection';
+import Contact from './components/Contact';
+import Navbar from './components/Navbar';
 
 const App = () => {
   return (
-    <div className='text-amber-600'>
-      <Home />
-      <Timeline />
-      <Projects />
-      <Buildlogs />
-      <MindSetSection />
-      <Contact />
-    </div>
-  )
-}
+    <div className="text-amber-600 bg-black">
+      <Navbar />
+      
+      <section id="home" className="min-h-screen py-20 scroll-section">
+        <Home />
+      </section>
 
-export default App
+      <section id="timeline" className="min-h-screen py-20 scroll-section">
+        <Timeline />
+      </section>
+
+      <section id="projects" className="min-h-screen py-20 scroll-section">
+        <Projects />
+      </section>
+
+      <section id="buildlogs" className="min-h-screen py-20 scroll-section">
+        <Buildlogs />
+      </section>
+
+      <section id="mindset" className="min-h-screen py-20 scroll-section">
+        <MindSetSection />
+      </section>
+
+      <section id="contact" className="min-h-screen py-20 scroll-section">
+        <Contact />
+      </section>
+    </div>
+  );
+};
+
+export default App;
