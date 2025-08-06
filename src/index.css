@@ -10,5 +10,5 @@ html {
 }
 
 .scroll-section {
-  scroll-margin-top: 100px; /* Adjust if your navbar is fixed */
+  scroll-margin-top: 65px; /* Adjust if your navbar is fixed */
 }

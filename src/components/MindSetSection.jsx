@@ -2,7 +2,7 @@ import React from "react";
 
 const MindsetSection = () => {
   return (
-    <section id="mindset" className="py-16 px-6 bg-gray-900 text-white">
+    <section id="mindset" className="min-h-screen pt-14 px-6 bg-gray-900 text-white">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-4xl font-bold mb-6 text-indigo-400">🧠 Mindset</h2>
         <blockquote className="italic text-xl mb-8 text-gray-300">

@@ -9,32 +9,35 @@ import Navbar from './components/Navbar';
 
 const App = () => {
   return (
-    <div className="text-amber-600 bg-black">
+    <div className="text-amber-600 bg-black scroll-smooth">
       <Navbar />
-      
-      <section id="home" className="min-h-screen py-20 scroll-section">
-        <Home />
-      </section>
 
-      <section id="timeline" className="min-h-screen py-20 scroll-section">
-        <Timeline />
-      </section>
+      {/* Adds spacing below fixed navbar */}
+      <div className="pt-16">
+        <section id="home" className="min-h-screen scroll-section">
+          <Home />
+        </section>
 
-      <section id="projects" className="min-h-screen py-20 scroll-section">
-        <Projects />
-      </section>
+        <section id="timeline" className="min-h-screen scroll-section">
+          <Timeline />
+        </section>
 
-      <section id="buildlogs" className="min-h-screen py-20 scroll-section">
-        <Buildlogs />
-      </section>
+        <section id="projects" className="min-h-screen scroll-section">
+          <Projects />
+        </section>
 
-      <section id="mindset" className="min-h-screen py-20 scroll-section">
-        <MindSetSection />
-      </section>
+        <section id="buildlogs" className="min-h-screen scroll-section">
+          <Buildlogs />
+        </section>
 
-      <section id="contact" className="min-h-screen py-20 scroll-section">
-        <Contact />
-      </section>
+        <section id="mindset" className="min-h-screen scroll-section">
+          <MindSetSection />
+        </section>
+
+        <section id="contact" className="min-h-screen scroll-section">
+          <Contact />
+        </section>
+      </div>
     </div>
   );
 };

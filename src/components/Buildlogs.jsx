@@ -26,7 +26,7 @@ const BuildLogs = () => {
   }, []);
 
   return (
-    <section className="bg-gray-900 text-white py-16 px-4" id="buildlogs">
+    <section className="bg-gray-900 text-white min-h-screen pt-14 px-4" id="buildlogs">
       <h2 className="text-3xl text-center font-bold mb-12">🛠️ Build Logs</h2>
       <div className="max-w-4xl mx-auto space-y-8">
         {logs.map((log, index) => (

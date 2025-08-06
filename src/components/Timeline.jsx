@@ -23,7 +23,7 @@ const Timeline = () => {
   }, []);
 
   return (
-    <section className="bg-gray-100 py-16 px-4 min-h-screen" id="timeline">
+    <section className="bg-gray-100 pt-14 px-4 min-h-screen" id="timeline">
       <h2 className="text-4xl text-center font-bold mb-12 text-blue-800">📜 My Dev Journey</h2>
       <div className="relative border-l-4 border-blue-600 max-w-3xl mx-auto">
         {timelineData.map((item, index) => (

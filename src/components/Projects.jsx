@@ -28,7 +28,7 @@ const Projects = () => {
   }, []);
 
   return (
-    <section className="bg-white py-16 px-4" id="projects">
+    <section className="bg-white min-h-screen pt-14 px-4" id="projects">
       <h2 className="text-3xl text-center font-bold mb-12">🚀 Projects</h2>
       <div className="grid gap-10 max-w-5xl mx-auto md:grid-cols-2">
         {projects.map((project, index) => (
