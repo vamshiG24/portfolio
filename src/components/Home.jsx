@@ -59,14 +59,12 @@ const Home = () => {
               <FaDownload /> Resume
             </a>
 
-            <Link
-              to="projects"
-              smooth={true}
-              duration={500}
+            <a
+              href='#projects'
               className="cursor-pointer border border-white py-2.5 px-6 rounded-full text-white hover:bg-white hover:text-black transition duration-300 shadow-md hover:shadow-white/30"
             >
               See Projects
-            </Link>
+            </a>
           </div>
         </div>
 

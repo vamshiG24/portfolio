@@ -15,9 +15,9 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-orange-500 text-white shadow-md">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-orange-400 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-amber-500">My Portfolio</h1>
+        <h1 className="text-2xl font-bold text-silver-500">My Portfolio</h1>
 
         {/* Desktop Links */}
         <ul className="hidden md:flex space-x-8">
@@ -25,7 +25,7 @@ const Navbar = () => {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="hover:text-amber-400 text-lg transition duration-300"
+                className="hover:text-green-400 hover:underline text-lg transition duration-300"
               >
                 {link.label}
               </a>
