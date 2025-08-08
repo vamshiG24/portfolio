@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { FaDownload } from "react-icons/fa";
-import { Link } from "react-scroll";
 import Lottie from "lottie-react";
 import AOS from "aos";
 import "aos/dist/aos.css";

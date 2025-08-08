@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Lottie from "lottie-react";
+import AboutProject from "../assets/lottie/About-Project.json";
 
 const projects = [
   {
@@ -27,16 +29,55 @@ const projects = [
     demo: "https://vamshi-resumebuilder.netlify.app",
     image: "https://via.placeholder.com/600x300",
   },
-  // Add more projects...
 ];
 
 const Projects = () => {
+  const lottieRef = useRef();
+  const sectionRef = useRef();
+  const [playAnimation, setPlayAnimation] = useState(false);
+
   useEffect(() => {
     AOS.init({ duration: 1000 });
+
+    // IntersectionObserver to detect when section is visible
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPlayAnimation(false); // reset
+          setTimeout(() => setPlayAnimation(true), 50); // restart after small delay
+        }
+      },
+      { threshold: 0.5 } // 50% visible
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+    };
   }, []);
 
   return (
-    <section className="bg-white min-h-screen pt-14 px-4" id="projects">
+    <section
+      ref={sectionRef}
+      className="bg-white min-h-screen pt-14 px-4"
+      id="projects"
+    >
+      {/* Lottie Animation */}
+      <div className="flex justify-center mb-8 bg-amber-400">
+        {playAnimation && (
+          <Lottie
+            lottieRef={lottieRef}
+            animationData={AboutProject}
+            loop={true}
+            autoplay={true}
+            style={{ height: 200, width: 200 }}
+          />
+        )}
+      </div>
+
       <h2 className="text-3xl text-center font-bold mb-12">🚀 Projects</h2>
 
       <div className="overflow-x-auto">
