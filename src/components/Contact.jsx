@@ -53,13 +53,13 @@ const Contact = () => {
               <p className="text-gray-400 mt-2">I’m active on these platforms 👇</p>
             </div>
             <div className="flex space-x-6 text-3xl">
-              <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">
+              <a href="https://github.com/vamshiG24" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">
                 <FaGithub />
               </a>
-              <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">
+              <a href="https://www.linkedin.com/in/vamshi-gowni-8bba28322?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">
                 <FaLinkedin />
               </a>
-              <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">
+              <a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">
                 <FaTwitter />
               </a>
             </div>
