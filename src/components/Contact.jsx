@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import emailjs from "@emailjs/browser";
 import Lottie from "lottie-react";
 import loaderAnim from "../assets/lottie/Loading.json";
 
@@ -15,33 +14,45 @@ const Contact = () => {
     Aos.init({ duration: 1000, once: true });
   }, []);
 
-  const sendEmail = (e) => {
+  const sendEmail = async (e) => {
     e.preventDefault();
     setShowLoader(true);
     setLoading(true);
 
-    emailjs
-      .sendForm(
-        "service_wlydo98",
-        "template_3sz6ymh",
-        form.current,
-        "6eC8d4gCqPggsi5Hl"
-      )
-      .then(() => {
-        setLoading(false); // Start fade-out
-        setTimeout(() => {
-          setShowLoader(false); // Remove from DOM
+    const formData = new FormData(form.current);
+    const data = {
+      name: formData.get("user_name"),
+      email: formData.get("user_email"),
+      subject: formData.get("subject"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch("https://backend-portfolio-s2ey.onrender.com/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      setLoading(false);
+      setTimeout(() => {
+        setShowLoader(false);
+        if (result.success) {
           alert("✅ Message sent successfully!");
           form.current.reset();
-        }, 400); // matches fade duration
-      })
-      .catch(() => {
-        setLoading(false);
-        setTimeout(() => {
-          setShowLoader(false);
+        } else {
           alert("❌ Failed to send message, please try again.");
-        }, 400);
-      });
+        }
+      }, 400);
+    } catch (error) {
+      setLoading(false);
+      setTimeout(() => {
+        setShowLoader(false);
+        alert("❌ Failed to send message, please try again.");
+      }, 400);
+    }
   };
 
   return (
@@ -101,48 +112,48 @@ const Contact = () => {
 
         {/* Right Side Form */}
         <form ref={form} onSubmit={sendEmail} className="flex flex-col space-y-4">
-            <input
-              type="text"
-              placeholder="Your Name"
-              name="user_name"
-              className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-              required
-            />
-            <input
-              type="email"
-              placeholder="Your Email"
-              name="user_email"
-              className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Subject"
-              name="subject"
-              className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-              required
-            />
-            <textarea
-              placeholder="Your Message"
-              name="message"
-              rows="5"
-              className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-              required
-            ></textarea>
-            <button
-              type="submit"
-              className="bg-teal-500 
-                        hover:bg-teal-600 
-                        hover:shadow-[0_0_10px_2px_rgba(20,184,166,0.5)] 
-                        hover:text-white 
-                        text-white font-bold 
-                        py-3 px-6 rounded 
-                        transition-all duration-300 
-                        active:scale-95 active:bg-teal-700 active:shadow-[0_0_6px_1px_rgba(20,184,166,0.4)]"
-            >
-              Send Message
-            </button>
-          </form>
+          <input
+            type="text"
+            placeholder="Your Name"
+            name="user_name"
+            className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            required
+          />
+          <input
+            type="email"
+            placeholder="Your Email"
+            name="user_email"
+            className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Subject"
+            name="subject"
+            className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            required
+          />
+          <textarea
+            placeholder="Your Message"
+            name="message"
+            rows="5"
+            className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            required
+          ></textarea>
+          <button
+            type="submit"
+            className="bg-teal-500 
+                      hover:bg-teal-600 
+                      hover:shadow-[0_0_10px_2px_rgba(20,184,166,0.5)] 
+                      hover:text-white 
+                      text-white font-bold 
+                      py-3 px-6 rounded 
+                      transition-all duration-300 
+                      active:scale-95 active:bg-teal-700 active:shadow-[0_0_6px_1px_rgba(20,184,166,0.4)]"
+          >
+            Send Message
+          </button>
+        </form>
       </div>
     </section>
   );
