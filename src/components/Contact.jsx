@@ -4,7 +4,7 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import emailjs from "@emailjs/browser";
 import Lottie from "lottie-react";
-import loaderAnim from "../assets/lottie/loading.json";
+import loaderAnim from "../assets/lottie/Loading.json";
 
 const Contact = () => {
   const form = useRef();
