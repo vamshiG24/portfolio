@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@tailwindcss/vite": "^4.1.11",
     "aos": "^2.3.4",
+    "emailjs-com": "^3.2.0",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.536.0",
     "react": "^19.1.0",
