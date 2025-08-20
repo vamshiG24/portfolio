@@ -21,14 +21,6 @@ const projects = [
     demo: "https://vamshi-resumebuilder.netlify.app",
     image: "https://via.placeholder.com/600x300",
   },
-  {
-    title: "Resume Builder App",
-    description: "Build modern CVs from templates dynamically using user input. Download ready-made resumes.",
-    tech: ["React", "Express", "MongoDB"],
-    github: "https://github.com/yourusername/resume-builder",
-    demo: "https://vamshi-resumebuilder.netlify.app",
-    image: "https://via.placeholder.com/600x300",
-  },
 ];
 
 const Projects = () => {
