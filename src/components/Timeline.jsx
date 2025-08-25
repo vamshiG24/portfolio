@@ -30,7 +30,7 @@ const Timeline = () => {
 
   return (
     <section className="bg-gray-100 pt-14 px-4 min-h-screen" id="timeline">
-      <h2 className="text-4xl text-center font-bold mb-12 text-blue-800">📜 My Dev Journey</h2>
+      <h2 className="text-4xl text-center font-bold mb-12 text-blue-800">📜 My Journey</h2>
       <div className="relative border-l-4 border-blue-600 max-w-3xl mx-auto">
         {timelineData.map((item, index) => (
           <div key={index} className="mb-12 ml-6" data-aos="fade-up">
