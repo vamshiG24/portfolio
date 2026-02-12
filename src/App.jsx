@@ -1,18 +1,17 @@
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Home from './components/Home';
 import Timeline from './components/Timeline';
 import Projects from './components/Projects';
 import Buildlogs from './components/Buildlogs';
-import MindSetSection from './components/MindSetSection';
 import Contact from './components/Contact';
 import Navbar from './components/Navbar';
 import PortfolioIntro from "./components/PortfolioIntro";
 
 const App = () => {
 
-    const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(true);
 
-    useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setShowIntro(false);
     }, 3000); // Hide after 3 seconds
@@ -22,7 +21,7 @@ const App = () => {
   return (
     <div className="text-amber-600 bg-black scroll-smooth">
 
-     <PortfolioIntro />
+      <PortfolioIntro />
 
       <Navbar />
 
@@ -42,10 +41,6 @@ const App = () => {
 
         <section id="buildlogs" className="min-h-screen scroll-section">
           <Buildlogs />
-        </section>
-
-        <section id="mindset" className="min-h-screen scroll-section">
-          <MindSetSection />
         </section>
 
         <section id="contact" className="min-h-screen scroll-section">

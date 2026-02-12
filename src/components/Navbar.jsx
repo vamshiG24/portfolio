@@ -10,7 +10,6 @@ const Navbar = () => {
     { label: 'Timeline', href: '#timeline' },
     { label: 'Projects', href: '#projects' },
     { label: 'Build Logs', href: '#buildlogs' },
-    { label: 'Mindset', href: '#mindset' },
     { label: 'Contact', href: '#contact' },
   ];
 
