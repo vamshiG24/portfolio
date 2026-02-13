@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
-import Aos from "aos";
-import "aos/dist/aos.css";
+import { useRef, useState } from "react";
+import { FaGithub, FaLinkedin, FaTwitter, FaPaperPlane } from "react-icons/fa";
+import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import loaderAnim from "../assets/lottie/Loading.json";
 
@@ -9,13 +8,21 @@ const Contact = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
-
-  useEffect(() => {
-    Aos.init({ duration: 1000, once: true });
-  }, []);
+  const [ripples, setRipples] = useState([]);
 
   const sendEmail = async (e) => {
     e.preventDefault();
+
+    // Create ripple effect
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const newRipple = { x, y, id: Date.now() };
+    setRipples([...ripples, newRipple]);
+    setTimeout(() => {
+      setRipples(prev => prev.filter(r => r.id !== newRipple.id));
+    }, 600);
+
     setShowLoader(true);
     setLoading(true);
 
@@ -58,35 +65,36 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="relative min-h-screen flex items-center justify-center px-6 py-16 text-white overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+      className="relative min-h-screen py-20 px-4 flex items-center justify-center overflow-hidden"
     >
-      {/* Background Animated Blobs */}
-      <div className="absolute w-[500px] h-[500px] bg-teal-500/30 rounded-full blur-3xl -top-40 -left-40 animate-pulse"></div>
-      <div className="absolute w-[400px] h-[400px] bg-cyan-400/20 rounded-full blur-3xl bottom-0 right-0 animate-pulse delay-2000"></div>
-
-      {/* Loader Overlay with Fade */}
+      {/* Loader Overlay */}
       {showLoader && (
         <div
-          className={`absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-lg z-50 transition-opacity duration-400 ${
-            loading ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-50 transition-opacity duration-300 ${loading ? "opacity-100" : "opacity-0"
+            }`}
         >
           <Lottie animationData={loaderAnim} loop={true} className="w-40 h-40" />
         </div>
       )}
 
-      <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-14 items-center z-10">
+      <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-16 items-center z-10">
         {/* Left Side */}
-        <div data-aos="fade-right" className="space-y-6">
-          <h2 className="text-5xl font-extrabold leading-tight">
-            Let’s Build Something <span className="text-teal-400">Amazing</span> 🚀
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="space-y-8"
+        >
+          <h2 className="text-5xl md:text-6xl font-extrabold leading-tight text-white">
+            Let’s Build Something <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">Amazing</span> 🚀
           </h2>
-          <p className="text-gray-300 text-lg">
+          <p className="text-gray-300 text-lg leading-relaxed max-w-lg">
             Have a project idea, or just want to connect?
             I’d love to hear from you. Let’s make something incredible together.
           </p>
 
-          <div className="flex space-x-6 text-4xl">
+          <div className="flex gap-6">
             {[
               { icon: <FaGithub />, link: "https://github.com/vamshiG24" },
               { icon: <FaLinkedin />, link: "https://www.linkedin.com/in/vamshi-gowni-8bba28322" },
@@ -97,63 +105,90 @@ const Contact = () => {
                 href={social.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 bg-white/10 rounded-full 
-                          hover:bg-teal-400 hover:text-gray-900 
-                          transition-all duration-300 transform 
-                          hover:scale-110 active:scale-90 
-                          active:shadow-[0_0_8px_2px_rgba(20,184,166,0.5)] 
-                          shadow-lg"
+                className="p-4 bg-white/5 border border-white/10 rounded-full text-white text-xl hover:bg-teal-500 hover:border-teal-500 transition-all duration-300 hover:scale-110 shadow-lg shadow-teal-500/20"
               >
                 {social.icon}
               </a>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Right Side Form */}
-        <form ref={form} onSubmit={sendEmail} className="flex flex-col space-y-4">
-          <input
-            type="text"
-            placeholder="Your Name"
-            name="user_name"
-            className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-            required
-          />
-          <input
-            type="email"
-            placeholder="Your Email"
-            name="user_email"
-            className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Subject"
-            name="subject"
-            className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-            required
-          />
-          <textarea
-            placeholder="Your Message"
-            name="message"
-            rows="5"
-            className="p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-            required
-          ></textarea>
-          <button
-            type="submit"
-            className="bg-teal-500 
-                      hover:bg-teal-600 
-                      hover:shadow-[0_0_10px_2px_rgba(20,184,166,0.5)] 
-                      hover:text-white 
-                      text-white font-bold 
-                      py-3 px-6 rounded 
-                      transition-all duration-300 
-                      active:scale-95 active:bg-teal-700 active:shadow-[0_0_6px_1px_rgba(20,184,166,0.4)]"
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <form
+            ref={form}
+            onSubmit={sendEmail}
+            className="glass-card p-10 rounded-2xl space-y-6 border border-white/10 relative overflow-hidden"
           >
-            Send Message
-          </button>
-        </form>
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-600"></div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-400">Name</label>
+                <input
+                  type="text"
+                  name="user_name"
+                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all"
+                  placeholder="John Doe"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-400">Email</label>
+                <input
+                  type="email"
+                  name="user_email"
+                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all"
+                  placeholder="john@example.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-400">Subject</label>
+              <input
+                type="text"
+                name="subject"
+                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all"
+                placeholder="Project Inquiry"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-400">Message</label>
+              <textarea
+                name="message"
+                rows="4"
+                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all resize-none"
+                placeholder="Tell me about your project..."
+                required
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              className="relative w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white font-bold py-4 rounded-lg shadow-lg shadow-teal-500/30 hover:shadow-teal-500/50 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden"
+            >
+              {ripples.map((ripple) => (
+                <span
+                  key={ripple.id}
+                  className="ripple"
+                  style={{
+                    left: ripple.x,
+                    top: ripple.y,
+                  }}
+                />
+              ))}
+              <FaPaperPlane /> Send Message
+            </button>
+          </form>
+        </motion.div>
       </div>
     </section>
   );
