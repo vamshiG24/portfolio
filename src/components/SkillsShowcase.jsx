@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { FaReact, FaNode, FaPython, FaDatabase } from 'react-icons/fa';
-import { SiMongodb, SiTailwindcss, SiExpress, SiTensorflow, SiJavascript, SiGit, SiDocker, SiPostgresql } from 'react-icons/si';
+import { SiMongodb, SiTailwindcss, SiExpress, SiTensorflow, SiJavascript, SiGit, SiPandas, SiNumpy } from 'react-icons/si';
 
 const skills = [
     { name: 'React', icon: <FaReact />, color: '#61dafb' },
@@ -10,10 +10,10 @@ const skills = [
     { name: 'Python', icon: <FaPython />, color: '#3776ab' },
     { name: 'TensorFlow', icon: <SiTensorflow />, color: '#ff6f00' },
     { name: 'Tailwind', icon: <SiTailwindcss />, color: '#06b6d4' },
-    { name: 'PostgreSQL', icon: <SiPostgresql />, color: '#4169e1' },
+    { name: 'NumPy', icon: <SiNumpy />, color: '#013243' },
     { name: 'JavaScript', icon: <SiJavascript />, color: '#f7df1e' },
     { name: 'Git', icon: <SiGit />, color: '#f05032' },
-    { name: 'Docker', icon: <SiDocker />, color: '#2496ed' },
+    { name: 'Pandas', icon: <SiPandas />, color: '#150458' },
     { name: 'SQL', icon: <FaDatabase />, color: '#cc2927' },
 ];
 

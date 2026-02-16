@@ -2,22 +2,28 @@ import { motion } from "framer-motion";
 
 const logs = [
   {
-    title: "PhotoCleaner - Blurry Image Detection",
-    challenge: "Detecting and removing blurry images wasn't accurate using just OpenCV's Laplacian.",
-    solution: "Tuned the threshold and added a variance check with scikit-image, boosting accuracy by 30%.",
-    date: "Feb 2024"
+    title: "Evidence Management - Cryptographic Hash Integrity",
+    challenge: "Ensuring tamper-proof evidence storage required implementing SHA-256 hashing, but verifying hash chains across multiple evidence updates was causing performance bottlenecks.",
+    solution: "Optimized by implementing incremental hashing with MongoDB indexing on hash fields and caching verification results, reducing verification time by 75%.",
+    date: "Feb 2026"
   },
   {
-    title: "Resume Builder - PDF Rendering",
-    challenge: "React-PDF wasn't applying Tailwind styles, leading to broken layouts in downloads.",
-    solution: "Switched to using html2canvas + jsPDF for pixel-perfect rendering, fixing the responsive layout issues.",
-    date: "Jan 2024"
+    title: "BiteBot - Gemini API Context Management",
+    challenge: "The chatbot was losing conversation context after 3-4 exchanges, leading to repetitive responses and poor user experience.",
+    solution: "Implemented session-based context storage with Redis and structured prompt engineering to maintain conversation history, improving response relevance by 60%.",
+    date: "Jan 2026"
   },
   {
-    title: "Portfolio Timeline - Mobile Overflow",
-    challenge: "Timeline content was getting cut off and overlapping on smaller mobile screens.",
-    solution: "Refactored to a vertical flex layout with specific media queries in Tailwind to ensure responsiveness.",
-    date: "Dec 2023"
+    title: "Speaker Identification - MFCC Feature Extraction",
+    challenge: "Initial model accuracy was only 72% due to inconsistent audio quality and background noise affecting MFCC feature extraction.",
+    solution: "Added preprocessing pipeline with noise reduction using spectral gating and data augmentation techniques, achieving 94% accuracy on test dataset.",
+    date: "Dec 2025"
+  },
+  {
+    title: "EEG Seizure Detection - CNN Model Overfitting",
+    challenge: "CNN model was overfitting on training data (98% train accuracy, 65% validation accuracy), failing to generalize to new EEG patterns.",
+    solution: "Applied dropout layers, batch normalization, and k-fold cross-validation with augmented EEG data, improving validation accuracy to 89% while maintaining clinical reliability.",
+    date: "Nov 2025"
   },
 ];
 
