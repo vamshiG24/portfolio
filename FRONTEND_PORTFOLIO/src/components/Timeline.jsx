@@ -5,11 +5,11 @@ import { FaGraduationCap, FaCode, FaBrain, FaRocket } from "react-icons/fa";
 const timelineData = [
   {
     year: "2023",
-    title: "Foundations & Frontend",
-    description: "Started with C, then moved to HTML, CSS, and JavaScript. Built static websites and understood core programming concepts.",
+    title: "Foundations, C++ & DSA",
+    description: "Started my journey with C, then advanced to C++ to master Data Structures and Algorithms (DSA). Concurrently learned web technologies like HTML, CSS, and JavaScript.",
     icon: <FaGraduationCap />,
     color: "from-blue-400 to-cyan-500",
-    achievements: ["Mastered C fundamentals", "Built 10+ static websites", "Learned responsive design"]
+    achievements: ["Mastered C/C++ fundamentals", "Strong grip on DSA", "Built 10+ static websites"]
   },
   {
     year: "2024",
@@ -17,7 +17,7 @@ const timelineData = [
     description: "Gained expertise in the MERN stack and developed full-stack web applications with interactive UI and smooth animations.",
     icon: <FaCode />,
     color: "from-purple-400 to-pink-500",
-    achievements: ["MERN stack mastery", "5+ full-stack projects", "RESTful API design"]
+    achievements: ["MERN stack mastery", "RESTful API design"]
   },
   {
     year: "2025",
@@ -25,7 +25,7 @@ const timelineData = [
     description: "Started exploring AI and ML, learning core concepts, Python libraries, and building small projects to understand practical applications.",
     icon: <FaBrain />,
     color: "from-orange-400 to-red-500",
-    achievements: ["TensorFlow & PyTorch", "3 ML projects deployed", "Deep learning fundamentals"]
+    achievements: ["TensorFlow", "Deep learning"]
   },
   {
     year: "Future",
