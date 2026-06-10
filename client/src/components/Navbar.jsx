@@ -79,36 +79,36 @@ const Navbar = () => {
 
   const containerStyle = scrolled
     ? {
-        width: '100%',
-        maxWidth: '960px',
-        borderRadius: '50px',
-        border: '1px solid rgba(234, 179, 8, 0.22)',
-        boxShadow: '0 12px 30px -10px rgba(234, 179, 8, 0.18), 0 0 15px rgba(250, 204, 21, 0.04)',
-        background: 'rgba(255, 255, 255, 0.88)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        padding: '12px 28px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-        pointerEvents: 'auto',
-      }
+      width: '100%',
+      maxWidth: '960px',
+      borderRadius: '50px',
+      border: '1px solid rgba(234, 179, 8, 0.22)',
+      boxShadow: '0 12px 30px -10px rgba(234, 179, 8, 0.18), 0 0 15px rgba(250, 204, 21, 0.04)',
+      background: 'rgba(255, 255, 255, 0.88)',
+      backdropFilter: 'blur(20px)',
+      WebkitBackdropFilter: 'blur(20px)',
+      padding: '12px 28px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+      pointerEvents: 'auto',
+    }
     : {
-        width: '100%',
-        maxWidth: '1200px',
-        borderRadius: '0px',
-        border: '1px solid transparent',
-        borderBottom: '1px solid transparent',
-        boxShadow: 'none',
-        background: 'transparent',
-        padding: '24px 8px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-        pointerEvents: 'auto',
-      };
+      width: '100%',
+      maxWidth: '1200px',
+      borderRadius: '0px',
+      border: '1px solid transparent',
+      borderBottom: '1px solid transparent',
+      boxShadow: 'none',
+      background: 'transparent',
+      padding: '24px 8px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+      pointerEvents: 'auto',
+    };
 
   return (
     <nav style={navStyle}>
@@ -213,7 +213,6 @@ const Navbar = () => {
               borderBottom: scrolled ? '1px solid rgba(234, 179, 8, 0.22)' : '1px solid rgba(234, 179, 8, 0.12)',
               boxShadow: scrolled ? 'var(--shadow-lg)' : 'none',
               overflow: 'hidden',
-              pointerEvents: 'auto',
             }}
             className="md:hidden"
           >
