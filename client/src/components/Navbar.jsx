@@ -213,6 +213,7 @@ const Navbar = () => {
               borderBottom: scrolled ? '1px solid rgba(234, 179, 8, 0.22)' : '1px solid rgba(234, 179, 8, 0.12)',
               boxShadow: scrolled ? 'var(--shadow-lg)' : 'none',
               overflow: 'hidden',
+              pointerEvents: 'auto',
             }}
             className="md:hidden"
           >
