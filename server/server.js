@@ -69,13 +69,19 @@ PERSONALITY & GUIDELINES:
 - Use emojis occasionally.
 - VERY IMPORTANT: Only talk about Vamshi Gowni. If asked about unrelated topics, politely pivot back to Vamshi's portfolio, skills, or projects. For example: "I am only programmed to talk about Vamshi and his work. Feel free to ask me about his project BioSecure or his skills!"`;
 
+    // Filter out the initial assistant greeting if it starts the history to satisfy Gemini's requirement
+    let historyMessages = messages;
+    if (historyMessages.length > 0 && historyMessages[0].role === 'assistant') {
+      historyMessages = historyMessages.slice(1);
+    }
+
     // Map client messages ('user' / 'assistant') to Gemini format ('user' / 'model')
-    const geminiHistory = messages.slice(0, -1).map(msg => ({
+    const geminiHistory = historyMessages.slice(0, -1).map(msg => ({
       role: msg.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: msg.content }]
     }));
 
-    const latestMessage = messages[messages.length - 1].content;
+    const latestMessage = historyMessages[historyMessages.length - 1].content;
 
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
