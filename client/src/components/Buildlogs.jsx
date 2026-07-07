@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { AlertCircle, ChevronDown, Sparkles } from 'lucide-react';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { AlertCircle, Sparkles } from 'lucide-react';
 
 const logs = [
   {
@@ -26,7 +26,7 @@ const logs = [
   }
 ];
 
-const LogCard = ({ log, index, isExpanded, onToggle }) => {
+const LogCard = ({ log, index }) => {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, { once: true, margin: "-120px" });
 
@@ -35,31 +35,28 @@ const LogCard = ({ log, index, isExpanded, onToggle }) => {
       ref={cardRef}
       initial={{ opacity: 0, y: 35 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, type: 'spring', stiffness: 80, damping: 15, delay: index * 0.05 }}
-      className={`glass-card log-accordion-card ${isExpanded ? 'expanded' : ''}`}
+      transition={{ duration: 0.8, type: 'spring', stiffness: 80, damping: 15, delay: index * 0.1 }}
+      className="glass-card log-normal-card"
       style={{
         borderRadius: '24px',
-        border: '1px solid',
-        borderColor: isExpanded ? 'rgba(234, 179, 8, 0.35)' : 'rgba(234, 179, 8, 0.14)',
-        background: isExpanded ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.75)',
-        boxShadow: isExpanded 
-          ? '0 20px 40px -10px rgba(202, 138, 4, 0.15), 0 0 25px rgba(250, 204, 21, 0.08)' 
-          : 'var(--shadow-sm)',
-        marginBottom: '24px',
+        border: '1px solid rgba(234, 179, 8, 0.14)',
+        background: 'rgba(255, 255, 255, 0.75)',
+        boxShadow: 'var(--shadow-sm)',
+        marginBottom: '28px',
         overflow: 'hidden',
-        cursor: 'pointer',
         transition: 'border-color 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease',
+        padding: '32px'
       }}
-      onClick={onToggle}
       whileHover={{ translateY: -4 }}
     >
       {/* Header Area */}
       <div style={{
-        padding: '28px 32px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: '24px'
+        alignItems: 'flex-start',
+        gap: '24px',
+        marginBottom: '20px',
+        flexWrap: 'wrap'
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
           <span style={{
@@ -84,143 +81,109 @@ const LogCard = ({ log, index, isExpanded, onToggle }) => {
           </h3>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
-          <span style={{
-            fontSize: '0.85rem',
-            color: 'var(--text-muted)',
-            fontFamily: 'var(--font-mono)',
-            fontWeight: 600
-          }}>
-            {log.date}
-          </span>
-          <motion.div
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              background: isExpanded ? 'rgba(234, 179, 8, 0.12)' : 'rgba(234, 179, 8, 0.03)',
-              border: '1px solid',
-              borderColor: isExpanded ? 'rgba(234, 179, 8, 0.3)' : 'rgba(234, 179, 8, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: isExpanded ? 'var(--yellow-dark)' : 'var(--text-muted)',
-              transition: 'all 0.3s ease'
-            }}
-          >
-            <ChevronDown size={18} />
-          </motion.div>
-        </div>
+        <span style={{
+          fontSize: '0.85rem',
+          color: 'var(--text-muted)',
+          fontFamily: 'var(--font-mono)',
+          fontWeight: 600,
+          flexShrink: 0
+        }}>
+          {log.date}
+        </span>
       </div>
 
-      {/* Expanded Content Area */}
-      <AnimatePresence initial={false}>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {/* Divider */}
-            <div style={{
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent, rgba(234, 179, 8, 0.15) 15%, rgba(234, 179, 8, 0.15) 85%, transparent)',
-              margin: '0 32px'
-            }} />
+      {/* Divider */}
+      <div style={{
+        height: '1px',
+        background: 'linear-gradient(90deg, transparent, rgba(234, 179, 8, 0.15) 15%, rgba(234, 179, 8, 0.15) 85%, transparent)',
+        marginBottom: '24px'
+      }} />
 
-            {/* Grid Content */}
-            <div 
-              className="log-grid-content"
-              style={{
-                padding: '32px',
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '24px',
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Challenge Column */}
-              <div style={{
-                background: 'rgba(239, 68, 68, 0.02)',
-                borderLeft: '4px solid #EF4444',
-                padding: '24px',
-                borderRadius: '16px',
-                borderTopRightRadius: '4px',
-                borderBottomRightRadius: '4px',
-                border: '1px solid rgba(239, 68, 68, 0.06)',
-                borderLeftWidth: '4px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                transition: 'all 0.3s ease',
-              }} className="challenge-col-hover">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <AlertCircle size={18} style={{ color: '#EF4444' }} />
-                  <h4 style={{
-                    fontSize: '0.85rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    color: '#EF4444',
-                    fontWeight: 800,
-                    fontFamily: 'var(--font-mono)'
-                  }}>
-                    Technical Challenge
-                  </h4>
-                </div>
-                <p style={{
-                  color: 'var(--text-secondary)',
-                  fontSize: '0.94rem',
-                  lineHeight: '1.6',
-                  margin: 0
-                }}>
-                  {log.challenge}
-                </p>
-              </div>
+      {/* Grid Content */}
+      <div 
+        className="log-grid-content"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '24px',
+        }}
+      >
+        {/* Challenge Column */}
+        <div style={{
+          background: 'rgba(239, 68, 68, 0.02)',
+          borderLeft: '4px solid #EF4444',
+          padding: '24px',
+          borderRadius: '16px',
+          borderTopRightRadius: '4px',
+          borderBottomRightRadius: '4px',
+          border: '1px solid rgba(239, 68, 68, 0.06)',
+          borderLeftWidth: '4px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          transition: 'all 0.3s ease',
+        }} className="challenge-col-hover">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <AlertCircle size={18} style={{ color: '#EF4444' }} />
+            <h4 style={{
+              fontSize: '0.85rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              color: '#EF4444',
+              fontWeight: 800,
+              fontFamily: 'var(--font-mono)'
+            }}>
+              Technical Challenge
+            </h4>
+          </div>
+          <p style={{
+            color: 'var(--text-secondary)',
+            fontSize: '0.94rem',
+            lineHeight: '1.6',
+            margin: 0
+          }}>
+            {log.challenge}
+          </p>
+        </div>
 
-              {/* Solution Column */}
-              <div style={{
-                background: 'rgba(202, 138, 4, 0.02)',
-                borderLeft: '4px solid var(--yellow-dark)',
-                padding: '24px',
-                borderRadius: '16px',
-                borderTopRightRadius: '4px',
-                borderBottomRightRadius: '4px',
-                border: '1px solid rgba(202, 138, 4, 0.06)',
-                borderLeftWidth: '4px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                transition: 'all 0.3s ease',
-              }} className="solution-col-hover">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Sparkles size={18} style={{ color: 'var(--yellow-dark)' }} />
-                  <h4 style={{
-                    fontSize: '0.85rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    color: 'var(--yellow-dark)',
-                    fontWeight: 800,
-                    fontFamily: 'var(--font-mono)'
-                  }}>
-                    Engineering Solution
-                  </h4>
-                </div>
-                <p style={{
-                  color: 'var(--text-secondary)',
-                  fontSize: '0.94rem',
-                  lineHeight: '1.6',
-                  margin: 0
-                }}>
-                  {log.solution}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* Solution Column */}
+        <div style={{
+          background: 'rgba(202, 138, 4, 0.02)',
+          borderLeft: '4px solid var(--yellow-dark)',
+          padding: '24px',
+          borderRadius: '16px',
+          borderTopRightRadius: '4px',
+          borderBottomRightRadius: '4px',
+          border: '1px solid rgba(202, 138, 4, 0.06)',
+          borderLeftWidth: '4px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          transition: 'all 0.3s ease',
+        }} className="solution-col-hover">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Sparkles size={18} style={{ color: 'var(--yellow-dark)' }} />
+            <h4 style={{
+              fontSize: '0.85rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              color: 'var(--yellow-dark)',
+              fontWeight: 800,
+              fontFamily: 'var(--font-mono)'
+            }}>
+              Engineering Solution
+            </h4>
+          </div>
+          <p style={{
+            color: 'var(--text-secondary)',
+            fontSize: '0.94rem',
+            lineHeight: '1.6',
+            margin: 0
+          }}>
+            {log.solution}
+          </p>
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -228,11 +191,6 @@ const LogCard = ({ log, index, isExpanded, onToggle }) => {
 const BuildLogs = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const [expandedIndex, setExpandedIndex] = useState(0);
-
-  const toggleExpand = (index) => {
-    setExpandedIndex(expandedIndex === index ? -1 : index);
-  };
 
   return (
     <section
@@ -293,15 +251,13 @@ const BuildLogs = () => {
           </motion.p>
         </div>
 
-        {/* Accordion List */}
+        {/* Normal List */}
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           {logs.map((log, index) => (
             <LogCard 
               key={index} 
               log={log} 
               index={index} 
-              isExpanded={expandedIndex === index}
-              onToggle={() => toggleExpand(index)}
             />
           ))}
         </div>
@@ -318,16 +274,18 @@ const BuildLogs = () => {
           border-color: rgba(202, 138, 4, 0.15) !important;
           transform: translateY(-2px);
         }
+        .log-normal-card:hover {
+          border-color: rgba(234, 179, 8, 0.35) !important;
+          box-shadow: 0 20px 40px -10px rgba(202, 138, 4, 0.12), 0 0 25px rgba(250, 204, 21, 0.05) !important;
+        }
         @media (max-width: 768px) {
           .log-grid-content {
             grid-template-columns: 1fr !important;
-            padding: 24px !important;
+            padding: 0 !important;
             gap: 20px !important;
           }
-          .log-accordion-card h3 {
-            font-size: 1.15rem !important;
-          }
-          .log-accordion-card {
+          .log-normal-card {
+            padding: 24px !important;
             border-radius: 18px !important;
           }
         }

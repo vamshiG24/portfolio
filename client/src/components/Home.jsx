@@ -13,7 +13,7 @@ const quotes = [
 
 const AIAssistantCharacter = ({ voiceActive }) => {
   return (
-    <div 
+    <div
       className="glass-card floating-accent-card"
       style={{
         width: '100%',
@@ -23,7 +23,7 @@ const AIAssistantCharacter = ({ voiceActive }) => {
         border: '1px solid rgba(202, 138, 4, 0.42)',
         borderRadius: '50%',
         position: 'relative',
-        boxShadow: voiceActive 
+        boxShadow: voiceActive
           ? '0 30px 60px -12px rgba(202, 138, 4, 0.45), 0 0 40px rgba(250, 204, 21, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6)'
           : '0 20px 40px -15px rgba(0, 0, 0, 0.1), 0 8px 24px -8px rgba(202, 138, 4, 0.22), 0 0 15px rgba(250, 204, 21, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
         background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(254, 243, 199, 0.4) 50%, rgba(255, 255, 255, 0.9) 100%)',
@@ -41,8 +41,8 @@ const AIAssistantCharacter = ({ voiceActive }) => {
         top: '-12px',
         left: '50%',
         transform: 'translateX(-50%)',
-        background: voiceActive 
-          ? 'linear-gradient(90deg, #CA8A04, #FACC15)' 
+        background: voiceActive
+          ? 'linear-gradient(90deg, #CA8A04, #FACC15)'
           : 'linear-gradient(90deg, var(--text-secondary), var(--text-muted))',
         border: '1px solid rgba(255, 255, 255, 0.25)',
         borderRadius: '99px',
@@ -50,8 +50,8 @@ const AIAssistantCharacter = ({ voiceActive }) => {
         fontSize: '0.68rem',
         fontWeight: '700',
         color: '#FFFFFF',
-        boxShadow: voiceActive 
-          ? '0 6px 16px rgba(202, 138, 4, 0.45)' 
+        boxShadow: voiceActive
+          ? '0 6px 16px rgba(202, 138, 4, 0.45)'
           : '0 4px 12px rgba(0, 0, 0, 0.15)',
         display: 'flex',
         alignItems: 'center',
@@ -151,12 +151,12 @@ const AIAssistantCharacter = ({ voiceActive }) => {
           <path d="M 140,146 C 140,132 158,130 166,140 C 168,142 165,148 160,146 C 155,144 148,148 140,146 Z" fill="var(--text-secondary)" />
           {/* AI Communication Headset (earbud glowing gold) */}
           <circle cx="148" cy="152" r="3.5" fill="var(--yellow-dark)" />
-          <motion.circle 
-            cx={148} 
-            cy={152} 
-            r={6} 
-            fill="none" 
-            stroke="var(--yellow)" 
+          <motion.circle
+            cx={148}
+            cy={152}
+            r={6}
+            fill="none"
+            stroke="var(--yellow)"
             strokeWidth={1.5}
             animate={{ scale: [1, 2.2, 1], opacity: [0.8, 0, 0.8] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
@@ -167,12 +167,12 @@ const AIAssistantCharacter = ({ voiceActive }) => {
           <circle cx="224" cy="218" r="4" fill="#F5F5F4" />
 
           {/* Gesturing Arm (Right Arm) - animates on voice speaking */}
-          <motion.path 
-            d="M 158,198 Q 185,178 200,165 Q 215,152 230,158" 
-            stroke="var(--text-primary)" 
-            strokeWidth="11" 
-            strokeLinecap="round" 
-            fill="none" 
+          <motion.path
+            d="M 158,198 Q 185,178 200,165 Q 215,152 230,158"
+            stroke="var(--text-primary)"
+            strokeWidth="11"
+            strokeLinecap="round"
+            fill="none"
             animate={voiceActive ? {
               d: [
                 "M 158,198 Q 185,178 200,165 Q 215,152 230,158",
@@ -188,10 +188,10 @@ const AIAssistantCharacter = ({ voiceActive }) => {
               ease: 'easeInOut'
             }}
           />
-          <motion.circle 
-            cx={230} 
-            cy={158} 
-            r={4.5} 
+          <motion.circle
+            cx={230}
+            cy={158}
+            r={4.5}
             fill="#F5F5F4"
             animate={voiceActive ? {
               cx: [230, 235, 230],
@@ -204,9 +204,9 @@ const AIAssistantCharacter = ({ voiceActive }) => {
         {/* THE TABLE & LAPTOP */}
         <g className="svg-table">
           {/* Laptop Screen projection beam */}
-          <motion.polygon 
-            points="242,228 270,228 320,130 190,130" 
-            fill="url(#laptop-glow)" 
+          <motion.polygon
+            points="242,228 270,228 320,130 190,130"
+            fill="url(#laptop-glow)"
             animate={{ opacity: voiceActive ? [0.25, 0.45, 0.25] : [0.15, 0.25, 0.15] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -231,52 +231,52 @@ const AIAssistantCharacter = ({ voiceActive }) => {
           {voiceActive && (
             <g className="svg-voice-waves">
               {/* Concentric sound wave arcs emanating from the AI mouth / head */}
-              <motion.path 
-                d="M 175,145 A 25,25 0 0,1 175,175" 
-                stroke="var(--yellow-dark)" 
-                strokeWidth="2.5" 
-                strokeLinecap="round" 
-                fill="none" 
+              <motion.path
+                d="M 175,145 A 25,25 0 0,1 175,175"
+                stroke="var(--yellow-dark)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                fill="none"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: [0, 1, 0], scale: 1.1 }}
                 transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}
               />
-              <motion.path 
-                d="M 185,135 A 40,40 0 0,1 185,185" 
-                stroke="var(--yellow)" 
-                strokeWidth="3" 
-                strokeLinecap="round" 
-                fill="none" 
+              <motion.path
+                d="M 185,135 A 40,40 0 0,1 185,185"
+                stroke="var(--yellow)"
+                strokeWidth="3"
+                strokeLinecap="round"
+                fill="none"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: [0, 1, 0], scale: 1.15 }}
                 transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }}
               />
-              <motion.path 
-                d="M 195,125 A 55,55 0 0,1 195,195" 
-                stroke="var(--yellow-dark)" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                fill="none" 
+              <motion.path
+                d="M 195,125 A 55,55 0 0,1 195,195"
+                stroke="var(--yellow-dark)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                fill="none"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: [0, 1, 0], scale: 1.2 }}
                 transition={{ duration: 1.5, repeat: Infinity, delay: 0.8 }}
               />
 
               {/* Glowing speech particle orbs rising */}
-              <motion.circle 
-                cx="180" 
-                cy="130" 
-                r="4" 
-                fill="var(--yellow)" 
+              <motion.circle
+                cx="180"
+                cy="130"
+                r="4"
+                fill="var(--yellow)"
                 initial={{ y: 0, opacity: 1, scale: 0.5 }}
                 animate={{ y: -60, x: -10, opacity: 0, scale: 1.2 }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
               />
-              <motion.circle 
-                cx="210" 
-                cy="120" 
-                r="3" 
-                fill="var(--yellow-dark)" 
+              <motion.circle
+                cx="210"
+                cy="120"
+                r="3"
+                fill="var(--yellow-dark)"
                 initial={{ y: 0, opacity: 1, scale: 0.5 }}
                 animate={{ y: -70, x: 15, opacity: 0, scale: 1 }}
                 transition={{ duration: 2.2, repeat: Infinity, delay: 0.5, ease: 'easeOut' }}
@@ -287,7 +287,7 @@ const AIAssistantCharacter = ({ voiceActive }) => {
 
         {/* HOLOGRAPHIC FLOATING WIDGETS */}
         {/* Widget 1: Tech Chart Line (Floats in top right) */}
-        <motion.g 
+        <motion.g
           className="svg-widget-chart"
           initial={{ y: 0 }}
           animate={{ y: [-6, 6, -6] }}
@@ -298,12 +298,12 @@ const AIAssistantCharacter = ({ voiceActive }) => {
           {/* Chart line */}
           <path d="M 260,85 L 280,70 L 295,80 L 315,62 L 330,75" stroke="var(--yellow)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" fill="none" />
           <circle cx={315} cy={62} r={3} fill="var(--yellow-dark)" />
-          <motion.circle 
-            cx={315} 
-            cy={62} 
-            r={6} 
-            fill="none" 
-            stroke="var(--yellow)" 
+          <motion.circle
+            cx={315}
+            cy={62}
+            r={6}
+            fill="none"
+            stroke="var(--yellow)"
             strokeWidth={1}
             animate={{ scale: [1, 2, 1], opacity: [0.6, 0, 0.6] }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -313,7 +313,7 @@ const AIAssistantCharacter = ({ voiceActive }) => {
         </motion.g>
 
         {/* Widget 2: Sparkle & Code bubble (Floats top left) */}
-        <motion.g 
+        <motion.g
           className="svg-widget-code"
           initial={{ y: 0 }}
           animate={{ y: [4, -8, 4] }}
@@ -327,22 +327,22 @@ const AIAssistantCharacter = ({ voiceActive }) => {
 
         {/* Equalizer overlay on screen when voice active */}
         <g transform="translate(250, 240)">
-          <motion.rect 
+          <motion.rect
             x="0" y="0" width="3" height="8" rx="1.5" fill="var(--yellow)"
             animate={voiceActive ? { height: [4, 16, 4] } : {}}
             transition={{ duration: 0.6, repeat: Infinity, ease: 'easeInOut' }}
           />
-          <motion.rect 
+          <motion.rect
             x="6" y="0" width="3" height="12" rx="1.5" fill="var(--yellow-dark)"
             animate={voiceActive ? { height: [6, 20, 6] } : {}}
             transition={{ duration: 0.5, repeat: Infinity, ease: 'easeInOut', delay: 0.15 }}
           />
-          <motion.rect 
+          <motion.rect
             x="12" y="0" width="3" height="6" rx="1.5" fill="var(--yellow)"
             animate={voiceActive ? { height: [3, 14, 3] } : {}}
             transition={{ duration: 0.7, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
           />
-          <motion.rect 
+          <motion.rect
             x="18" y="0" width="3" height="10" rx="1.5" fill="var(--yellow-deep)"
             animate={voiceActive ? { height: [5, 18, 5] } : {}}
             transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut', delay: 0.05 }}
@@ -350,14 +350,14 @@ const AIAssistantCharacter = ({ voiceActive }) => {
         </g>
 
         {/* Floating Digital Ring surrounding the developer */}
-        <motion.circle 
-          cx="200" 
-          cy="260" 
-          rx="120" 
-          ry="30" 
-          fill="none" 
-          stroke="rgba(234, 179, 8, 0.12)" 
-          strokeWidth="1.5" 
+        <motion.circle
+          cx="200"
+          cy="260"
+          rx="120"
+          ry="30"
+          fill="none"
+          stroke="rgba(234, 179, 8, 0.12)"
+          strokeWidth="1.5"
           strokeDasharray="5,15"
           animate={{ rotate: 360 }}
           transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
@@ -484,12 +484,12 @@ const Home = ({ voiceActive, toggleSpeech }) => {
                     </motion.span>
                   ))}
                 </span>
-                <motion.span 
+                <motion.span
                   className="gradient-text-yellow"
                   initial={{ x: -120, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(250, 204, 21, 0))' }}
-                  animate={{ 
-                    x: 0, 
-                    opacity: 1, 
+                  animate={{
+                    x: 0,
+                    opacity: 1,
                     filter: [
                       'drop-shadow(0 0 0px rgba(250, 204, 21, 0))',
                       'drop-shadow(0 0 25px rgba(250, 204, 21, 0.95))',
@@ -497,7 +497,7 @@ const Home = ({ voiceActive, toggleSpeech }) => {
                     ]
                   }}
                   onAnimationComplete={() => setAnimDone(true)}
-                  transition={{ 
+                  transition={{
                     x: { type: 'spring', stiffness: 70, damping: 14, delay: 0.2 },
                     opacity: { duration: 0.6, delay: 0.2 },
                     filter: { duration: 2.2, times: [0, 0.4, 1], delay: 0.2 }
@@ -526,7 +526,7 @@ const Home = ({ voiceActive, toggleSpeech }) => {
             transition={{ duration: 0.8, delay: 1.4, ease: 'easeOut' }}
             style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
           >
-            <span 
+            <span
               style={{
                 color: 'var(--yellow-dark)',
                 fontWeight: 700,
@@ -541,8 +541,8 @@ const Home = ({ voiceActive, toggleSpeech }) => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <h2 style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)', color: 'var(--text-secondary)', fontWeight: 500, margin: 0, display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                Full-Stack MERN Developer & 
-                <span style={{ 
+                Full-Stack MERN Developer &
+                <span style={{
                   background: 'linear-gradient(120deg, rgba(250, 204, 21, 0.18) 0%, rgba(249, 115, 22, 0.12) 100%)',
                   padding: '4px 14px',
                   borderRadius: '99px',
@@ -607,7 +607,7 @@ const Home = ({ voiceActive, toggleSpeech }) => {
           <AIAssistantCharacter voiceActive={voiceActive} />
 
           {/* Minimal visual yellow wireframe circle */}
-          <div 
+          <div
             style={{
               position: 'absolute',
               width: '420px',

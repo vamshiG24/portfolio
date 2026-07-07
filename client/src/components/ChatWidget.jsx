@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Sparkles } from 'lucide-react';
+import { X, Send, Bot } from 'lucide-react';
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -97,7 +97,7 @@ const ChatWidget = () => {
           filter: isOpen ? 'brightness(1.18) contrast(1.05)' : 'none',
         }}
       >
-        {isOpen ? <X size={24} /> : <Sparkles size={24} className="animate-pulse" />}
+        {isOpen ? <X size={24} /> : <Bot size={24} className="animate-pulse" />}
       </motion.button>
 
       {/* Chat window */}
@@ -155,7 +155,7 @@ const ChatWidget = () => {
                   style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%' }}
                 >
                   {msg.role === 'assistant' && (
-                    <div className="bubble-avatar" style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)', display: 'flex', alignItems: 'center', justify: 'center', fontSize: '0.85rem' }}>✨</div>
+                    <div className="bubble-avatar" style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Bot size={16} style={{ color: 'var(--yellow-dark)' }} /></div>
                   )}
                   <div
                     className="bubble-text"
@@ -184,7 +184,7 @@ const ChatWidget = () => {
               ))}
               {loading && (
                 <div className="chat-bubble chat-bubble--assistant" style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', maxWidth: '85%' }}>
-                  <div className="bubble-avatar" style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)', display: 'flex', alignItems: 'center', justify: 'center', fontSize: '0.85rem' }}>✨</div>
+                  <div className="bubble-avatar" style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Bot size={16} style={{ color: 'var(--yellow-dark)' }} /></div>
                   <div className="bubble-typing" style={{ padding: '12px 14px', borderRadius: '4px 14px 14px 14px', background: 'var(--bg-secondary)', border: '1px solid rgba(234, 179, 8, 0.1)', display: 'flex', gap: '4px', alignItems: 'center' }}>
                     <span className="dot-pulse" style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--yellow-dark)', animation: 'typing-pulse 1s infinite alternate' }} />
                     <span className="dot-pulse" style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--yellow-dark)', animation: 'typing-pulse 1s infinite alternate 0.2s' }} />
