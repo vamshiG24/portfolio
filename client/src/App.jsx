@@ -10,6 +10,7 @@ import Contact from './components/Contact';
 import ChatWidget from './components/ChatWidget';
 import LoadingScreen from './components/LoadingScreen';
 import { VolumeX } from 'lucide-react';
+import FluidCanvas from './components/FluidCanvas';
 
 let activeSpeechUtterance = null;
 
@@ -31,17 +32,17 @@ const App = () => {
     if ('speechSynthesis' in window) {
       hasSpokenRef.current = true;
       window.speechSynthesis.cancel();
-      
+
       const introText = "Hello! I am ARIA, Vamshi Gowni's personal AI assistant. Welcome to his portfolio! I can guide you through his work and skills. Feel free to scroll down to view his timeline, projects, and contact form, or chat with me directly using the assistant drawer in the bottom right corner!";
-      
+
       const utterance = new SpeechSynthesisUtterance(introText);
       activeSpeechUtterance = utterance; // prevent garbage collection by referencing globally
-      
+
       // Find a male voice
       const voices = window.speechSynthesis.getVoices();
       let maleVoice = voices.find(v => {
         const name = v.name.toLowerCase();
-        return v.lang.startsWith('en') && 
+        return v.lang.startsWith('en') &&
           (name.includes('male') || name.includes('david') || name.includes('mark') || name.includes('george') || name.includes('sean') || name.includes('daniel') || name.includes('google us english') || name.includes('google uk english male')) &&
           !name.includes('female') && !name.includes('zira') && !name.includes('aria') && !name.includes('hazel');
       });
@@ -50,7 +51,7 @@ const App = () => {
       if (!maleVoice) {
         maleVoice = voices.find(v => {
           const name = v.name.toLowerCase();
-          return v.lang.startsWith('en') && 
+          return v.lang.startsWith('en') &&
             !name.includes('female') && !name.includes('zira') && !name.includes('aria') && !name.includes('hazel');
         });
       }
@@ -58,10 +59,10 @@ const App = () => {
       if (maleVoice) {
         utterance.voice = maleVoice;
       }
-      
+
       utterance.rate = 1.0;
       utterance.pitch = 1.05;
-      
+
       utterance.onstart = () => setVoiceActive(true);
       utterance.onend = () => {
         setVoiceActive(false);
@@ -71,7 +72,7 @@ const App = () => {
         setVoiceActive(false);
         activeSpeechUtterance = null;
       };
-      
+
       window.speechSynthesis.speak(utterance);
     }
   }, []);
@@ -105,15 +106,16 @@ const App = () => {
   }, []);
 
   return (
-    <div className="app-root" style={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
+    <div className="app-root" style={{ width: '100%', minHeight: '100vh', backgroundColor: 'transparent' }}>
       <AnimatePresence>
         {!loaded && <LoadingScreen onDone={handleLoadComplete} />}
       </AnimatePresence>
- 
+
       {/* 2D Portfolio Page */}
       {loaded && (
         <div className="portfolio-content" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Navbar />
+          <FluidCanvas />
 
           {/* Floating Speaking Wave */}
           {voiceActive && (
@@ -158,7 +160,7 @@ const App = () => {
               <VolumeX size={14} style={{ color: 'var(--yellow-dark)' }} />
             </motion.div>
           )}
- 
+
           {/* Main sections */}
           <main style={{ flex: '1 0 auto' }}>
             <div id="home">
@@ -193,5 +195,5 @@ const App = () => {
     </div>
   );
 };
- 
+
 export default App;

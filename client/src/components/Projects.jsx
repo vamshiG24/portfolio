@@ -50,11 +50,11 @@ const ProjectRow = ({ project, index }) => {
   const leftColAnim = {
     initial: { opacity: 0, x: -60, y: 0 },
     animate: isInView ? { opacity: 1, x: 0, y: 0 } : {},
-    transition: { 
-      duration: 0.8, 
-      type: 'spring', 
-      stiffness: 80, 
-      damping: 15, 
+    transition: {
+      duration: 0.8,
+      type: 'spring',
+      stiffness: 80,
+      damping: 15,
       delay: 0.1,
       y: { type: 'spring', stiffness: 300, damping: 20, delay: 0 },
       scale: { type: 'spring', stiffness: 300, damping: 20, delay: 0 }
@@ -64,11 +64,11 @@ const ProjectRow = ({ project, index }) => {
   const rightColAnim = {
     initial: { opacity: 0, x: 60, y: 0 },
     animate: isInView ? { opacity: 1, x: 0, y: 0 } : {},
-    transition: { 
-      duration: 0.8, 
-      type: 'spring', 
-      stiffness: 80, 
-      damping: 15, 
+    transition: {
+      duration: 0.8,
+      type: 'spring',
+      stiffness: 80,
+      damping: 15,
       delay: 0.2,
       y: { type: 'spring', stiffness: 300, damping: 20, delay: 0 },
       scale: { type: 'spring', stiffness: 300, damping: 20, delay: 0 }
@@ -159,7 +159,7 @@ const ProjectRow = ({ project, index }) => {
       }}
     >
       <div>
-        <span 
+        <span
           style={{
             fontSize: '0.78rem',
             color: 'var(--yellow-dark)',
@@ -173,7 +173,7 @@ const ProjectRow = ({ project, index }) => {
         >
           {project.subtitle}
         </span>
-        <h3 
+        <h3
           style={{
             fontSize: '2rem',
             fontWeight: 800,
@@ -188,7 +188,7 @@ const ProjectRow = ({ project, index }) => {
         </h3>
       </div>
 
-      <p 
+      <p
         style={{
           color: 'var(--text-secondary)',
           fontSize: '0.98rem',
@@ -300,7 +300,7 @@ const Projects = () => {
       <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-          <span 
+          <span
             style={{
               color: 'var(--yellow-dark)',
               fontWeight: 700,
@@ -381,10 +381,10 @@ const Projects = () => {
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, idx) => (
-              <ProjectRow 
-                key={project.title} 
-                project={project} 
-                index={idx} 
+              <ProjectRow
+                key={project.title}
+                project={project}
+                index={idx}
               />
             ))}
           </AnimatePresence>
