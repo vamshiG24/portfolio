@@ -13,11 +13,11 @@ const FluidCanvas = () => {
 
     // Simulation settings
     const CELL_SIZE = 36; // Grid cell size in pixels
-    const PARTICLE_COUNT = 1800; // Slightly more particles for full-page immersion
+    const PARTICLE_COUNT = 150; // Decreased for cleaner aesthetics
     const VISCOSITY = 0.96; // Velocity decay factor per frame
     const INJECTION_RADIUS = 3.5; // Grid cells radius for mouse injection
-    const MOUSE_FORCE = 2.0; // Force factor for mouse movements
-    const CLICK_FORCE = 18; // Force factor for mouse clicks
+    const MOUSE_FORCE = 1.2; // Force factor for mouse movements
+    const CLICK_FORCE = 10.0; // Force factor for mouse clicks
     const CLICK_RADIUS = 7; // Grid cells radius for clicks
 
     let width = 0;
@@ -25,6 +25,7 @@ const FluidCanvas = () => {
     let cols = 0;
     let rows = 0;
     let numCells = 0;
+    let currentActiveCount = PARTICLE_COUNT;
 
     // Grid buffers
     let u = new Float32Array(0); // horizontal velocity
@@ -45,18 +46,17 @@ const FluidCanvas = () => {
         this.py = this.y;
         this.vx = (Math.random() - 0.5) * 0.4;
         this.vy = (Math.random() - 0.5) * 0.4;
-        this.size = Math.random() * 1.6 + 0.6;
+        this.size = Math.random() * 0.7 + 0.3;
         this.life = init ? Math.random() * 200 : 0;
         this.maxLife = 140 + Math.random() * 180;
 
-        // Custom palette matching the portfolio theme:
-        // Yellows, Golds, Warm Ambers, and deep contrast highlights
+        // Custom palette matching the blue/cyan cinematic theme:
         const colors = [
-          'rgba(250, 204, 21, ',  // Bright Yellow
-          'rgba(202, 138, 4, ',   // Warm Amber/Gold
-          'rgba(254, 240, 138, ', // Light Cream-Yellow
-          'rgba(133, 77, 14, ',  // Deep contrast Gold
-          'rgba(249, 115, 22, '   // Orange Accent
+          'rgba(164, 244, 253, ', // Neon Cyan
+          'rgba(61, 129, 227, ',  // Royal Blue
+          'rgba(0, 210, 255, ',   // Electric Blue
+          'rgba(11, 37, 81, ',    // Deep Blue Accent
+          'rgba(147, 51, 234, '   // Purple accent
         ];
         this.colorPrefix = colors[Math.floor(Math.random() * colors.length)];
       }
@@ -125,7 +125,7 @@ const FluidCanvas = () => {
         const alpha = Math.min(0.65, (0.12 + speedFactor * 0.53) * lifeFactor);
 
         c.strokeStyle = `${this.colorPrefix}${alpha})`;
-        c.lineWidth = this.size * (1 + speed * 0.08);
+        c.lineWidth = this.size * (1 + speed * 0.02);
         c.lineCap = 'round';
 
         c.beginPath();
@@ -279,15 +279,15 @@ const FluidCanvas = () => {
       mouse.isDown = false;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('blur', handleMouseLeave);
-    window.addEventListener('mouseenter', handleMouseEnter);
-    window.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd);
+    // window.addEventListener('mousemove', handleMouseMove);
+    // window.addEventListener('mousedown', handleMouseDown);
+    // window.addEventListener('mouseup', handleMouseUp);
+    // window.addEventListener('blur', handleMouseLeave);
+    // window.addEventListener('mouseenter', handleMouseEnter);
+    // window.addEventListener('mouseleave', handleMouseLeave);
+    // window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    // window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    // window.addEventListener('touchend', handleTouchEnd);
 
     // Animation Loop
     let animationFrameId = null;
@@ -332,17 +332,27 @@ const FluidCanvas = () => {
 
     const animate = () => {
       // Clear canvas with partial opacity to create trail sweep
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.085)';
+      ctx.fillStyle = 'rgba(12, 12, 12, 0.085)';
       ctx.fillRect(0, 0, width, height);
 
       // Solve grid velocities
       updateFluidGrid();
 
+      // Dynamic active particle count based on scroll position (Home vs other sections)
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const isHome = scrollY < window.innerHeight * 0.8;
+      const targetCount = isHome ? PARTICLE_COUNT : 700;
+      
+      currentActiveCount += (targetCount - currentActiveCount) * 0.08;
+      const countToDraw = Math.round(currentActiveCount);
+
       // Update and draw particles
-      for (let i = 0; i < particles.length; i++) {
+      for (let i = 0; i < countToDraw; i++) {
         const p = particles[i];
-        p.update(width, height);
-        p.draw(ctx);
+        if (p) {
+          p.update(width, height);
+          p.draw(ctx);
+        }
       }
 
       animationFrameId = requestAnimationFrame(animate);
@@ -352,15 +362,15 @@ const FluidCanvas = () => {
 
     return () => {
       window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('blur', handleMouseLeave);
-      window.removeEventListener('mouseenter', handleMouseEnter);
-      window.removeEventListener('mouseleave', handleMouseLeave);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
+      // window.removeEventListener('mousemove', handleMouseMove);
+      // window.removeEventListener('mousedown', handleMouseDown);
+      // window.removeEventListener('mouseup', handleMouseUp);
+      // window.removeEventListener('blur', handleMouseLeave);
+      // window.removeEventListener('mouseenter', handleMouseEnter);
+      // window.removeEventListener('mouseleave', handleMouseLeave);
+      // window.removeEventListener('touchstart', handleTouchStart);
+      // window.removeEventListener('touchmove', handleTouchMove);
+      // window.removeEventListener('touchend', handleTouchEnd);
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }

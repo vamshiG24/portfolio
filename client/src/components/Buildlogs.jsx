@@ -39,7 +39,7 @@ const LogCard = ({ log, index }) => {
       className="glass-card log-normal-card"
       style={{
         borderRadius: '24px',
-        border: '1px solid rgba(234, 179, 8, 0.14)',
+        border: '1px solid rgba(204, 0, 0, 0.14)',
         background: 'rgba(255, 255, 255, 0.75)',
         boxShadow: 'var(--shadow-sm)',
         marginBottom: '28px',
@@ -95,7 +95,7 @@ const LogCard = ({ log, index }) => {
       {/* Divider */}
       <div style={{
         height: '1px',
-        background: 'linear-gradient(90deg, transparent, rgba(234, 179, 8, 0.15) 15%, rgba(234, 179, 8, 0.15) 85%, transparent)',
+        background: 'linear-gradient(90deg, transparent, rgba(204, 0, 0, 0.15) 15%, rgba(204, 0, 0, 0.15) 85%, transparent)',
         marginBottom: '24px'
       }} />
 
@@ -110,13 +110,13 @@ const LogCard = ({ log, index }) => {
       >
         {/* Challenge Column */}
         <div style={{
-          background: 'rgba(239, 68, 68, 0.02)',
+          background: 'rgba(255, 0, 0, 0.02)',
           borderLeft: '4px solid #EF4444',
           padding: '24px',
           borderRadius: '16px',
           borderTopRightRadius: '4px',
           borderBottomRightRadius: '4px',
-          border: '1px solid rgba(239, 68, 68, 0.06)',
+          border: '1px solid rgba(255, 0, 0, 0.06)',
           borderLeftWidth: '4px',
           display: 'flex',
           flexDirection: 'column',
@@ -265,8 +265,8 @@ const BuildLogs = () => {
 
       <style>{`
         .challenge-col-hover:hover {
-          background: rgba(239, 68, 68, 0.04) !important;
-          border-color: rgba(239, 68, 68, 0.15) !important;
+          background: rgba(255, 0, 0, 0.04) !important;
+          border-color: rgba(255, 0, 0, 0.15) !important;
           transform: translateY(-2px);
         }
         .solution-col-hover:hover {
@@ -275,8 +275,8 @@ const BuildLogs = () => {
           transform: translateY(-2px);
         }
         .log-normal-card:hover {
-          border-color: rgba(234, 179, 8, 0.35) !important;
-          box-shadow: 0 20px 40px -10px rgba(202, 138, 4, 0.12), 0 0 25px rgba(250, 204, 21, 0.05) !important;
+          border-color: rgba(204, 0, 0, 0.35) !important;
+          box-shadow: 0 20px 40px -10px rgba(202, 138, 4, 0.12), 0 0 25px rgba(255, 0, 0, 0.05) !important;
         }
         @media (max-width: 768px) {
           .log-grid-content {

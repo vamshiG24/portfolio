@@ -98,7 +98,7 @@ const Contact = () => {
           {/* Quick Info */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(234, 179, 8, 0.06)', border: '1px solid rgba(234, 179, 8, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--yellow-dark)' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(204, 0, 0, 0.06)', border: '1px solid rgba(204, 0, 0, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--yellow-dark)' }}>
                 <Mail size={20} />
               </div>
               <div>
@@ -108,7 +108,7 @@ const Contact = () => {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(234, 179, 8, 0.06)', border: '1px solid rgba(234, 179, 8, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--yellow-dark)' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(204, 0, 0, 0.06)', border: '1px solid rgba(204, 0, 0, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--yellow-dark)' }}>
                 <MapPin size={20} />
               </div>
               <div>
@@ -134,7 +134,7 @@ const Contact = () => {
                   height: '48px',
                   borderRadius: '50%',
                   background: 'var(--card-bg)',
-                  border: '1px solid rgba(234, 179, 8, 0.25)',
+                  border: '1px solid rgba(204, 0, 0, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -188,7 +188,7 @@ const Contact = () => {
                     padding: '12px 16px',
                     borderRadius: '8px',
                     background: 'var(--bg-primary)',
-                    border: '1px solid rgba(234, 179, 8, 0.15)',
+                    border: '1px solid rgba(204, 0, 0, 0.15)',
                     color: 'var(--text-primary)',
                     outline: 'none',
                     fontSize: '0.9rem',
@@ -208,7 +208,7 @@ const Contact = () => {
                     padding: '12px 16px',
                     borderRadius: '8px',
                     background: 'var(--bg-primary)',
-                    border: '1px solid rgba(234, 179, 8, 0.15)',
+                    border: '1px solid rgba(204, 0, 0, 0.15)',
                     color: 'var(--text-primary)',
                     outline: 'none',
                     fontSize: '0.9rem',
@@ -229,7 +229,7 @@ const Contact = () => {
                   padding: '12px 16px',
                   borderRadius: '8px',
                   background: 'var(--bg-primary)',
-                  border: '1px solid rgba(234, 179, 8, 0.15)',
+                  border: '1px solid rgba(204, 0, 0, 0.15)',
                   color: 'var(--text-primary)',
                   outline: 'none',
                   fontSize: '0.9rem',
@@ -249,7 +249,7 @@ const Contact = () => {
                   padding: '12px 16px',
                   borderRadius: '8px',
                   background: 'var(--bg-primary)',
-                  border: '1px solid rgba(234, 179, 8, 0.15)',
+                  border: '1px solid rgba(204, 0, 0, 0.15)',
                   color: 'var(--text-primary)',
                   outline: 'none',
                   fontSize: '0.9rem',
@@ -313,14 +313,14 @@ const Contact = () => {
           border-color: var(--yellow-dark) !important;
           background: var(--yellow) !important;
           transform: translateY(-5px) rotate(8deg) !important;
-          box-shadow: 0 8px 20px rgba(234, 179, 8, 0.25) !important;
+          box-shadow: 0 8px 20px rgba(204, 0, 0, 0.25) !important;
         }
         .form-input {
           transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
         .form-input:focus {
           border-color: var(--yellow-dark) !important;
-          box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15), 0 4px 12px rgba(234, 179, 8, 0.05) !important;
+          box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.15), 0 4px 12px rgba(204, 0, 0, 0.05) !important;
           background: #FFFFFF !important;
         }
         @media (max-width: 767px) {

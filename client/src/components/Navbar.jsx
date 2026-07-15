@@ -82,9 +82,9 @@ const Navbar = () => {
       width: '100%',
       maxWidth: '960px',
       borderRadius: '50px',
-      border: '1px solid rgba(234, 179, 8, 0.22)',
-      boxShadow: '0 12px 30px -10px rgba(234, 179, 8, 0.18), 0 0 15px rgba(250, 204, 21, 0.04)',
-      background: 'rgba(255, 255, 255, 0.88)',
+      border: '1px solid rgba(255, 255, 255, 0.08)',
+      boxShadow: '0 12px 30px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.02)',
+      background: 'rgba(12, 12, 12, 0.75)',
       backdropFilter: 'blur(20px)',
       WebkitBackdropFilter: 'blur(20px)',
       padding: '12px 28px',
@@ -114,17 +114,22 @@ const Navbar = () => {
     <nav style={navStyle}>
       <div style={containerStyle}>
         {/* Logo */}
-        <motion.h1
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-2xl font-bold cursor-pointer"
-          style={{ fontSize: '1.4rem', fontWeight: 800, margin: 0 }}
+        <a
+          href="#home"
           onClick={(e) => handleLinkClick(e, 'home')}
+          style={{
+            textDecoration: 'none',
+            fontSize: '1.25rem',
+            fontWeight: 800,
+            color: '#ffffff',
+            fontFamily: 'var(--font-display)',
+            letterSpacing: '-0.02em',
+            display: 'flex',
+            alignItems: 'center'
+          }}
         >
-          <span style={{ color: 'var(--text-primary)' }}>Vamshi</span>
-          <span style={{ color: 'var(--yellow-dark)' }}>.dev</span>
-        </motion.h1>
+          vamshi<span style={{ color: '#ff0000' }}>.dev</span>
+        </a>
 
         {/* Desktop Navigation */}
         <ul className="desktop-menu" style={{ gap: '32px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
@@ -145,7 +150,7 @@ const Navbar = () => {
                     textDecoration: 'none',
                     fontSize: '0.9rem',
                     fontWeight: 600,
-                    color: isActive ? 'var(--yellow-dark)' : 'var(--text-secondary)',
+                    color: isActive ? '#ff0000' : 'var(--text-secondary)',
                     transition: 'color 0.3s ease',
                     padding: '6px 0',
                     fontFamily: 'var(--font-display)',
@@ -162,7 +167,7 @@ const Navbar = () => {
                         left: 0,
                         width: '100%',
                         height: '2px',
-                        backgroundColor: 'var(--yellow-dark)',
+                        backgroundColor: '#ff0000',
                         borderRadius: '99px',
                       }}
                     />
@@ -205,12 +210,12 @@ const Navbar = () => {
               top: scrolled ? 'calc(100% + 12px)' : '100%',
               left: scrolled ? '0px' : '0px',
               width: '100%',
-              background: 'rgba(255, 255, 255, 0.96)',
+              background: 'rgba(12, 12, 12, 0.96)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
               borderRadius: scrolled ? '24px' : '0px',
-              border: scrolled ? '1px solid rgba(234, 179, 8, 0.22)' : 'none',
-              borderBottom: scrolled ? '1px solid rgba(234, 179, 8, 0.22)' : '1px solid rgba(234, 179, 8, 0.12)',
+              border: scrolled ? '1px solid rgba(255, 255, 255, 0.08)' : 'none',
+              borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(255, 255, 255, 0.05)',
               boxShadow: scrolled ? 'var(--shadow-lg)' : 'none',
               overflow: 'hidden',
             }}

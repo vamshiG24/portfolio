@@ -121,7 +121,7 @@ const SkillsShowcase = () => {
                 style={{
                   padding: '8px 18px',
                   borderRadius: '99px',
-                  border: isActive ? '1px solid var(--yellow-dark)' : '1px solid rgba(234, 179, 8, 0.15)',
+                  border: isActive ? '1px solid var(--yellow-dark)' : '1px solid rgba(204, 0, 0, 0.15)',
                   background: isActive ? 'var(--yellow)' : 'var(--card-bg)',
                   color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
                   fontWeight: 600,
@@ -129,7 +129,7 @@ const SkillsShowcase = () => {
                   fontFamily: 'var(--font-display)',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
-                  boxShadow: isActive ? '0 4px 10px rgba(234, 179, 8, 0.1)' : 'var(--shadow-sm)',
+                  boxShadow: isActive ? '0 4px 10px rgba(204, 0, 0, 0.1)' : 'var(--shadow-sm)',
                 }}
                 className="category-tab-btn"
               >
@@ -164,7 +164,7 @@ const SkillsShowcase = () => {
         .skill-card-wrapper:hover {
           transform: translateY(-5px) scale(1.02) !important;
           border-color: var(--yellow-dark) !important;
-          box-shadow: 0 12px 30px -5px rgba(202, 138, 4, 0.15), 0 0 20px rgba(250, 204, 21, 0.08) !important;
+          box-shadow: 0 12px 30px -5px rgba(202, 138, 4, 0.15), 0 0 20px rgba(255, 0, 0, 0.08) !important;
         }
         .skill-card-wrapper:hover .skill-icon {
           color: var(--yellow-dark) !important;

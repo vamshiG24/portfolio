@@ -79,7 +79,7 @@ const ChatWidget = () => {
           scale: 1.15, 
           rotate: 8,
           borderRadius: '12px',
-          boxShadow: '0 0 35px 10px rgba(250, 204, 21, 0.85), 0 0 60px 20px rgba(234, 179, 8, 0.55)',
+          boxShadow: '0 0 35px 10px rgba(255, 0, 0, 0.85), 0 0 60px 20px rgba(204, 0, 0, 0.55)',
           filter: 'brightness(1.18) contrast(1.05)',
         }}
         whileTap={{ scale: 0.9 }}
@@ -92,8 +92,8 @@ const ChatWidget = () => {
           border: '1px solid rgba(202, 138, 4, 0.65)',
           color: '#1C1917',
           boxShadow: isOpen 
-            ? '0 0 35px 10px rgba(250, 204, 21, 0.85), 0 0 60px 20px rgba(234, 179, 8, 0.55)'
-            : '0 8px 28px -2px rgba(202, 138, 4, 0.45), 0 0 15px rgba(250, 204, 21, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.45)',
+            ? '0 0 35px 10px rgba(255, 0, 0, 0.85), 0 0 60px 20px rgba(204, 0, 0, 0.55)'
+            : '0 8px 28px -2px rgba(202, 138, 4, 0.45), 0 0 15px rgba(255, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.45)',
           filter: isOpen ? 'brightness(1.18) contrast(1.05)' : 'none',
         }}
       >
@@ -120,17 +120,17 @@ const ChatWidget = () => {
               background: 'rgba(255, 255, 255, 0.98)',
               backdropFilter: 'blur(30px)',
               WebkitBackdropFilter: 'blur(30px)',
-              border: '1px solid rgba(234, 179, 8, 0.25)',
+              border: '1px solid rgba(204, 0, 0, 0.25)',
               borderRadius: '24px',
-              boxShadow: 'var(--shadow-lg), 0 0 40px rgba(234, 179, 8, 0.06)',
+              boxShadow: 'var(--shadow-lg), 0 0 40px rgba(204, 0, 0, 0.06)',
               overflow: 'hidden',
             }}
           >
             {/* Header */}
-            <div className="aria-chat__header" style={{ padding: '16px 18px', display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(250, 204, 21, 0.08)', borderBottom: '1px solid rgba(234, 179, 8, 0.15)' }}>
+            <div className="aria-chat__header" style={{ padding: '16px 18px', display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(255, 0, 0, 0.08)', borderBottom: '1px solid rgba(204, 0, 0, 0.15)' }}>
               <div className="aria-chat__avatar" style={{ position: 'relative', width: '38px', height: '38px' }}>
-                <div className="avatar-orb" style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%, #FFFFFF, var(--yellow), var(--yellow-dark))', boxShadow: '0 0 15px rgba(234, 179, 8, 0.4)' }} />
-                <div className="avatar-ring" style={{ position: 'absolute', inset: '-4px', borderRadius: '50%', border: '1px solid rgba(234, 179, 8, 0.3)' }} />
+                <div className="avatar-orb" style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%, #FFFFFF, var(--yellow), var(--yellow-dark))', boxShadow: '0 0 15px rgba(204, 0, 0, 0.4)' }} />
+                <div className="avatar-ring" style={{ position: 'absolute', inset: '-4px', borderRadius: '50%', border: '1px solid rgba(204, 0, 0, 0.3)' }} />
               </div>
               <div className="aria-chat__info" style={{ flex: 1 }}>
                 <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>ARIA AI</h3>
@@ -155,7 +155,7 @@ const ChatWidget = () => {
                   style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%' }}
                 >
                   {msg.role === 'assistant' && (
-                    <div className="bubble-avatar" style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Bot size={16} style={{ color: 'var(--yellow-dark)' }} /></div>
+                    <div className="bubble-avatar" style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(204, 0, 0, 0.08)', border: '1px solid rgba(204, 0, 0, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Bot size={16} style={{ color: 'var(--yellow-dark)' }} /></div>
                   )}
                   <div
                     className="bubble-text"
@@ -165,7 +165,7 @@ const ChatWidget = () => {
                       fontSize: '0.83rem',
                       lineHeight: '1.55',
                       background: 'var(--bg-secondary)',
-                      border: '1px solid rgba(234, 179, 8, 0.1)',
+                      border: '1px solid rgba(204, 0, 0, 0.1)',
                       color: 'var(--text-secondary)'
                     } : {
                       padding: '10px 14px',
@@ -184,8 +184,8 @@ const ChatWidget = () => {
               ))}
               {loading && (
                 <div className="chat-bubble chat-bubble--assistant" style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', maxWidth: '85%' }}>
-                  <div className="bubble-avatar" style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Bot size={16} style={{ color: 'var(--yellow-dark)' }} /></div>
-                  <div className="bubble-typing" style={{ padding: '12px 14px', borderRadius: '4px 14px 14px 14px', background: 'var(--bg-secondary)', border: '1px solid rgba(234, 179, 8, 0.1)', display: 'flex', gap: '4px', alignItems: 'center' }}>
+                  <div className="bubble-avatar" style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(204, 0, 0, 0.08)', border: '1px solid rgba(204, 0, 0, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Bot size={16} style={{ color: 'var(--yellow-dark)' }} /></div>
+                  <div className="bubble-typing" style={{ padding: '12px 14px', borderRadius: '4px 14px 14px 14px', background: 'var(--bg-secondary)', border: '1px solid rgba(204, 0, 0, 0.1)', display: 'flex', gap: '4px', alignItems: 'center' }}>
                     <span className="dot-pulse" style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--yellow-dark)', animation: 'typing-pulse 1s infinite alternate' }} />
                     <span className="dot-pulse" style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--yellow-dark)', animation: 'typing-pulse 1s infinite alternate 0.2s' }} />
                     <span className="dot-pulse" style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--yellow-dark)', animation: 'typing-pulse 1s infinite alternate 0.4s' }} />
@@ -196,7 +196,7 @@ const ChatWidget = () => {
             </div>
 
             {/* Input */}
-            <div className="aria-chat__input" style={{ display: 'flex', gap: '8px', padding: '12px 14px', borderTop: '1px solid rgba(234, 179, 8, 0.12)' }}>
+            <div className="aria-chat__input" style={{ display: 'flex', gap: '8px', padding: '12px 14px', borderTop: '1px solid rgba(204, 0, 0, 0.12)' }}>
               <input
                 type="text"
                 value={input}
@@ -208,7 +208,7 @@ const ChatWidget = () => {
                 style={{
                   flex: 1,
                   background: 'var(--bg-primary)',
-                  border: '1px solid rgba(234, 179, 8, 0.18)',
+                  border: '1px solid rgba(204, 0, 0, 0.18)',
                   borderRadius: '10px',
                   padding: '9px 14px',
                   color: 'var(--text-primary)',
