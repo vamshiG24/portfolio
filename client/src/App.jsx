@@ -1,13 +1,13 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-// import Navbar from './components/Navbar';
+import Navbar from './components/Navbar';
 import Home from './components/Home';
-// import Timeline from './components/Timeline';
-// import SkillsShowcase from './components/SkillsShowcase';
+import Timeline from './components/Timeline';
+import SkillsShowcase from './components/SkillsShowcase';
 import Projects from './components/Projects';
-// import BuildLogs from './components/Buildlogs';
-// import Contact from './components/Contact';
-// import ChatWidget from './components/ChatWidget';
+import BuildLogs from './components/Buildlogs';
+import Contact from './components/Contact';
+import ChatWidget from './components/ChatWidget';
 import { VolumeX } from 'lucide-react';
 
 let activeSpeechUtterance = null;
@@ -101,7 +101,7 @@ const App = () => {
   return (
     <div className="app-root" style={{ width: '100%', minHeight: '100vh', backgroundColor: 'transparent' }}>
       <div className="portfolio-content" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        {/* <Navbar /> */}
+        <Navbar />
 
         {/* Floating Speaking Wave */}
         {voiceActive && (
@@ -152,24 +152,24 @@ const App = () => {
           <div id="home">
             <Home voiceActive={voiceActive} toggleSpeech={toggleSpeech} />
           </div>
-          {/* <div id="timeline">
+          <div id="timeline">
             <Timeline />
           </div>
           <div id="skills">
             <SkillsShowcase />
-          </div> */}
+          </div>
           <div>
             <Projects />
           </div>
-          {/* <div id="buildlogs">
+          <div id="buildlogs">
             <BuildLogs />
           </div>
           <div id="contact">
             <Contact />
-          </div> */}
+          </div>
         </main>
 
-        {/* <ChatWidget /> */}
+        <ChatWidget />
 
         {/* Footer */}
         <footer className="text-center py-8 text-sm border-t border-[rgba(255,255,255,0.05)] bg-[#0c0c0c]/80 backdrop-blur-md" style={{ zIndex: 10, textAlign: 'center', padding: '32px 24px' }}>

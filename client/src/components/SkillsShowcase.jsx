@@ -61,6 +61,89 @@ const SkillCard = ({ skill, index, isInView }) => {
     </motion.div>
   );
 };
+const getSkillGlowColor = (name) => {
+  const brandColors = {
+    'React': '#61dafb',
+    'Node.js': '#22c55e',
+    'MongoDB': '#10b981',
+    'Express.js': '#a8a8a8',
+    'Python': '#3b82f6',
+    'TensorFlow': '#f97316',
+    'Tailwind CSS': '#06b6d4',
+    'NumPy': '#4d77cf',
+    'JavaScript': '#eab308',
+    'Git': '#ef4444',
+    'Pandas': '#130654',
+    'SQL': '#00bcd4',
+  };
+  return brandColors[name] || '#eab308';
+};
+
+const SkillsMarqueeRow = ({ data, reverse = false, speed = 20 }) => {
+  if (data.length === 0) return null;
+  const items = data.length < 8 ? [...data, ...data, ...data, ...data] : [...data, ...data];
+  const [hoveredIdx, setHoveredIdx] = useState(null);
+  
+  return (
+    <div className="relative w-full overflow-hidden py-2" style={{ display: 'flex' }}>
+      <div
+        className="flex transform-gpu"
+        style={{
+          display: 'flex',
+          gap: '20px',
+          animation: `marqueeScroll ${speed}s linear infinite`,
+          animationDirection: reverse ? 'reverse' : 'normal',
+          width: 'max-content',
+        }}
+      >
+        {items.map((skill, idx) => {
+          const isHovered = hoveredIdx === idx;
+          const brandColor = getSkillGlowColor(skill.name);
+          return (
+            <div
+              key={idx}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              className="skill-marquee-card"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
+                padding: '20px 32px',
+                background: 'var(--card-bg)',
+                border: isHovered ? `1px solid ${brandColor}` : '1px solid rgba(255, 255, 255, 0.05)',
+                borderRadius: '20px',
+                boxShadow: isHovered 
+                  ? `0 12px 30px -5px ${brandColor}30, 0 0 20px ${brandColor}15`
+                  : '0 6px 24px rgba(0,0,0,0.18)',
+                transform: isHovered ? 'translateY(-6px) scale(1.04)' : 'none',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                cursor: 'pointer',
+              }}
+            >
+              <div 
+                className="skill-marquee-icon" 
+                style={{ 
+                  fontSize: '2.2rem', 
+                  color: isHovered ? brandColor : 'var(--text-muted)', 
+                  transition: 'all 0.3s', 
+                  display: 'flex', 
+                  alignItems: 'center',
+                  transform: isHovered ? 'scale(1.1) rotate(6deg)' : 'none'
+                }}
+              >
+                {skill.icon}
+              </div>
+              <span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '1.2rem', letterSpacing: '-0.01em' }}>
+                {skill.name}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
 const SkillsShowcase = () => {
   const containerRef = useRef(null);
@@ -71,17 +154,55 @@ const SkillsShowcase = () => {
     ? skills 
     : skills.filter(s => s.category === activeTab);
 
+  // Split filtered skills into two rows
+  const half = Math.ceil(filteredSkills.length / 2);
+  const row1 = filteredSkills.slice(0, half);
+  const row2 = filteredSkills.slice(half);
+
   return (
     <section
       id="skills"
       ref={containerRef}
       style={{
         width: '100%',
-        padding: '100px 24px',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '80px 24px',
         background: 'transparent',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
+      {/* Intense Ambient Glow Blobs */}
+      <div style={{
+        position: 'absolute',
+        top: '15%',
+        left: '5%',
+        width: '380px',
+        height: '380px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(234,179,8,0.06) 0%, transparent 70%)',
+        filter: 'blur(70px)',
+        pointerEvents: 'none',
+        zIndex: 0,
+      }} />
+      <div style={{
+        position: 'absolute',
+        bottom: '15%',
+        right: '5%',
+        width: '420px',
+        height: '420px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(255,68,68,0.04) 0%, transparent 70%)',
+        filter: 'blur(90px)',
+        pointerEvents: 'none',
+        zIndex: 0,
+      }} />
+
+      <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <motion.h2
@@ -109,7 +230,7 @@ const SkillsShowcase = () => {
             justifyContent: 'center', 
             gap: '8px', 
             flexWrap: 'wrap', 
-            marginBottom: '40px' 
+            marginBottom: '48px' 
           }}
         >
           {categories.map((tab) => {
@@ -139,45 +260,37 @@ const SkillsShowcase = () => {
           })}
         </div>
 
-        {/* Grid */}
-        <motion.div
-          layout
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-            gap: '24px',
-            minHeight: '200px'
-          }}
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredSkills.map((skill, index) => (
-              <SkillCard key={skill.name} skill={skill} index={index} isInView={isInView} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Sliding Skills Marquee Container */}
+        <div className="relative w-full flex flex-col gap-7 overflow-hidden py-4" style={{
+          maskImage: 'linear-gradient(to right, transparent, white 15%, white 85%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, white 15%, white 85%, transparent)',
+        }}>
+          <SkillsMarqueeRow data={row1} reverse={false} speed={25} />
+          {row2.length > 0 && <SkillsMarqueeRow data={row2} reverse={true} speed={25} />}
+        </div>
+
       </div>
 
       <style>{`
-        .skill-card-wrapper {
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        @keyframes marqueeScroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
-        .skill-card-wrapper:hover {
-          transform: translateY(-5px) scale(1.02) !important;
+        .skill-marquee-card:hover {
+          transform: translateY(-4px) scale(1.03) !important;
           border-color: var(--yellow-dark) !important;
-          box-shadow: 0 12px 30px -5px rgba(202, 138, 4, 0.15), 0 0 20px rgba(255, 0, 0, 0.08) !important;
+          box-shadow: 0 10px 25px -5px rgba(202, 138, 4, 0.18) !important;
         }
-        .skill-card-wrapper:hover .skill-icon {
+        .skill-marquee-card:hover .skill-marquee-icon {
           color: var(--yellow-dark) !important;
           transform: scale(1.15) rotate(5deg);
         }
-        .skill-card-wrapper:hover .skill-corner-accent {
-          opacity: 1 !important;
-        }
         .category-tab-btn:hover {
-          border-color: var(--yellow-dark) !important;
-          color: var(--yellow-deep) !important;
-          background: var(--bg-secondary);
-          transform: translateY(-1px);
+          border-color: #ff0000 !important;
+          color: #ffffff !important;
+          background: rgba(255, 0, 0, 0.12) !important;
+          box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25) !important;
+          transform: translateY(-2px) !important;
         }
       `}</style>
     </section>

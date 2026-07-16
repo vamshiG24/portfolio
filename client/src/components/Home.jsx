@@ -208,7 +208,13 @@ const Home = () => {
               <motion.a
                 href="#projects"
                 onClick={handleScrollToProjects}
-                whileHover={{ scale: 1.03, borderColor: '#ffffff', color: '#ffffff' }}
+                whileHover={{ 
+                  scale: 1.03, 
+                  borderColor: '#ff0000', 
+                  color: '#ffffff', 
+                  backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                  boxShadow: '0 0 20px rgba(255, 0, 0, 0.35)'
+                }}
                 whileTap={{ scale: 0.98 }}
                 style={{
                   display: 'inline-flex',
@@ -223,7 +229,7 @@ const Home = () => {
                   textDecoration: 'none',
                   fontSize: '0.95rem',
                   fontFamily: 'var(--font-display)',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
                 <Eye size={18} /> View Projects

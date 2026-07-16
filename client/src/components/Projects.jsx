@@ -79,7 +79,7 @@ const Projects = () => {
       }}
     >
       {/* Header Details */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 24px 0px 24px', textAlign: 'center', zIndex: 10, position: 'relative' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 24px 0px 24px', textAlign: 'center', zIndex: 10, position: 'relative' }}>
         <span style={{ 
           fontSize: '0.8rem', 
           fontWeight: 700, 

@@ -517,16 +517,12 @@ h6 {
   animation: shimmer-rtl 8s linear infinite;
 }
 
-/* Brightening and Glowing Hover Effects for all buttons, inputs, and clickable items */
-button,
-input[type="submit"],
+/* Brightening and Glowing Hover Effects for specific styled buttons only */
 .btn-primary,
 .btn-secondary {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-button:hover,
-input[type="submit"]:hover,
 .btn-primary:hover,
 .btn-secondary:hover {
   filter: brightness(1.4) contrast(1.05) !important;
