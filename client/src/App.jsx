@@ -2,9 +2,9 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Timeline from './components/Timeline';
 import SkillsShowcase from './components/SkillsShowcase';
 import Projects from './components/Projects';
+import Timeline from './components/Timeline';
 import BuildLogs from './components/Buildlogs';
 import Contact from './components/Contact';
 import ChatWidget from './components/ChatWidget';
@@ -14,7 +14,18 @@ let activeSpeechUtterance = null;
 
 const App = () => {
   const [voiceActive, setVoiceActive] = useState(false);
+  const [lowSpecMode, setLowSpecMode] = useState(() => {
+    return localStorage.getItem('lowSpecMode') === 'true';
+  });
   const hasSpokenRef = useRef(false);
+
+  const toggleLowSpecMode = useCallback(() => {
+    setLowSpecMode(prev => {
+      const next = !prev;
+      localStorage.setItem('lowSpecMode', String(next));
+      return next;
+    });
+  }, []);
 
   const stopSpeech = useCallback(() => {
     if ('speechSynthesis' in window) {
@@ -30,31 +41,30 @@ const App = () => {
       hasSpokenRef.current = true;
       window.speechSynthesis.cancel();
 
-      const introText = "Hello! I am ARIA, Vamshi Gowni's personal AI assistant. Welcome to his portfolio! I can guide you through his work and skills. Feel free to scroll down to view his timeline, projects, and contact form, or chat with me directly using the assistant drawer in the bottom right corner!";
+      const introText = "Hello! I am IVY, Vamshi Gowni's personal AI assistant. Welcome to his portfolio! I can guide you through his work and skills. Feel free to scroll down to view his timeline, projects, and contact form, or chat with me directly using the assistant drawer in the bottom right corner!";
 
       const utterance = new SpeechSynthesisUtterance(introText);
       activeSpeechUtterance = utterance; // prevent garbage collection by referencing globally
 
-      // Find a male voice
+      // Find a female voice
       const voices = window.speechSynthesis.getVoices();
-      let maleVoice = voices.find(v => {
+      let femaleVoice = voices.find(v => {
         const name = v.name.toLowerCase();
         return v.lang.startsWith('en') &&
-          (name.includes('male') || name.includes('david') || name.includes('mark') || name.includes('george') || name.includes('sean') || name.includes('daniel') || name.includes('google us english') || name.includes('google uk english male')) &&
-          !name.includes('female') && !name.includes('zira') && !name.includes('aria') && !name.includes('hazel');
+          (name.includes('female') || name.includes('zira') || name.includes('hazel') || name.includes('samantha') || name.includes('victoria') || name.includes('karen') || name.includes('moira') || name.includes('google uk english female') || name.includes('google us english') || name.includes('ivy'));
       });
 
-      // Fallback: search for any english voice that isn't known to be female
-      if (!maleVoice) {
-        maleVoice = voices.find(v => {
+      // Fallback: search for any english voice that isn't known to be male
+      if (!femaleVoice) {
+        femaleVoice = voices.find(v => {
           const name = v.name.toLowerCase();
           return v.lang.startsWith('en') &&
-            !name.includes('female') && !name.includes('zira') && !name.includes('aria') && !name.includes('hazel');
+            !name.includes('male') && !name.includes('david') && !name.includes('mark') && !name.includes('george') && !name.includes('daniel');
         });
       }
 
-      if (maleVoice) {
-        utterance.voice = maleVoice;
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
       }
 
       utterance.rate = 1.0;
@@ -81,6 +91,17 @@ const App = () => {
       triggerSpeech();
     }
   }, [voiceActive, stopSpeech, triggerSpeech]);
+
+  useEffect(() => {
+    // Reset scroll to top on refresh
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    if (window.location.hash && window.location.hash !== '#home') {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
 
   useEffect(() => {
     if ('speechSynthesis' in window) {
@@ -141,7 +162,7 @@ const App = () => {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span className="voice-recording-dot"></span>
-              <span style={{ fontWeight: 600 }}>ARIA Speaking...</span>
+              <span style={{ fontWeight: 600 }}>IVY Speaking...</span>
             </div>
             <VolumeX size={14} style={{ color: 'var(--yellow-dark)' }} />
           </motion.div>
@@ -150,26 +171,26 @@ const App = () => {
         {/* Main sections */}
         <main style={{ flex: '1 0 auto' }}>
           <div id="home">
-            <Home voiceActive={voiceActive} toggleSpeech={toggleSpeech} />
+            <Home voiceActive={voiceActive} toggleSpeech={toggleSpeech} lowSpecMode={lowSpecMode} />
           </div>
-          <div id="timeline">
-            <Timeline />
+          <div>
+            <Timeline lowSpecMode={lowSpecMode} />
           </div>
           <div id="skills">
             <SkillsShowcase />
           </div>
           <div>
-            <Projects />
+            <Projects lowSpecMode={lowSpecMode} />
           </div>
           <div id="buildlogs">
-            <BuildLogs />
+            <BuildLogs lowSpecMode={lowSpecMode} />
           </div>
           <div id="contact">
             <Contact />
           </div>
         </main>
 
-        <ChatWidget />
+        <ChatWidget lowSpecMode={lowSpecMode} />
 
         {/* Footer */}
         <footer className="text-center py-8 text-sm border-t border-[rgba(255,255,255,0.05)] bg-[#0c0c0c]/80 backdrop-blur-md" style={{ zIndex: 10, textAlign: 'center', padding: '32px 24px' }}>

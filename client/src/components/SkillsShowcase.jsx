@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { FaReact, FaNode, FaPython, FaDatabase } from 'react-icons/fa';
 import { SiMongodb, SiTailwindcss, SiExpress, SiTensorflow, SiJavascript, SiGit, SiPandas, SiNumpy } from 'react-icons/si';
 
@@ -20,47 +20,6 @@ const skills = [
 
 const categories = ['All', 'Frontend', 'Backend', 'AI/ML', 'Database', 'Languages', 'Tools'];
 
-const SkillCard = ({ skill, index, isInView }) => {
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 15 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.4, delay: index * 0.03 }}
-      className="glass-card skill-card-wrapper"
-      style={{
-        padding: '20px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '16px',
-        position: 'relative',
-        background: 'var(--card-bg)',
-        overflow: 'hidden',
-      }}
-    >
-      <div className="skill-icon" style={{ fontSize: '2rem', display: 'flex', alignItems: 'center', color: 'var(--text-muted)', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}>
-        {skill.icon}
-      </div>
-      <div style={{ flex: 1 }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)', transition: 'color 0.3s ease' }}>{skill.name}</h3>
-        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: 'var(--font-mono)' }}>{skill.category}</span>
-      </div>
-      
-      {/* Decorative accent element in the corner */}
-      <div className="skill-corner-accent" style={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        width: '4px',
-        height: '100%',
-        background: 'linear-gradient(to bottom, var(--yellow), var(--yellow-dark))',
-        opacity: 0,
-        transition: 'opacity 0.3s ease'
-      }} />
-    </motion.div>
-  );
-};
 const getSkillGlowColor = (name) => {
   const brandColors = {
     'React': '#61dafb',
@@ -261,10 +220,20 @@ const SkillsShowcase = () => {
         </div>
 
         {/* Sliding Skills Marquee Container */}
-        <div className="relative w-full flex flex-col gap-7 overflow-hidden py-4" style={{
-          maskImage: 'linear-gradient(to right, transparent, white 15%, white 85%, transparent)',
-          WebkitMaskImage: 'linear-gradient(to right, transparent, white 15%, white 85%, transparent)',
-        }}>
+        <div className="relative w-full flex flex-col gap-7 overflow-hidden py-4">
+          {/* Left fading edge overlay */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, bottom: 0, width: '15%',
+            background: 'linear-gradient(to right, #0c0c0c, transparent)',
+            zIndex: 2, pointerEvents: 'none'
+          }} />
+          {/* Right fading edge overlay */}
+          <div style={{
+            position: 'absolute', top: 0, right: 0, bottom: 0, width: '15%',
+            background: 'linear-gradient(to left, #0c0c0c, transparent)',
+            zIndex: 2, pointerEvents: 'none'
+          }} />
+
           <SkillsMarqueeRow data={row1} reverse={false} speed={25} />
           {row2.length > 0 && <SkillsMarqueeRow data={row2} reverse={true} speed={25} />}
         </div>

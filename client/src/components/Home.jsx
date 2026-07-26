@@ -3,7 +3,7 @@ import { ArrowDown, Download, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { SplineScene } from '@/components/ui/splite';
 
-const Home = () => {
+const Home = ({ lowSpecMode }) => {
   const nameVamshi = "Vamshi".split("");
   const nameGowni = "Gowni".split("");
 
@@ -26,6 +26,34 @@ const Home = () => {
       transition: { type: 'spring', stiffness: 150, damping: 10 }
     }
   };
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [isInView, setIsInView] = useState(true);
+
+  useEffect(() => {
+    // Detect mobile viewport
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    // Viewport observer to unmount when scrolled out of view
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+
+    const section = document.getElementById('home');
+    if (section) observer.observe(section);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      if (section) observer.unobserve(section);
+    };
+  }, []);
 
   const handleScrollToProjects = (e) => {
     e.preventDefault();
@@ -75,11 +103,60 @@ const Home = () => {
         }}
         className="right-robot"
       >
-        <div style={{ width: '100%', height: '100%', overflow: 'visible' }}>
-          <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
-          />
+        <div style={{ width: '100%', height: '100%', overflow: 'visible', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {isInView && (
+            (!isMobile && !lowSpecMode) ? (
+              <SplineScene
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="w-full h-full"
+              />
+            ) : (
+              /* Mobile Fallback Graphic: Futuristic Glowing CSS Orb */
+              <div
+                style={{
+                  width: '240px',
+                  height: '240px',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(circle at 35% 35%, #ff3333 0%, #aa0000 65%, #000000 100%)',
+                  boxShadow: '0 0 40px rgba(255, 0, 0, 0.35), inset 0 0 20px rgba(255, 255, 255, 0.15)',
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  animation: 'mobile-orb-pulse 3s ease-in-out infinite alternate',
+                  zIndex: 2
+                }}
+              >
+                {/* Orbital Rings */}
+                <div style={{
+                  position: 'absolute',
+                  width: '290px',
+                  height: '290px',
+                  border: '1.5px solid rgba(255, 0, 0, 0.15)',
+                  borderRadius: '50%',
+                  animation: 'mobile-ring-rotate-clockwise 16s linear infinite'
+                }} />
+                <div style={{
+                  position: 'absolute',
+                  width: '320px',
+                  height: '150px',
+                  border: '1.5px dashed rgba(255, 0, 0, 0.22)',
+                  borderRadius: '50%',
+                  transform: 'rotate(-25deg)',
+                  animation: 'mobile-ring-rotate-counter 20s linear infinite'
+                }} />
+
+                {/* Pulse Glow Overlay */}
+                <div style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 80%)',
+                }} />
+              </div>
+            )
+          )}
         </div>
       </motion.div>
 
@@ -208,10 +285,10 @@ const Home = () => {
               <motion.a
                 href="#projects"
                 onClick={handleScrollToProjects}
-                whileHover={{ 
-                  scale: 1.03, 
-                  borderColor: '#ff0000', 
-                  color: '#ffffff', 
+                whileHover={{
+                  scale: 1.03,
+                  borderColor: '#ff0000',
+                  color: '#ffffff',
                   backgroundColor: 'rgba(255, 0, 0, 0.1)',
                   boxShadow: '0 0 20px rgba(255, 0, 0, 0.35)'
                 }}
@@ -268,7 +345,6 @@ const Home = () => {
         </motion.div>
       </div>
 
-      {/* CSS Overrides for Mobile and Layouts */}
       <style>{`
         @media (max-width: 768px) {
           .home-container {
@@ -303,6 +379,18 @@ const Home = () => {
             right: auto !important;
             top: auto !important;
           }
+        }
+        @keyframes mobile-orb-pulse {
+          0% { transform: scale(0.96); box-shadow: 0 0 35px rgba(255, 0, 0, 0.3); }
+          100% { transform: scale(1.04); box-shadow: 0 0 55px rgba(255, 0, 0, 0.5); }
+        }
+        @keyframes mobile-ring-rotate-clockwise {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes mobile-ring-rotate-counter {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(-360deg); }
         }
       `}</style>
     </section>

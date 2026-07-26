@@ -1,7 +1,6 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
 import cors from "cors";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -11,20 +10,6 @@ app.use(cors());
 app.use(express.json());
 
 const port = process.env.PORT || 5000;
-
-// Connect to MongoDB
-// mongoose
-//   .connect(process.env.MONGO_URI)
-//   .then(() => console.log("✅ MongoDB Connected"))
-//   .catch((err) => console.error("❌ MongoDB Error:", err));
-
-// // Schema & Model with only name and email
-// const ContactSchema = new mongoose.Schema({
-//   name: String,
-//   email: String,
-//   date: { type: Date, default: Date.now },
-// });
-// const Contact = mongoose.model("Contact", ContactSchema);
 
 // AI Chat Route
 app.post("/api/chat", async (req, res) => {
@@ -42,7 +27,7 @@ app.post("/api/chat", async (req, res) => {
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    const SYSTEM_PROMPT = `You are ARIA (Artificial Reasoning & Intelligence Assistant), the personal AI assistant of Vamshi Gowni. You live inside Vamshi's interactive portfolio.
+    const SYSTEM_PROMPT = `You are IVY (Intelligent Virtual Yielding Assistant), the personal AI assistant of Vamshi Gowni. You live inside Vamshi's interactive portfolio.
 
 ABOUT VAMSHI:
 - Full Name: Vamshi Gowni
@@ -116,18 +101,6 @@ app.post("/send-email", async (req, res) => {
   }
 
   try {
-    // Check if this contact already exists (same name & email)
-    // const existing = await Contact.findOne({ name, email });
-
-    // if (existing) {
-    //   console.log("⚠️ Duplicate contact detected, skipping DB save.");
-    // } else {
-    //   console.log("💾 Saving contact to DB...");
-    //   const newContact = new Contact({ name, email });
-    //   await newContact.save();
-    //   console.log("✅ Contact saved:", newContact);
-    // }
-
     // Email Transporter
     let transporter = nodemailer.createTransport({
       service: "gmail",

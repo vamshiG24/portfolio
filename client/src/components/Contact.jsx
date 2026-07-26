@@ -148,7 +148,6 @@ const Contact = () => {
         background: '#0c0c0c',
         position: 'relative',
         overflow: 'hidden',
-        borderTop: '1px solid rgba(255, 0, 0, 0.05)',
       }}
     >
       {/* Background Grid Accent overlay */}

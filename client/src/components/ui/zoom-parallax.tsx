@@ -20,12 +20,12 @@ interface ZoomParallaxProps {
 
 const POSITIONS = [
   { height: '12.5vh', width: '25vw' },
-  { height: '15vh',   width: '35vw', top: '-15vh',   left: '5vw' },
-  { height: '22.5vh', width: '20vw', top: '-5vh',    left: '-25vw' },
-  { height: '12.5vh', width: '25vw', top: '0',       left: '27.5vw' },
+  { height: '15vh', width: '35vw', top: '-15vh', left: '5vw' },
+  { height: '22.5vh', width: '20vw', top: '-5vh', left: '-25vw' },
+  { height: '12.5vh', width: '25vw', top: '0', left: '27.5vw' },
   { height: '12.5vh', width: '20vw', top: '13.75vh', left: '5vw' },
   { height: '12.5vh', width: '30vw', top: '13.75vh', left: '-22.5vw' },
-  { height: '7.5vh',  width: '15vw', top: '11.25vh', left: '25vw' },
+  { height: '7.5vh', width: '15vw', top: '11.25vh', left: '25vw' },
 ] as const;
 
 const COOLDOWN_MS = 650;      // min time between paging steps (one wheel tick = one project)
@@ -169,7 +169,7 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
   const [paging, setPaging] = useState(false);
 
   const cooldownRef = useRef(0);
-  const lastScrollYRef = useRef(0);
+  const isScrollingDownRef = useRef(true);
   const touchStartYRef = useRef<number | null>(null);
   const pagingRef = useRef(paging);
   const activeIndexRef = useRef(activeIndex);
@@ -177,6 +177,8 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
   activeIndexRef.current = activeIndex;
 
   const exitCooldownUntilRef = useRef(0);
+  const lastExitTimeRef = useRef(0);
+  const disablePagingUntilRef = useRef(0);
 
   const actualProjects = images.slice(1);
   const zoomVh = 220; // scroll distance dedicated to the mosaic zoom-in
@@ -200,8 +202,15 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
   // Track natural scroll direction while NOT locked, so we know which way
   // the user was heading when they cross into the paging section.
   useEffect(() => {
+    let lastY = window.scrollY;
     const onScroll = () => {
-      if (!pagingRef.current) lastScrollYRef.current = window.scrollY;
+      if (!pagingRef.current) {
+        const currentY = window.scrollY;
+        if (currentY !== lastY) {
+          isScrollingDownRef.current = currentY > lastY;
+          lastY = currentY;
+        }
+      }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -227,18 +236,54 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
+        // If we just exited paging or are navigating via navbar/anchor, ignore observer events
+        if (Date.now() < disablePagingUntilRef.current) return;
+        if (Date.now() - lastExitTimeRef.current < 800) return;
         if (pagingRef.current) return; // already paging, ignore
-        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          const goingDown = window.scrollY >= lastScrollYRef.current;
+        if (entry.isIntersecting && entry.intersectionRatio > 0.02) {
+          const goingDown = isScrollingDownRef.current;
           setActiveIndex(goingDown ? 0 : actualProjects.length - 1);
           setPaging(true);
+          cooldownRef.current = Date.now(); // Ignore initial scroll/touch inertia when entering paging mode
         }
       },
-      { threshold: [0, 0.5, 1] }
+      { threshold: [0, 0.02, 0.5, 1] }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, [actualProjects.length]);
+
+  // Release paging scroll-lock when user navigates away (e.g. Navbar click or browser back/forward)
+  useEffect(() => {
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest('a') || target.closest('button');
+      if (anchor) {
+        const href = anchor.getAttribute('href') || anchor.getAttribute('data-href');
+        if (href && href.startsWith('#') && href.length > 1) {
+          disablePagingUntilRef.current = Date.now() + 2500;
+          lastExitTimeRef.current = Date.now();
+          setPaging(false);
+        }
+      }
+    };
+
+    const handleRelease = () => {
+      disablePagingUntilRef.current = Date.now() + 2500;
+      lastExitTimeRef.current = Date.now();
+      setPaging(false);
+    };
+
+    document.addEventListener('click', handleAnchorClick, true);
+    window.addEventListener('hashchange', handleRelease);
+    window.addEventListener('popstate', handleRelease);
+
+    return () => {
+      document.removeEventListener('click', handleAnchorClick, true);
+      window.removeEventListener('hashchange', handleRelease);
+      window.removeEventListener('popstate', handleRelease);
+    };
+  }, []);
 
   // Lock/unlock body scroll while paging is active.
   useEffect(() => {
@@ -253,6 +298,7 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
   }, [paging]);
 
   const exitPaging = useCallback((direction: 'up' | 'down') => {
+    lastExitTimeRef.current = Date.now();
     setPaging(false);
     exitCooldownUntilRef.current = Date.now() + 500; // swallow momentum for 500ms
 
@@ -261,7 +307,7 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
         const el = pagingWrapper.current;
         if (!el) return;
         const rect = el.getBoundingClientRect();
-        window.scrollTo({ top: window.scrollY + rect.bottom - 10 });
+        window.scrollTo({ top: window.scrollY + rect.bottom + 50 });
       } else {
         // Reset straight to the top of the mosaic (progress ≈ 0) so the
         // full gallery of small cards shows immediately — not the deep-zoom
@@ -307,7 +353,7 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); step(1); }
-      if (e.key === 'ArrowUp' || e.key === 'PageUp')   { e.preventDefault(); step(-1); }
+      if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); step(-1); }
     };
 
     const onTouchStart = (e: TouchEvent) => { touchStartYRef.current = e.touches[0].clientY; };

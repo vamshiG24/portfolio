@@ -1,6 +1,6 @@
 import { ZoomParallax } from './ui/zoom-parallax';
 
-const Projects = () => {
+const Projects = ({ lowSpecMode }) => {
   const images = [
     {
       src: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
@@ -10,7 +10,7 @@ const Projects = () => {
       tech: ['React', 'Framer Motion', 'Tailwind']
     },
     {
-      src: 'https://images.unsplash.com/photo-1507083211179-02972963503d?auto=format&fit=crop&w=800&q=80',
+      src: '/biosecure_showcase.png',
       alt: 'BioSecure Access System',
       title: 'BioSecure Authentication',
       description: 'Voice + Face biometric validation using custom ECAPA-TDNN speech models and DeepFace neural embeddings.',
@@ -101,7 +101,7 @@ const Projects = () => {
         </p>
       </div>
 
-      <ZoomParallax images={images} />
+      <ZoomParallax images={images} lowSpecMode={lowSpecMode} />
     </section>
   );
 };
