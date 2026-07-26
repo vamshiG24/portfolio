@@ -7,6 +7,7 @@ import Projects from './components/Projects';
 import Timeline from './components/Timeline';
 import BuildLogs from './components/Buildlogs';
 import Contact from './components/Contact';
+import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget';
 import { VolumeX } from 'lucide-react';
 
@@ -193,9 +194,7 @@ const App = () => {
         <ChatWidget lowSpecMode={lowSpecMode} />
 
         {/* Footer */}
-        <footer className="text-center py-8 text-sm border-t border-[rgba(255,255,255,0.05)] bg-[#0c0c0c]/80 backdrop-blur-md" style={{ zIndex: 10, textAlign: 'center', padding: '32px 24px' }}>
-          <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.85rem' }}>&copy; {new Date().getFullYear()} Vamshi Gowni. Built with MERN & AI.</p>
-        </footer>
+        <Footer />
       </div>
     </div>
   );
