@@ -587,7 +587,7 @@ const ChatWidget = () => {
     setLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000' : 'https://backend-portfolio-s2ay.onrender.com');
+      const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000' : 'https://portfolio-umtu.onrender.com');
       const res = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
