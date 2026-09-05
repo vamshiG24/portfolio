@@ -105,7 +105,7 @@ PERSONALITY & GUIDELINES:
 
     const latestMessage = historyMessages[historyMessages.length - 1].content;
 
-    const candidateModels = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+    const candidateModels = ["gemini-2.5-flash-lite", "gemini-2.5-flash"];
     let text = null;
     let lastError = null;
 
