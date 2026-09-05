@@ -18,7 +18,7 @@ const Navbar = () => {
         return;
       }
 
-      const sections = ['home', 'timeline', 'skills', 'projects', 'buildlogs', 'contact'];
+      const sections = ['home', 'timeline', 'skills', 'projects', 'buildlogs', 'credentials', 'contact'];
       const scrollPosition = window.scrollY + 120;
 
       for (const section of sections) {
@@ -44,6 +44,7 @@ const Navbar = () => {
     { label: 'Skills', href: '#skills', id: 'skills' },
     { label: 'Projects', href: '#projects', id: 'projects' },
     { label: 'Build Logs', href: '#buildlogs', id: 'buildlogs' },
+    { label: 'Honors', href: '#credentials', id: 'credentials' },
     { label: 'Contact', href: '#contact', id: 'contact' },
   ];
 

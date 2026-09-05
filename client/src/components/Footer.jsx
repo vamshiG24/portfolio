@@ -15,6 +15,7 @@ const Footer = () => {
     { label: 'Skills', href: '#skills' },
     { label: 'Projects', href: '#projects' },
     { label: 'Build Logs', href: '#buildlogs' },
+    { label: 'Honors', href: '#credentials' },
     { label: 'Contact', href: '#contact' },
   ];
 
@@ -87,8 +88,8 @@ const Footer = () => {
                 Vamshi <span className="shimmer-gowni">Gowni</span>
               </span>
             </div>
-            <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '0.88rem', lineHeight: 1.6, margin: 0, maxWidth: '340px' }}>
-              Full-Stack & AI Software Engineer crafting high-performance neural biometrics, cryptographic ledgers, and interactive 3D web experiences.
+            <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '0.88rem', lineHeight: 1.6, margin: 0, maxWidth: '360px' }}>
+              MERN Stack & AI/ML engineer. Research Intern at IIT Madras working on LLM watermarking using Pseudorandom Codes, scalable backends, and AI-powered systems.
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 10px #22c55e' }} />
@@ -170,7 +171,7 @@ const Footer = () => {
               </a>
 
               <a
-                href="https://linkedin.com/in/vamshiG24"
+                href="https://www.linkedin.com/in/vamshi-gowni-8bba28322"
                 target="_blank"
                 rel="noreferrer"
                 style={{
@@ -201,7 +202,7 @@ const Footer = () => {
               </a>
 
               <a
-                href="mailto:vamshi.gowni.26@gmail.com"
+                href="mailto:vamshigowniv26@gmail.com"
                 style={{
                   width: '42px',
                   height: '42px',

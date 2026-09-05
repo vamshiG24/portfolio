@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Github, Linkedin, Send, Mail, MapPin } from "lucide-react";
+import { Github, Linkedin, Send, Mail, MapPin, Phone, Globe } from "lucide-react";
 import { motion } from "framer-motion";
 
 const AnimatedButtonText = ({ text }) => {
@@ -77,7 +77,8 @@ const Contact = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/send-email", {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/send-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -111,11 +112,12 @@ const Contact = () => {
   };
 
   const wordVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 35, rotateX: 70 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'spring', stiffness: 120, damping: 14 }
+      rotateX: 0,
+      transition: { type: 'spring', stiffness: 200, damping: 18 }
     }
   };
 
@@ -210,7 +212,7 @@ const Contact = () => {
         }}
       />
 
-      <div 
+      <div
         style={{
           width: '100%',
           maxWidth: '1100px',
@@ -231,14 +233,22 @@ const Contact = () => {
               variants={titleContainerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              style={{ fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', fontWeight: 800, marginBottom: '16px', color: 'var(--text-primary)', fontFamily: 'var(--font-display)', lineHeight: 1.25 }}
+              viewport={{ once: false, amount: 0.3 }}
+              style={{ 
+                fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', 
+                fontWeight: 800, 
+                marginBottom: '16px', 
+                color: 'var(--text-primary)', 
+                fontFamily: 'var(--font-display)', 
+                lineHeight: 1.25,
+                perspective: '800px',
+              }}
             >
               {headingWords.map((word, index) => (
                 <motion.span
                   key={index}
                   variants={wordVariants}
-                  style={{ display: 'inline-block', marginRight: '8px' }}
+                  style={{ display: 'inline-block', marginRight: '8px', transformOrigin: 'bottom center', transformStyle: 'preserve-3d' }}
                 >
                   {word.includes("Amazing") ? (
                     <span className="shimmer-gowni">Amazing</span>
@@ -247,10 +257,10 @@ const Contact = () => {
               ))}
             </motion.div>
             <motion.p
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.6, maxWidth: '480px' }}
             >
               Have an idea, a project, or want to discuss full-stack & AI opportunities? Send a message and let's start talking.
@@ -258,7 +268,7 @@ const Contact = () => {
           </div>
 
           {/* Quick Info */}
-          <motion.div 
+          <motion.div
             variants={infoContainerVariants}
             initial="hidden"
             whileInView="visible"
@@ -277,17 +287,27 @@ const Contact = () => {
 
             <motion.div variants={infoItemVariants} className="info-card" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div className="info-icon-container" style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(255, 0, 0, 0.04)', border: '1px solid rgba(255, 0, 0, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--yellow)' }}>
+                <Phone size={20} />
+              </div>
+              <div>
+                <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', margin: 0, letterSpacing: '0.04em' }}>Phone</h4>
+                <a href="tel:6301675616" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontSize: '1rem', fontWeight: 600 }}>+91 6301675616</a>
+              </div>
+            </motion.div>
+
+            <motion.div variants={infoItemVariants} className="info-card" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div className="info-icon-container" style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(255, 0, 0, 0.04)', border: '1px solid rgba(255, 0, 0, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--yellow)' }}>
                 <MapPin size={20} />
               </div>
               <div>
                 <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', margin: 0, letterSpacing: '0.04em' }}>Location</h4>
-                <span style={{ color: 'var(--text-primary)', fontSize: '1rem', fontWeight: 600 }}>India</span>
+                <span style={{ color: 'var(--text-primary)', fontSize: '1rem', fontWeight: 600 }}>Bengaluru, India</span>
               </div>
             </motion.div>
           </motion.div>
 
           {/* Social Links */}
-          <motion.div 
+          <motion.div
             variants={infoContainerVariants}
             initial="hidden"
             whileInView="visible"
@@ -295,8 +315,9 @@ const Contact = () => {
             style={{ display: 'flex', gap: '16px' }}
           >
             {[
-              { icon: <Github size={20} />, link: "https://github.com/vamshiG24" },
-              { icon: <Linkedin size={20} />, link: "https://www.linkedin.com/in/vamshi-gowni-8bba28322" }
+              { icon: <Github size={20} />, link: "https://github.com/vamshiG24", label: "GitHub" },
+              { icon: <Linkedin size={20} />, link: "https://www.linkedin.com/in/vamshi-gowni-8bba28322", label: "LinkedIn" },
+              { icon: <Globe size={20} />, link: "https://portfolio-seven-chi-z8v6hmlert.vercel.app/", label: "Portfolio" }
             ].map((soc, i) => (
               <motion.a
                 variants={infoItemVariants}
@@ -304,6 +325,7 @@ const Contact = () => {
                 href={soc.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                title={soc.label}
                 style={{
                   width: '48px',
                   height: '48px',

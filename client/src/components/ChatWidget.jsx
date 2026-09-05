@@ -477,7 +477,7 @@ const ChatWidget = () => {
     {
       id: 1,
       role: 'assistant',
-      content: "Hi! I'm **IVY** ✨ — Vamshi's personal AI assistant. Ask me anything about him — his projects, skills, experience, or availability!",
+      content: "Hi! I'm **IVY** ✨ — Vamshi's personal AI assistant. Ask me anything about him — his IIT Madras research, key projects like BioSecure and Secure Digital Evidence, skills, or verified credentials!",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -587,7 +587,8 @@ const ChatWidget = () => {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/chat', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

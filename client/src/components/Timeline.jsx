@@ -1,47 +1,51 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { FlowArt, FlowSection } from './FlowArt';
-import { Briefcase, Sparkles, Award, GraduationCap } from 'lucide-react';
+import { Briefcase, Sparkles, Award, GraduationCap, ExternalLink } from 'lucide-react';
+
 
 const timelineEvents = [
   {
     id: 'tl-1',
-    year: '2026 - PRESENT',
-    title: 'Lead AI & Cryptographic Security Architect',
-    subtitle: 'BioSecure Access & Immutable Hash Ledgers',
-    description: 'Architected zero-trust multimodal biometric authentication pairing ECAPA-TDNN neural voice embedding models with DeepFace facial recognition (99.4% accuracy under <120ms latency). Engineered a SHA-256 digital evidence hash ledger providing automated tamper detection and cryptographic audit logs.',
-    badges: ['Flask', 'React', 'PyTorch', 'MongoDB', 'SHA-256', 'WebSockets'],
+    year: 'MAY 2026 – JUL 2026',
+    title: 'Research Intern',
+    subtitle: 'Indian Institute of Technology Madras (Chennai, India)',
+    researchTitle: 'Study of LLM Watermarking via Pseudorandom Codes',
+    description: 'Conducted advanced research on Large Language Model (LLM) watermarking using Pseudorandom Codes (PRCs), focusing on secure and robust text watermarking techniques. Studied Reed–Solomon and Folded Reed–Solomon codes, list recovery algorithms, and cryptographic security proofs involving soundness, undetectability, and adaptive robustness.',
+    badges: ['LLM Watermarking', 'Pseudorandom Codes', 'Reed-Solomon Codes', 'Security Proofs', 'Cryptography'],
+    certificateUrl: 'https://drive.google.com/file/d/1BPo9zB2vY3gcm5fuC1HL5trjYJcy7Ls2/view?usp=drive_link',
     color: '#a855f7',
     icon: <Briefcase size={16} />,
   },
   {
     id: 'tl-2',
-    year: '2025',
-    title: 'Neural Signal Deep Learning Researcher',
-    subtitle: 'CNN EEG Seizure Prediction & Frequency Analytics',
-    description: 'Engineered end-to-end convolutional neural network (CNN) architectures for early EEG epileptic seizure prediction. Applied Fourier Transform (FFT) matrix spectral decomposition, dropout regularization, and batch normalization to achieve robust generalization across clinical neural datasets.',
-    badges: ['TensorFlow', 'Keras', 'Python', 'SciPy', 'NumPy', 'Matplotlib'],
-    color: '#22c55e',
-    icon: <Sparkles size={16} />,
+    year: '2026 – 2027',
+    title: 'B.Tech Final Year Exchange Program (MoU)',
+    subtitle: 'Indian Institute of Technology Madras (Chennai, India)',
+    description: 'Selected for the prestigious final year academic exchange program in Computer Science and Engineering under institutional MoU at IIT Madras, engaging in advanced research and cutting-edge engineering curriculum.',
+    badges: ['Computer Science', 'Exchange Program', 'MoU', 'IIT Madras', 'Advanced Systems'],
+    color: '#ff4444',
+    icon: <GraduationCap size={16} />,
   },
   {
     id: 'tl-3',
-    year: '2024',
-    title: 'Full-Stack Web & 3D Systems Engineer',
-    subtitle: 'High-Performance MERN & GSAP Web Applications',
-    description: 'Developed scalable full-stack web applications and interactive 3D portfolio environments using React, Node.js, Express, and GSAP ScrollTrigger animation engines. Optimized WebGL render pipelines and responsive layouts for 60 FPS performance.',
-    badges: ['React', 'Node.js', 'Express', 'GSAP', 'Three.js', 'TailwindCSS'],
+    year: '2023 – 2027',
+    title: 'B.Tech in Computer Science & Engineering (AI & Data Science)',
+    subtitle: 'Indian Institute of Information Technology Manipur (CPI: 8.10)',
+    description: 'Pursuing B.Tech with specialization in Artificial Intelligence & Data Science, maintaining a strong academic CPI of 8.10. Focused on MERN stack architectures, machine learning pipelines, scalable backend engineering, and algorithmic problem solving.',
+    badges: ['AI & Data Science', 'CPI: 8.10', 'MERN Stack', 'Algorithms', 'Data Structures', 'Deep Learning'],
     color: '#06b6d4',
-    icon: <Award size={16} />,
+    icon: <Sparkles size={16} />,
   },
   {
     id: 'tl-4',
-    year: '2023 - 2024',
-    title: 'Computer Science & Engineering Graduate',
-    subtitle: 'Core Algorithms & Distributed Systems',
-    description: 'Graduated with technical honors in Computer Science & Engineering. Mastered advanced data structures, asymptotic algorithm analysis, database query optimization, cloud computing infrastructure, and machine learning mathematical foundations.',
-    badges: ['Data Structures', 'Algorithms', 'Distributed Systems', 'Cloud Computing', 'Machine Learning'],
-    color: '#ff4444',
-    icon: <GraduationCap size={16} />,
+    year: '2021 – 2023',
+    title: 'Intermediate (Class XII) — 97%',
+    subtitle: 'Sri Chaitanya Junior College (Vijayawada, Andhra Pradesh)',
+    description: 'Completed higher secondary education with a stellar score of 97%, building a rigorous analytical foundation in Mathematics, Physics, and quantitative analysis.',
+    badges: ['Score: 97%', 'Mathematics', 'Physics', 'Analytical Problem Solving'],
+    color: '#22c55e',
+    icon: <Award size={16} />,
   },
 ];
 
@@ -65,7 +69,7 @@ const Timeline = ({ lowSpecMode }) => {
               }}
             />
 
-            {/* Top Left Header (Large Display Typography) */}
+            {/* Top Left Header with Horizontal Slide & Neon Laser Wipe Scroll Animation */}
             <div
               style={{
                 width: '100%',
@@ -80,7 +84,11 @@ const Timeline = ({ lowSpecMode }) => {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span
+                <motion.span
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   style={{
                     fontSize: '0.75rem',
                     color: item.color,
@@ -92,13 +100,18 @@ const Timeline = ({ lowSpecMode }) => {
                     borderRadius: '99px',
                     background: `${item.color}15`,
                     border: `1px solid ${item.color}40`,
+                    display: 'inline-block',
                   }}
                 >
                   MILESTONE 0{index + 1} / 0{timelineEvents.length}
-                </span>
+                </motion.span>
               </div>
 
-              <h2
+              <motion.h2
+                initial={{ opacity: 0, x: -60 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                 style={{
                   fontSize: 'clamp(2.4rem, 5.5vw, 4.6rem)',
                   fontWeight: 900,
@@ -108,10 +121,28 @@ const Timeline = ({ lowSpecMode }) => {
                   letterSpacing: '-0.02em',
                   lineHeight: 1.05,
                   textShadow: `0 0 40px ${item.color}25`,
+                  position: 'relative',
                 }}
               >
                 TIMELINE <span style={{ color: item.color }}>// {item.year}</span>
-              </h2>
+
+                {/* Laser Accent Glow Line that expands from left */}
+                <motion.span
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    display: 'block',
+                    height: '2px',
+                    width: '180px',
+                    marginTop: '8px',
+                    background: `linear-gradient(90deg, ${item.color}, transparent)`,
+                    transformOrigin: 'left',
+                    boxShadow: `0 0 10px ${item.color}`,
+                  }}
+                />
+              </motion.h2>
             </div>
 
             {/* Main Content Area with Timeline Node Axis */}
@@ -186,7 +217,63 @@ const Timeline = ({ lowSpecMode }) => {
                       {item.icon}
                       <span>{item.subtitle}</span>
                     </div>
+
+                    {item.certificateUrl && (
+                      <a
+                        href={item.certificateUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          fontSize: '0.78rem',
+                          fontWeight: 700,
+                          color: '#ffffff',
+                          background: `${item.color}25`,
+                          border: `1px solid ${item.color}80`,
+                          borderRadius: '8px',
+                          padding: '4px 12px',
+                          textDecoration: 'none',
+                          fontFamily: 'var(--font-mono)',
+                          transition: 'all 0.2s ease',
+                          cursor: 'pointer',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = item.color;
+                          e.currentTarget.style.color = '#000000';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = `${item.color}25`;
+                          e.currentTarget.style.color = '#ffffff';
+                        }}
+                      >
+                        <span>[View Certificate]</span>
+                        <ExternalLink size={12} />
+                      </a>
+                    )}
                   </div>
+
+                  {item.researchTitle && (
+                    <div
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontSize: '0.88rem',
+                        color: 'rgba(255, 255, 255, 0.95)',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        borderLeft: `3px solid ${item.color}`,
+                        padding: '6px 12px',
+                        borderRadius: '0 6px 6px 0',
+                        fontFamily: 'var(--font-mono)',
+                        marginTop: '2px',
+                      }}
+                    >
+                      <span style={{ color: item.color, fontWeight: 700 }}>Research Title:</span>
+                      <span>{item.researchTitle}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Description Paragraph */}

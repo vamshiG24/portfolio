@@ -6,6 +6,7 @@ import SkillsShowcase from './components/SkillsShowcase';
 import Projects from './components/Projects';
 import Timeline from './components/Timeline';
 import BuildLogs from './components/Buildlogs';
+import Credentials from './components/Credentials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget';
@@ -185,6 +186,9 @@ const App = () => {
           </div>
           <div id="buildlogs">
             <BuildLogs lowSpecMode={lowSpecMode} />
+          </div>
+          <div id="credentials">
+            <Credentials />
           </div>
           <div id="contact">
             <Contact />

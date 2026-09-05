@@ -207,7 +207,7 @@ const Home = ({ lowSpecMode }) => {
                 alignSelf: 'flex-start',
               }}
             >
-              MERN STACK & AI DEVELOPER
+              RESEARCH INTERN @ IIT MADRAS | MERN & AI/ML
             </span>
 
             <motion.h1
@@ -253,8 +253,8 @@ const Home = ({ lowSpecMode }) => {
               </div>
             </motion.h1>
 
-            <p style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '1.1rem', lineHeight: 1.6, margin: 0 }}>
-              Designing and engineering high-performance web applications using <span style={{ color: '#ffffff', fontWeight: 600 }}>MongoDB, Express, React, and Node.js</span>, combined with cutting-edge <span style={{ color: '#ff0000', fontWeight: 600 }}>Artificial Intelligence</span> capabilities.
+            <p style={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.08rem', lineHeight: 1.65, margin: 0 }}>
+              Computer Science undergraduate specializing in <span style={{ color: '#ffffff', fontWeight: 600 }}>MERN Stack Development</span>, <span style={{ color: '#ff4444', fontWeight: 600 }}>AI/ML</span>, and Data Structures & Algorithms. Research Intern at <span style={{ color: '#ffffff', fontWeight: 700 }}>IIT Madras</span> focusing on LLM watermarking using Pseudorandom Codes.
             </p>
 
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', paddingTop: '10px' }}>

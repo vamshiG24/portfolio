@@ -1,48 +1,89 @@
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { FaReact, FaNode, FaPython, FaDatabase } from 'react-icons/fa';
-import { SiMongodb, SiTailwindcss, SiExpress, SiTensorflow, SiJavascript, SiGit, SiPandas, SiNumpy } from 'react-icons/si';
+import { FaReact, FaNode, FaPython, FaBrain, FaShieldAlt } from 'react-icons/fa';
+import {
+  SiMongodb, SiTailwindcss, SiExpress, SiTensorflow, SiJavascript, SiGit,
+  SiCplusplus, SiDocker, SiRedis, SiNginx, SiKeras, SiOpenai, SiAnthropic
+} from 'react-icons/si';
+import { Sparkles, Terminal, Network, KeyRound, Cpu, ShieldCheck } from 'lucide-react';
 
 const skills = [
-  { name: 'React', level: '90%', category: 'Frontend', icon: <FaReact /> },
-  { name: 'Node.js', level: '85%', category: 'Backend', icon: <FaNode /> },
-  { name: 'MongoDB', level: '80%', category: 'Database', icon: <SiMongodb /> },
-  { name: 'Express.js', level: '85%', category: 'Backend', icon: <SiExpress /> },
-  { name: 'Python', level: '75%', category: 'AI/ML', icon: <FaPython /> },
-  { name: 'TensorFlow', level: '70%', category: 'AI/ML', icon: <SiTensorflow /> },
-  { name: 'Tailwind CSS', level: '90%', category: 'Frontend', icon: <SiTailwindcss /> },
-  { name: 'NumPy', level: '75%', category: 'AI/ML', icon: <SiNumpy /> },
-  { name: 'JavaScript', level: '90%', category: 'Languages', icon: <SiJavascript /> },
-  { name: 'Git', level: '80%', category: 'Tools', icon: <SiGit /> },
-  { name: 'Pandas', level: '75%', category: 'AI/ML', icon: <SiPandas /> },
-  { name: 'SQL', level: '70%', category: 'Database', icon: <FaDatabase /> },
+  // Programming Languages
+  { name: 'Python', category: 'Languages', icon: <FaPython /> },
+  { name: 'C++', category: 'Languages', icon: <SiCplusplus /> },
+  { name: 'JavaScript', category: 'Languages', icon: <SiJavascript /> },
+
+  // Web Technologies
+  { name: 'React.js', category: 'Web & Backend', icon: <FaReact /> },
+  { name: 'Node.js', category: 'Web & Backend', icon: <FaNode /> },
+  { name: 'Express.js', category: 'Web & Backend', icon: <SiExpress /> },
+  { name: 'MongoDB', category: 'Web & Backend', icon: <SiMongodb /> },
+  { name: 'Tailwind CSS', category: 'Web & Backend', icon: <SiTailwindcss /> },
+
+  // Backend & Architecture
+  { name: 'Microservices', category: 'Web & Backend', icon: <Network size={28} /> },
+  { name: 'REST APIs', category: 'Web & Backend', icon: <Terminal size={28} /> },
+  { name: 'Authentication', category: 'Web & Backend', icon: <KeyRound size={28} /> },
+  { name: 'RBAC & ABAC', category: 'Web & Backend', icon: <ShieldCheck size={28} /> },
+
+  // DevOps & Infrastructure
+  { name: 'Docker', category: 'DevOps & Infra', icon: <SiDocker /> },
+  { name: 'Redis', category: 'DevOps & Infra', icon: <SiRedis /> },
+  { name: 'Nginx', category: 'DevOps & Infra', icon: <SiNginx /> },
+  { name: 'Git', category: 'DevOps & Infra', icon: <SiGit /> },
+
+  // AI/ML
+  { name: 'Machine Learning', category: 'AI & Machine Learning', icon: <FaBrain /> },
+  { name: 'Deep Learning', category: 'AI & Machine Learning', icon: <Cpu size={28} /> },
+  { name: 'TensorFlow', category: 'AI & Machine Learning', icon: <SiTensorflow /> },
+  { name: 'Keras', category: 'AI & Machine Learning', icon: <SiKeras /> },
+  { name: 'Generative AI', category: 'AI & Machine Learning', icon: <Sparkles size={28} /> },
+
+  // AI Tools
+  { name: 'ChatGPT', category: 'AI Tools', icon: <SiOpenai /> },
+  { name: 'Claude', category: 'AI Tools', icon: <SiAnthropic /> },
+  { name: 'AntiGravity', category: 'AI Tools', icon: <Sparkles size={28} /> },
+  { name: 'Prompt Engineering', category: 'AI Tools', icon: <Terminal size={28} /> },
 ];
 
-const categories = ['All', 'Frontend', 'Backend', 'AI/ML', 'Database', 'Languages', 'Tools'];
+const categories = ['All', 'Languages', 'Web & Backend', 'DevOps & Infra', 'AI & Machine Learning', 'AI Tools'];
 
 const getSkillGlowColor = (name) => {
   const brandColors = {
-    'React': '#61dafb',
+    'Python': '#3b82f6',
+    'C++': '#00599c',
+    'JavaScript': '#f7df1e',
+    'React.js': '#61dafb',
     'Node.js': '#22c55e',
     'MongoDB': '#10b981',
     'Express.js': '#a8a8a8',
-    'Python': '#3b82f6',
-    'TensorFlow': '#f97316',
     'Tailwind CSS': '#06b6d4',
-    'NumPy': '#4d77cf',
-    'JavaScript': '#eab308',
-    'Git': '#ef4444',
-    'Pandas': '#130654',
-    'SQL': '#00bcd4',
+    'Microservices': '#6366f1',
+    'REST APIs': '#14b8a6',
+    'Authentication': '#f59e0b',
+    'RBAC & ABAC': '#ef4444',
+    'Docker': '#2496ed',
+    'Redis': '#dc382d',
+    'Nginx': '#009639',
+    'Git': '#f05032',
+    'Machine Learning': '#38bdf8',
+    'Deep Learning': '#a855f7',
+    'TensorFlow': '#ff6f00',
+    'Keras': '#d00000',
+    'Generative AI': '#ec4899',
+    'ChatGPT': '#10a37f',
+    'Claude': '#d97706',
+    'AntiGravity': '#ff4444',
+    'Prompt Engineering': '#8b5cf6',
   };
-  return brandColors[name] || '#eab308';
+  return brandColors[name] || '#ff4444';
 };
 
 const SkillsMarqueeRow = ({ data, reverse = false, speed = 20 }) => {
+  const [hoveredIdx, setHoveredIdx] = useState(null);
   if (data.length === 0) return null;
   const items = data.length < 8 ? [...data, ...data, ...data, ...data] : [...data, ...data];
-  const [hoveredIdx, setHoveredIdx] = useState(null);
-  
+
   return (
     <div className="relative w-full overflow-hidden py-2" style={{ display: 'flex' }}>
       <div
@@ -72,7 +113,7 @@ const SkillsMarqueeRow = ({ data, reverse = false, speed = 20 }) => {
                 background: 'var(--card-bg)',
                 border: isHovered ? `1px solid ${brandColor}` : '1px solid rgba(255, 255, 255, 0.05)',
                 borderRadius: '20px',
-                boxShadow: isHovered 
+                boxShadow: isHovered
                   ? `0 12px 30px -5px ${brandColor}30, 0 0 20px ${brandColor}15`
                   : '0 6px 24px rgba(0,0,0,0.18)',
                 transform: isHovered ? 'translateY(-6px) scale(1.04)' : 'none',
@@ -80,13 +121,13 @@ const SkillsMarqueeRow = ({ data, reverse = false, speed = 20 }) => {
                 cursor: 'pointer',
               }}
             >
-              <div 
-                className="skill-marquee-icon" 
-                style={{ 
-                  fontSize: '2.2rem', 
-                  color: isHovered ? brandColor : 'var(--text-muted)', 
-                  transition: 'all 0.3s', 
-                  display: 'flex', 
+              <div
+                className="skill-marquee-icon"
+                style={{
+                  fontSize: '2.2rem',
+                  color: isHovered ? brandColor : 'var(--text-muted)',
+                  transition: 'all 0.3s',
+                  display: 'flex',
                   alignItems: 'center',
                   transform: isHovered ? 'scale(1.1) rotate(6deg)' : 'none'
                 }}
@@ -109,8 +150,8 @@ const SkillsShowcase = () => {
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   const [activeTab, setActiveTab] = useState('All');
 
-  const filteredSkills = activeTab === 'All' 
-    ? skills 
+  const filteredSkills = activeTab === 'All'
+    ? skills
     : skills.filter(s => s.category === activeTab);
 
   // Split filtered skills into two rows
@@ -162,34 +203,68 @@ const SkillsShowcase = () => {
       }} />
 
       <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        {/* Header with 3D Holographic Perspective Flip Scroll Animation */}
+        <div style={{ textAlign: 'center', marginBottom: '48px', perspective: '1000px' }}>
+          <motion.span
+            initial={{ opacity: 0, scaleX: 0 }}
+            whileInView={{ opacity: 1, scaleX: 1 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            style={{
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              letterSpacing: '0.22em',
+              color: '#ff4444',
+              background: 'rgba(255, 68, 68, 0.08)',
+              border: '1px solid rgba(255, 68, 68, 0.22)',
+              padding: '6px 16px',
+              borderRadius: '99px',
+              fontFamily: 'var(--font-mono)',
+              display: 'inline-block',
+              marginBottom: '16px',
+              transformOrigin: 'center',
+            }}
+          >
+            TECHNICAL CAPABILITIES & TOOLING
+          </motion.span>
+
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            style={{ fontSize: '2.5rem', marginBottom: '16px', color: 'var(--text-primary)' }}
+            initial={{ opacity: 0, rotateX: -75, y: -35 }}
+            whileInView={{ opacity: 1, rotateX: 0, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ type: 'spring', stiffness: 180, damping: 18, delay: 0.1 }}
+            style={{
+              fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
+              marginBottom: '16px',
+              color: 'var(--text-primary)',
+              fontFamily: 'var(--font-display)',
+              fontWeight: 800,
+              transformOrigin: 'top center',
+              transformStyle: 'preserve-3d',
+            }}
           >
-            Skills & <span style={{ color: 'var(--yellow-dark)' }}>Technologies</span>
+            Skills & <span style={{ color: '#ff4444' }}>Technologies</span>
           </motion.h2>
+
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.2 }}
-            style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto' }}
           >
-            My current tech stack and development tools
+            My current tech stack, frameworks, and engineering tools
           </motion.p>
         </div>
 
         {/* Categories Tab Swapper */}
-        <div 
-          style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            gap: '8px', 
-            flexWrap: 'wrap', 
-            marginBottom: '48px' 
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '8px',
+            flexWrap: 'wrap',
+            marginBottom: '48px'
           }}
         >
           {categories.map((tab) => {

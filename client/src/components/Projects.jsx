@@ -1,67 +1,32 @@
 import { ZoomParallax } from './ui/zoom-parallax';
+import { motion } from 'framer-motion';
 
 const Projects = ({ lowSpecMode }) => {
   const images = [
     {
       src: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
       alt: 'Portfolio Showcase Hub',
-      title: 'Project Gallery Hub',
-      description: 'Explore my interactive AI & Full Stack web applications. Scroll down to trigger the Zoom Parallax showcase.',
-      tech: ['React', 'Framer Motion', 'Tailwind']
+      title: 'Featured Engineering Systems',
+      description: 'Production-grade Full Stack and AI/ML systems — biometric authentication and forensic evidence management. Scroll to explore.',
+      tech: ['React', 'Node.js', 'Flask', 'Gemini AI', 'Docker']
     },
     {
-      src: '/biosecure_showcase.png',
-      alt: 'BioSecure Access System',
-      title: 'BioSecure Authentication',
-      description: 'Voice + Face biometric validation using custom ECAPA-TDNN speech models and DeepFace neural embeddings.',
-      tech: ['Flask', 'React', 'Python', 'Deep Learning'],
+      src: '/images/buildlog_bg_biosecure.png',
+      alt: 'BioSecure Multi-Modal Biometric Authentication',
+      title: 'BioSecure — Multimodal Biometrics',
+      description: 'Multi-modal biometric authentication system using voice, face, and hand geometry recognition with ECAPA-TDNN, VGG-Face, and ORB + BFMatcher. Built with React, Node.js, Flask, and MongoDB.',
+      tech: ['React', 'Node.js', 'Flask', 'MongoDB', 'ECAPA-TDNN', 'VGG-Face'],
       github: 'https://github.com/vamshiG24/BioSecure-Access',
       demo: 'https://github.com/vamshiG24/BioSecure-Access'
     },
     {
-      src: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=800&q=80',
-      alt: 'EEG Seizure Detection Web App',
-      title: 'EEG Medical AI Predictor',
-      description: 'Clinical-grade seizure prediction app running CNN inference on streaming patient EEG signal frequencies.',
-      tech: ['Flask', 'TensorFlow', 'Keras', 'React'],
-      github: 'https://github.com/vamshiG24/Seizure-Detection-project-main',
-      demo: '#'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1601597111158-2fceff270190?auto=format&fit=crop&w=800&q=80',
-      alt: 'Secure Digital Evidence Management',
-      title: 'Evidence Ledger Logs',
-      description: 'MERN law enforcement case manager with automated SHA-256 evidence file integrity checking.',
-      tech: ['MongoDB', 'Express.js', 'React', 'Node.js'],
+      src: '/images/buildlog_bg_ledger.png',
+      alt: 'Secure Digital Evidence Management Platform',
+      title: 'Secure Digital Evidence Platform',
+      description: 'Secure digital evidence platform using MERN microservices with SHA-256 tamper-detection hashing, chain-of-custody logging, and Gemini 2.5 Flash multimodal RAG for forensic Q&A.',
+      tech: ['React', 'Node.js', 'MongoDB', 'Docker', 'Socket.IO', 'Gemini AI'],
       github: 'https://github.com/vamshiG24/secure-digital-evidence',
       demo: 'https://secure-digital-evidence.vercel.app'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
-      alt: 'BioSecure Face scan',
-      title: 'DeepFace Biometric Scanner',
-      description: 'Sub-450ms verification server tracking face matching embeddings with granular security validation checks.',
-      tech: ['PyTorch', 'DeepFace', 'Python'],
-      github: 'https://github.com/vamshiG24/BioSecure-Access',
-      demo: 'https://github.com/vamshiG24/BioSecure-Access'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
-      alt: 'Cryptographic SHA-256 ledger validation',
-      title: 'Case Data Hash Checker',
-      description: 'Role-based ACL verification pipeline comparing client assets hashes against cryptographic database records.',
-      tech: ['NodeJS', 'Crypto', 'SHA-256'],
-      github: 'https://github.com/vamshiG24/secure-digital-evidence',
-      demo: 'https://secure-digital-evidence.vercel.app'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=800&q=80',
-      alt: 'Epileptic seizure inference signals',
-      title: 'Fast Fourier Signal Processor',
-      description: 'Pre-processing pipeline executing fast Fourier transform matrices on EEG channels for medical AI diagnostics.',
-      tech: ['SciPy', 'NumPy', 'Pandas'],
-      github: 'https://github.com/vamshiG24/Seizure-Detection-project-main',
-      demo: '#'
     }
   ];
 
@@ -78,27 +43,47 @@ const Projects = ({ lowSpecMode }) => {
         borderTop: '1px solid rgba(255, 0, 0, 0.05)',
       }}
     >
-      {/* Header Details */}
+      {/* Header Details with Cinematic Blur-In & Track-In Scroll Animation */}
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 24px 0px 24px', textAlign: 'center', zIndex: 10, position: 'relative' }}>
-        <span style={{ 
-          fontSize: '0.8rem', 
-          fontWeight: 700, 
-          letterSpacing: '0.2em', 
-          color: '#ff0000', 
-          background: 'rgba(255,0,0,0.06)', 
-          border: '1px solid rgba(255,0,0,0.18)', 
-          padding: '6px 16px', 
-          borderRadius: '99px',
-          fontFamily: 'var(--font-mono)'
-        }}>
+        <motion.span
+          initial={{ opacity: 0, letterSpacing: '0.4em', y: -15 }}
+          whileInView={{ opacity: 1, letterSpacing: '0.2em', y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ 
+            fontSize: '0.8rem', 
+            fontWeight: 700, 
+            color: '#ff0000', 
+            background: 'rgba(255,0,0,0.06)', 
+            border: '1px solid rgba(255,0,0,0.18)', 
+            padding: '6px 16px', 
+            borderRadius: '99px',
+            fontFamily: 'var(--font-mono)',
+            display: 'inline-block',
+          }}
+        >
           FEATURED PORTFOLIO
-        </span>
-        <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 800, color: 'white', marginTop: '20px', letterSpacing: '-0.02em', fontFamily: 'var(--font-display)' }}>
+        </motion.span>
+
+        <motion.h2
+          initial={{ opacity: 0, filter: 'blur(16px)', scale: 1.15, y: 20 }}
+          whileInView={{ opacity: 1, filter: 'blur(0px)', scale: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 800, color: 'white', marginTop: '20px', letterSpacing: '-0.02em', fontFamily: 'var(--font-display)' }}
+        >
           Innovative <span className="shimmer-gowni">Projects</span>
-        </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', maxWidth: '600px', margin: '15px auto 0 auto', lineHeight: 1.6 }}>
-          A visual archive of dual-factor biometric scanners, cryptographic ledgers, and EEG Seizure Predictor neural networks. Hover over any zooming block to view metadata and links.
-        </p>
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          style={{ color: 'var(--text-muted)', fontSize: '0.95rem', maxWidth: '680px', margin: '15px auto 0 auto', lineHeight: 1.6 }}
+        >
+          Production-grade multimodal biometric authentication, MERN microservices, cryptographic SHA-256 evidence ledgers, and Gemini 2.5 Flash RAG systems.
+        </motion.p>
       </div>
 
       <ZoomParallax images={images} lowSpecMode={lowSpecMode} />
