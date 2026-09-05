@@ -137,19 +137,29 @@ app.post("/send-email", async (req, res) => {
     return res.status(400).json({ success: false, message: "Name and Email are required" });
   }
 
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.error("❌ EMAIL_USER or EMAIL_PASS environment variables are missing.");
+    return res.status(500).json({ 
+      success: false, 
+      message: "Server email credentials (EMAIL_USER / EMAIL_PASS) are not configured." 
+    });
+  }
+
   try {
     // Email Transporter
     let transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.EMAIL_USER.trim(),
+        pass: process.env.EMAIL_PASS.trim(),
       },
     });
 
     console.log("📧 Sending email to owner...");
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: `"${name}" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
       replyTo: email,
       subject: subject || "New Contact Form Submission",
@@ -159,26 +169,17 @@ app.post("/send-email", async (req, res) => {
 
     console.log("📧 Sending auto-reply to sender...");
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: `"Vamshi Gowni" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Thanks for reaching out!",
-      text: `Hi ${name},
-
-Thanks for getting in touch with me! I’ve received your message and will review it shortly.
-You can expect a reply within the next 24–48 hours.
-
-If it’s urgent, feel free to reach out to me directly at ${process.env.EMAIL_USER}.
-
-Best regards,
-Vamshi Gowni
-`,
+      text: `Hi ${name},\n\nThanks for getting in touch with me! I’ve received your message and will review it shortly.\nYou can expect a reply within the next 24–48 hours.\n\nIf it’s urgent, feel free to reach out to me directly at ${process.env.EMAIL_USER}.\n\nBest regards,\nVamshi Gowni\n`,
     });
     console.log("✅ Auto-reply sent to sender");
 
-    res.status(200).json({ success: true, message: "Email sent & saved to DB!" });
+    res.status(200).json({ success: true, message: "Email sent successfully!" });
   } catch (err) {
-    console.error("❌ Error:", err);
-    res.status(500).json({ success: false, message: "Error sending email or saving to DB" });
+    console.error("❌ Error sending email:", err);
+    res.status(500).json({ success: false, message: err.message || "Error sending email" });
   }
 });
 
