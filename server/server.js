@@ -105,23 +105,42 @@ PERSONALITY & GUIDELINES:
 
     const latestMessage = historyMessages[historyMessages.length - 1].content;
 
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
-      systemInstruction: SYSTEM_PROMPT
-    });
+    const candidateModels = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+    let text = null;
+    let lastError = null;
 
-    const chat = model.startChat({
-      history: geminiHistory
-    });
+    for (const modelName of candidateModels) {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          systemInstruction: SYSTEM_PROMPT
+        });
 
-    const result = await chat.sendMessage(latestMessage);
-    const response = await result.response;
-    const text = response.text();
+        const chat = model.startChat({
+          history: geminiHistory
+        });
+
+        const result = await chat.sendMessage(latestMessage);
+        const response = await result.response;
+        text = response.text();
+        if (text) break;
+      } catch (err) {
+        console.warn(`⚠️ Model ${modelName} hit high demand, attempting fallback:`, err.message);
+        lastError = err;
+      }
+    }
+
+    if (!text) {
+      throw lastError || new Error("All AI models are currently busy.");
+    }
 
     res.status(200).json({ success: true, reply: text });
   } catch (err) {
     console.error("❌ Gemini Chat Error:", err);
-    res.status(500).json({ success: false, message: err.message || "Failed to generate AI response" });
+    res.status(500).json({ 
+      success: false, 
+      message: "I'm experiencing a brief rush in AI traffic right now! 🚦 Please try again in a few seconds." 
+    });
   }
 });
 
