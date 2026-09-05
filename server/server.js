@@ -106,7 +106,7 @@ PERSONALITY & GUIDELINES:
     const latestMessage = historyMessages[historyMessages.length - 1].content;
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.5-flash",
       systemInstruction: SYSTEM_PROMPT
     });
 
@@ -121,7 +121,7 @@ PERSONALITY & GUIDELINES:
     res.status(200).json({ success: true, reply: text });
   } catch (err) {
     console.error("❌ Gemini Chat Error:", err);
-    res.status(500).json({ success: false, message: "Failed to generate AI response" });
+    res.status(500).json({ success: false, message: err.message || "Failed to generate AI response" });
   }
 });
 
