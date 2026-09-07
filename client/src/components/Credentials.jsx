@@ -463,6 +463,14 @@ const Credentials = () => {
           ))}
         </div>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          .credentials-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

@@ -114,8 +114,8 @@ const Navbar = () => {
     };
 
   return (
-    <nav style={navStyle}>
-      <div style={containerStyle}>
+    <nav className="navbar-wrapper" style={navStyle}>
+      <div className="navbar-container" style={containerStyle}>
         {/* Logo */}
         <a
           href="#home"
@@ -277,6 +277,14 @@ const Navbar = () => {
           .desktop-menu { display: flex !important; }
         }
         @media (max-width: 767px) {
+          .navbar-wrapper {
+            padding: 0 12px !important;
+            top: 10px !important;
+          }
+          .navbar-container {
+            padding: 10px 16px !important;
+            border-radius: 20px !important;
+          }
           .mobile-toggle-wrapper { display: block !important; }
           .desktop-menu { display: none !important; }
         }

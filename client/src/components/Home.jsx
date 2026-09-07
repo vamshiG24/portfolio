@@ -74,6 +74,7 @@ const Home = ({ lowSpecMode }) => {
   return (
     <section
       id="home"
+      className="home-section"
       style={{
         width: '100%',
         minHeight: '100vh',
@@ -88,7 +89,7 @@ const Home = ({ lowSpecMode }) => {
       {/* Right Column: Robot Scene (positioned absolutely to span screen boundary without clipping) */}
       <motion.div
         initial={{ width: '100%', scale: 2.2, originX: 0.5, originY: 0.35 }}
-        animate={{ width: '60%', scale: 1.0 }}
+        animate={{ width: isMobile ? '100%' : '60%', scale: 1.0 }}
         transition={{ duration: 2.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
         style={{
           height: '100%',
@@ -105,7 +106,7 @@ const Home = ({ lowSpecMode }) => {
       >
         <div style={{ width: '100%', height: '100%', overflow: 'visible', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {isInView && (
-            (!isMobile && !lowSpecMode) ? (
+            (!lowSpecMode) ? (
               <SplineScene
                 scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                 className="w-full h-full"
@@ -318,6 +319,7 @@ const Home = ({ lowSpecMode }) => {
 
       {/* Floating Scroll Indicator */}
       <div
+        className="scroll-down-indicator"
         style={{
           position: 'absolute',
           bottom: '30px',
@@ -347,20 +349,39 @@ const Home = ({ lowSpecMode }) => {
 
       <style>{`
         @media (max-width: 768px) {
-          .home-container {
-            flex-direction: column-reverse !important;
-            padding-top: 100px !important;
+          .home-section {
+            flex-direction: column !important;
+            justify-content: flex-start !important;
             height: auto !important;
             min-height: 100vh !important;
-            justify-content: flex-end !important;
+            padding-top: 80px !important;
+            padding-bottom: 40px !important;
+          }
+          .right-robot {
+            position: relative !important;
+            width: 100% !important;
+            height: 360px !important;
+            max-height: 48vh !important;
+            right: auto !important;
+            top: auto !important;
+            order: 1 !important;
+          }
+          .home-container {
+            width: 100% !important;
+            height: auto !important;
+            min-height: unset !important;
+            padding: 0 16px !important;
+            order: 2 !important;
+            display: flex !important;
+            flex-direction: column !important;
             pointer-events: auto !important;
           }
           .left-details {
             width: 100% !important;
             align-items: center !important;
             text-align: center !important;
-            padding-bottom: 60px !important;
-            margin-top: 20px !important;
+            padding-bottom: 20px !important;
+            margin-top: 10px !important;
           }
           .left-details > div {
             padding-right: 0 !important;
@@ -372,12 +393,14 @@ const Home = ({ lowSpecMode }) => {
           .left-details div {
             justify-content: center !important;
           }
-          .right-robot {
+          .scroll-down-indicator {
             position: relative !important;
-            width: 100% !important;
-            height: 380px !important;
-            right: auto !important;
-            top: auto !important;
+            bottom: auto !important;
+            left: auto !important;
+            transform: none !important;
+            margin-top: 24px !important;
+            margin-bottom: 12px !important;
+            order: 3 !important;
           }
         }
         @keyframes mobile-orb-pulse {

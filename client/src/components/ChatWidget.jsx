@@ -656,7 +656,7 @@ const ChatWidget = () => {
   const isVoiceSupported = typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
 
   return (
-    <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999 }}>
+    <div className="chat-widget-root" style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999 }}>
       {/* Immersive Welcome Tooltip Pill */}
       <AnimatePresence>
         {!isOpen && (
@@ -797,7 +797,7 @@ const ChatWidget = () => {
               overflow: 'hidden',
             } : {
               position: 'absolute', bottom: '76px', right: '0',
-              width: '400px', height: '560px',
+              width: 'min(400px, calc(100vw - 32px))', height: 'min(560px, calc(100vh - 120px))',
               display: 'flex', flexDirection: 'column',
               background: 'rgba(10, 10, 20, 0.48)',
               backdropFilter: 'blur(36px) saturate(180%)',
@@ -1080,6 +1080,12 @@ const ChatWidget = () => {
         .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 99px; }
         .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
         .scrollbar-none::-webkit-scrollbar { display: none; }
+        @media (max-width: 768px) {
+          .chat-widget-root {
+            bottom: 16px !important;
+            right: 16px !important;
+          }
+        }
       `}</style>
     </div>
   );

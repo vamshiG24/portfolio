@@ -19,7 +19,7 @@ export const FlowSection = ({
   >
     <div
       data-flow-inner
-      className="flow-art-container relative flex min-h-screen w-full flex-col justify-between gap-6 px-[5vw] pt-[clamp(250px,35vh,350px)] pb-[60px] will-change-transform"
+      className="flow-art-container relative flex min-h-screen w-full flex-col justify-between gap-6 px-[5vw] pt-14 md:pt-[clamp(250px,35vh,350px)] pb-[40px] md:pb-[60px] will-change-transform"
       style={{ transformOrigin: 'bottom left', ...style }}
     >
       {children}
@@ -47,7 +47,8 @@ export const FlowArt = ({
   useEffect(() => {
     if (!containerRef.current || reducedMotion) return;
 
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia(containerRef);
+    mm.add("(min-width: 768px)", () => {
       const sections = Array.from(
         containerRef.current.querySelectorAll('[data-flow-section]')
       );
@@ -85,9 +86,9 @@ export const FlowArt = ({
       });
 
       ScrollTrigger.refresh();
-    }, containerRef);
+    });
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, [children, reducedMotion]);
 
   return (

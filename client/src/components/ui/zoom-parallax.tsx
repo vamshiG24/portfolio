@@ -41,9 +41,9 @@ interface ProjectPanelProps {
 
 function ProjectPanel({ project, index, total }: ProjectPanelProps) {
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', background: '#0c0c0c' }}>
+    <div className="project-panel-root" style={{ position: 'absolute', inset: 0, display: 'flex', background: '#0c0c0c' }}>
       {/* Left side: Image */}
-      <div style={{ position: 'relative', width: '55%', height: '100%', overflow: 'hidden' }}>
+      <div className="project-panel-image" style={{ position: 'relative', width: '55%', height: '100%', overflow: 'hidden' }}>
         <img
           src={project.src || '/placeholder.svg'}
           alt={project.alt || ''}
@@ -68,6 +68,7 @@ function ProjectPanel({ project, index, total }: ProjectPanelProps) {
 
       {/* Right side: Details */}
       <div
+        className="project-panel-details"
         style={{
           width: '45%',
           display: 'flex',

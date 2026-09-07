@@ -71,6 +71,7 @@ const Timeline = ({ lowSpecMode }) => {
 
             {/* Top Left Header with Horizontal Slide & Neon Laser Wipe Scroll Animation */}
             <div
+              className="timeline-header-block"
               style={{
                 width: '100%',
                 maxWidth: '1050px',
@@ -147,6 +148,7 @@ const Timeline = ({ lowSpecMode }) => {
 
             {/* Main Content Area with Timeline Node Axis */}
             <div
+              className="timeline-content-block"
               style={{
                 width: '100%',
                 maxWidth: '1050px',
@@ -340,6 +342,17 @@ const Timeline = ({ lowSpecMode }) => {
           </FlowSection>
         ))}
       </FlowArt>
+      <style>{`
+        @media (max-width: 768px) {
+          .timeline-header-block {
+            padding-top: 16px !important;
+          }
+          .timeline-content-block {
+            gap: 14px !important;
+            padding-top: 14px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

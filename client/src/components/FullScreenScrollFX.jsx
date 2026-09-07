@@ -711,13 +711,35 @@ export const FullScreenScrollFX = forwardRef(
           .fx-progress-numbers { position: absolute; inset: auto 0 100% 0; display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--fx-text); }
 
           @media (max-width: 900px) {
-            .fx-content {
-              grid-template-columns: 1fr; row-gap: 3vh;
-              place-items: center;
+            .fx-left, .fx-right {
+              display: none !important;
             }
-            .fx-left, .fx-right, .fx-center { height: auto; }
-            .fx-left, .fx-right { justify-items: center; }
-            .fx-track { transform: none !important; }
+            .fx-content {
+              grid-template-columns: 1fr !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              padding: 0 16px !important;
+            }
+            .fx-center {
+              width: 100% !important;
+              height: auto !important;
+              max-height: 82vh !important;
+              overflow-y: auto !important;
+              padding: 12px 0 !important;
+            }
+            .fx-featured {
+              position: relative !important;
+            }
+            .fx-featured:not(.active) {
+              display: none !important;
+            }
+            .fx-header {
+              padding-top: 2vh !important;
+            }
+            .fx-footer {
+              padding-bottom: 2vh !important;
+            }
           }
         `}</style>
       </div>

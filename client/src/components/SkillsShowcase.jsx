@@ -336,6 +336,23 @@ const SkillsShowcase = () => {
           box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25) !important;
           transform: translateY(-2px) !important;
         }
+        @media (max-width: 768px) {
+          .skill-marquee-card {
+            padding: 12px 18px !important;
+            border-radius: 14px !important;
+            gap: 10px !important;
+          }
+          .skill-marquee-card span {
+            font-size: 0.95rem !important;
+          }
+          .skill-marquee-icon {
+            font-size: 1.4rem !important;
+          }
+          .category-tab-btn {
+            padding: 6px 12px !important;
+            font-size: 0.75rem !important;
+          }
+        }
       `}</style>
     </section>
   );
