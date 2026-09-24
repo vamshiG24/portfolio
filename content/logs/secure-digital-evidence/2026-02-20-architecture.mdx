@@ -1,0 +1,20 @@
+---
+date: "2026-02-20"
+title: "Five services, one proxy"
+tags: ["architecture", "docker", "nginx"]
+challenge: "Five Express services meant five origins, and cookies, CORS and sessions across them got messy fast."
+solution: "Nginx in front as the single public port, so the browser only ever sees one origin. Redis holds sessions and OTP state, so any instance can answer any request."
+---
+
+Split the platform into five Express services — auth, cases, evidence, custody, AI — and put
+Nginx in front as the single public port. Each service owns its collections in MongoDB; Redis
+holds sessions and OTP state so any instance can answer any request.
+
+Docker Compose wires it up locally in one command. The reverse-proxy layer means the browser
+only ever sees one origin, which made cookies and CORS boring — the goal.
+
+```nginx
+location /api/evidence/ { proxy_pass http://evidence:4003/; }
+location /api/custody/  { proxy_pass http://custody:4004/; }
+location /api/ai/       { proxy_pass http://ai:4005/; }
+```

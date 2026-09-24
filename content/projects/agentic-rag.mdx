@@ -1,0 +1,19 @@
+---
+title: "Agentic RAG"
+slug: "agentic-rag"
+blurb: "Multi-agent retrieval-augmented generation with guardrails, running entirely on free-tier LLMs with automatic fallback routing."
+stack: ["LangGraph", "FastAPI", "Qdrant", "LiteLLM", "React", "Vite"]
+role: "Architecture + build"
+period: "Sep 2026 — now"
+repo: "https://github.com/vamshiG24/agentic-rag"
+cover: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1600&q=80" # TODO replace with a real screenshot
+featured: true
+---
+
+A supervisor agent routes work to Retriever, Researcher, Analyst, Critic and Writer agents on
+LangGraph, served by FastAPI and streamed to a React/Vite client over SSE. Retrieval is Qdrant
+with bge-m3 embeddings, with input and output guardrails around the graph.
+
+The interesting part is the LLM router: a role-based LiteLLM layer across five free-tier
+providers (Gemini, Groq, OpenRouter, Cerebras, Mistral) with ordered fallback chains, failover
+on rate limits and timeouts, and per-model cooldowns — so free quotas stack instead of blocking.

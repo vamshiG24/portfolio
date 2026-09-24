@@ -1,0 +1,19 @@
+---
+title: "Job Radar"
+slug: "job-radar"
+blurb: "Self-hosted job-matching pipeline: n8n fetches listings, Gemini scores them against your resume and tailors a LaTeX résumé per job, Supabase stores it all."
+stack: ["n8n", "Gemini API", "Supabase", "Docker", "React", "Vite", "LaTeX"]
+role: "Build"
+period: "Sep 2026"
+repo: "https://github.com/vamshiG24/job-radar"
+cover: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1600&q=80" # TODO replace with a real screenshot
+featured: false
+---
+
+Every morning an n8n schedule pulls remote and part-time roles from Remotive, Arbeitnow,
+WeWorkRemotely and LinkedIn, dedupes against Supabase, and has Gemini give each an ATS score
+with gap notes. Anything above 50 gets a résumé tailored to the job description — compiled from
+LaTeX to PDF by a tiny Express + TeX Live service — and uploaded to a bucket.
+
+A local Vite + React dashboard lists the day's jobs by score, with saved/applied/skipped states,
+a "Find jobs now" trigger, and a live activity feed from the pipeline's event log.

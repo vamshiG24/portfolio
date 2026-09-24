@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gowni Vamshi — portfolio
 
-## Getting Started
-
-First, run the development server:
+Next.js 16 (App Router, Turbopack), Tailwind v4, `motion`, Lenis, and a small three.js scene.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev     # http://localhost:3000
+npm run build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How it is put together
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **The stage** — `components/background/stage/VideoStage.tsx`. One fixed layer behind the whole page: the intro clip is scrubbed by the hero's scroll, the figure is then carried into the About section's plate, the portrait stays dark until hovered and a pointer spotlight reveals it through the figure, and a pre-blurred plate sits under the later sections.
+- **Sections** — `components/sections/*`; the skills constellation is `sections/skills/*` (WebGL, with a DOM sphere fallback).
+- **Content** — `content/` (site copy, skills, timeline, projects and build logs as MDX). A log whose frontmatter has `challenge` and `solution` also appears in the home page's Breakpoints section.
+- **Tunables** — every number lives in `config/motion.ts`; colours in `styles/tokens.css`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Assets
 
-## Learn More
+Served files are in `public/`; their sources are in `assets/` (not deployed):
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `public/video/intro*.{mp4,jpg}` from `assets/video/…mp4` — re-encode with `keyint=4`, no B-frames, `+faststart` (flags documented on `INTRO` in `config/motion.ts`).
+- `public/myimage/about-reveal.png` — the portrait cut out and composited into the clip's frame space; `vamshi-thumb.jpg` for the About card. Source: `assets/photo/`.

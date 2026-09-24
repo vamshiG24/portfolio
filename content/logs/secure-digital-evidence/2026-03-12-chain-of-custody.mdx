@@ -1,0 +1,19 @@
+---
+date: "2026-03-12"
+title: "Making the custody ledger actually tamper-evident"
+tags: ["security", "integrity"]
+challenge: "The custody chain hashed only the link between entries. Editing a note or a timestamp in the database still left the chain \"valid\"."
+solution: "Every block's hash now covers its index, the previous hash, action, custodian, notes, timestamp and the file's SHA-256. Verification recomputes each block, so a break names the block that changed."
+---
+
+First version linked each custody entry to the previous one by hash — but only the link. Editing
+a note or a timestamp in the database left the chain "valid". Now every block's hash covers its
+index, the previous hash, the action, custodian, notes, timestamp **and** the file's SHA-256, and
+verification recomputes every block from scratch.
+
+```ts
+const payload = `${index}|${prevHash}|${action}|${custodian}|${notes}|${timestamp}|${fileSha256}`;
+const hash = createHash("sha256").update(payload).digest("hex");
+```
+
+Side effect: a broken chain now tells you *which* block changed, not just that something did.

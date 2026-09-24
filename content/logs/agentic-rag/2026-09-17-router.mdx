@@ -1,0 +1,18 @@
+---
+date: "2026-09-17"
+title: "A router that makes free tiers stack"
+tags: ["llm", "routing", "litellm"]
+challenge: "Five free LLM providers, five different rate limits. One 429 failed the whole call, so the free quotas blocked each other instead of adding up."
+solution: "Each agent role gets an ordered fallback chain. A 429 or a timeout puts that model on cooldown and the call moves down the chain, so the free tiers stack."
+---
+
+Five free providers, five different rate limits. Each agent role gets an ordered fallback chain;
+a 429 or timeout puts that model on cooldown and the call moves down the chain. In practice the
+free quotas add up instead of blocking each other.
+
+```python
+ROLES = {
+  "supervisor": ["gemini/gemini-2.5-flash", "groq/llama-3.3-70b", "cerebras/llama-3.3-70b"],
+  "writer":     ["openrouter/deepseek-v3", "mistral/mistral-large", "gemini/gemini-2.5-flash"],
+}
+```

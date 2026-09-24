@@ -1,26 +1,546 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
+@import "lenis/dist/lenis.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
+/* Map tokens → Tailwind utilities (bg-bg, text-fg-muted, font-display, rounded-lg…) */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-bg-elev-2: var(--bg-elev-2);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-hue-amber: var(--hue-amber);
+  --color-hue-rose: var(--hue-rose);
+  --color-hue-violet: var(--hue-violet);
+  --color-hue-cyan: var(--hue-cyan);
+  --color-hue-teal: var(--hue-teal);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-base: var(--text-base);
+  --text-lg: var(--text-lg);
+  --text-xl: var(--text-xl);
+  --text-2xl: var(--text-2xl);
+  --text-3xl: var(--text-3xl);
+  --text-4xl: var(--text-4xl);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: auto; /* Lenis owns smoothing */
+    scroll-padding-top: 6rem; /* keep focused/anchored elements clear of the fixed header */
+    -webkit-text-size-adjust: 100%;
+  }
+  button, [role="button"], summary { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+    text-rendering: geometricPrecision;
+  }
+  body { text-rendering: geometricPrecision; }
+}
+
+@layer utilities {
+  .container-page {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--fg-subtle);
+  }
+  /* white pill CTA (spec 1); on hover the spectrum sweeps in from the left under the ink */
+  .pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 3rem; padding: 0 1.55rem; border-radius: 999px;
+    background: var(--accent); color: var(--accent-fg);
+    font-size: 0.95rem; font-weight: 500; white-space: nowrap;
+    transition: transform var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out), opacity var(--dur-fast);
+  }
+  .pill > span { transform: translateY(1px); }
+  .pill, .sweep { position: relative; isolation: isolate; overflow: hidden; }
+  .pill::before, .sweep::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: var(--spectrum);
+    transform: translateX(-101%);
+    transition: transform 650ms var(--ease-out);
+  }
+  .sweep { transition: box-shadow var(--dur-hover) var(--ease-out); }
+  .pill:disabled::before { display: none; }
+  /* ghost link (secondary): the ink fades off a spectrum clipped to the glyphs, an underline draws in */
+  .ghost {
+    position: relative;
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: 0.95rem; font-weight: 500; letter-spacing: 0.006em; color: var(--fg);
+  }
+  .ghost, .hue-text {
+    background-image: var(--spectrum);
+    background-size: 250% 100%;
+    background-position: 0% 50%;
+    -webkit-background-clip: text; background-clip: text;
+    transition: color var(--dur-hover) var(--ease-out), background-position 900ms var(--ease-out);
+  }
+  .ghost::after, .hue-line::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; pointer-events: none;
+    background: var(--spectrum);
+    transform: scaleX(0); transform-origin: right;
+    transition: transform 550ms var(--ease-out);
+  }
+  .hue-line { position: relative; }
+  .ghost:focus-visible, .hue-text:focus-visible { color: transparent; background-position: 100% 50%; }
+  /* hairline */
+  .rule { border-top: 1px solid var(--line); }
+  /* a hairline that lights up along its length when its card is hovered */
+  .rule-glow { position: relative; }
+  .rule-glow::before {
+    content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; pointer-events: none;
+    background: var(--spectrum);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 800ms var(--ease-out);
+  }
+  @media (min-width: 48rem) { .rule-glow[data-glow-from="end"]::before { transform-origin: right; } }
+  /* tags: each takes its own colour when touched (cycled, so neighbours differ) */
+  .chip {
+    --c: var(--hue-amber);
+    transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out);
+  }
+  .chip:nth-child(4n + 2) { --c: var(--hue-rose); }
+  .chip:nth-child(4n + 3) { --c: var(--hue-violet); }
+  .chip:nth-child(4n + 4) { --c: var(--hue-cyan); }
+  /* round icon buttons: a spectrum ring fades in and turns; the glyph warms */
+  .ring-btn {
+    position: relative; isolation: isolate;
+    transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out);
+  }
+  .ring-btn::before {
+    content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: conic-gradient(from var(--spin), var(--hue-amber), var(--hue-rose), var(--hue-violet), var(--hue-cyan), var(--hue-amber));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--dur-hover) var(--ease-out);
+    animation: hue-spin 2.6s linear infinite paused;
+  }
+  /* form fields: the underline takes the light */
+  .field { transition: border-color var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out); }
+  .field:focus-visible { border-color: var(--hue-rose); box-shadow: 0 1px 0 0 var(--hue-rose); }
+  .field[aria-invalid="true"] { border-color: color-mix(in srgb, var(--danger) 70%, transparent); }
+  .sr-only-keep {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0);
+    white-space: nowrap; border: 0;
+  }
+
+  /* ---- Hover light. Only where a real pointer hovers, so taps never leave colour stuck on.
+     A `.hue-group` (a card) lights its `.hue-in` text, chips and glow rules when the group itself is
+     hovered; other links inside it still light only under their own hover. */
+  @media (hover: hover) {
+    .pill:hover { transform: translateY(-2px); box-shadow: var(--hue-glow); }
+    .pill:hover::before, .sweep:hover::before { transform: translateX(0); }
+    .sweep:hover { box-shadow: var(--hue-glow); }
+    .pill:disabled:hover { transform: none; box-shadow: none; }
+
+    .ghost:hover, .hue-text:hover, .hue-group:hover .hue-in { color: transparent; background-position: 100% 50%; }
+    .ghost:hover::after, .hue-line:hover::after, .hue-group:hover .hue-in::after { transform: scaleX(1); transform-origin: left; }
+
+    .hue-group:hover .rule-glow::before, .rule-glow:hover::before { transform: scaleX(1); }
+
+    .chip:hover, .hue-group:hover .chip {
+      color: var(--c);
+      border-color: color-mix(in srgb, var(--c) 55%, transparent);
+      background-color: color-mix(in srgb, var(--c) 10%, transparent);
+    }
+    .chip:hover { transform: translateY(-1px); }
+
+    .ring-btn:hover {
+      color: var(--hue-amber); border-color: transparent;
+      background-color: color-mix(in srgb, var(--hue-rose) 10%, transparent);
+      transform: translateY(-2px); box-shadow: var(--hue-glow);
+    }
+    .ring-btn:hover::before { opacity: 1; animation-play-state: running; }
+
+    .field:not([aria-invalid="true"]):hover:not(:focus-visible) { border-color: color-mix(in srgb, var(--hue-violet) 65%, transparent); }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@property --spin { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes hue-spin { to { --spin: 360deg; } }
+
+/* Reduced motion: kill CSS transitions site-wide; JS side handled in hooks */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- scroll cue idle pulse (time-based, DOM only; killed by the reduced-motion block above) */
+@keyframes cue {
+  0%, 100% { transform: translateY(0); opacity: .6; }
+  50%      { transform: translateY(6px); opacity: 1; }
+}
+.animate-cue { animation: cue 1.8s var(--ease-in-out) infinite; }
+
+/* ---- build-log prose */
+.prose-log { color: var(--fg-muted); }
+.prose-log > * + * { margin-top: 1em; }
+.prose-log h3 { color: var(--fg); font-size: var(--text-lg); margin-top: 2em; }
+.prose-log strong { color: var(--fg); font-weight: 500; }
+.prose-log a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.prose-log ul { padding-left: 1.2em; list-style: "— "; }
+.prose-log code:not(pre code) {
+  font-family: var(--font-mono); font-size: .9em;
+  background: var(--bg-elev-2); padding: .1em .35em; border-radius: var(--radius-sm);
+}
+.prose-log blockquote { border-left: 2px solid var(--accent); padding-left: 1em; color: var(--fg); }
+
+/* ---- shiki: the dark half of its dual theme (the site is dark only) */
+.shiki, .shiki span { color: var(--shiki-dark); background-color: transparent !important; }
+.shiki { font-family: var(--font-mono); }
+
+/* ---- About: word pull-up + fade-up, triggered when the section gets .is-in */
+@keyframes word-pull-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); filter: blur(8px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+/* the copy overlaps the plate on narrow screens: same lift as the hero copy, so it reads over the revealed photo */
+#about h2, #about .about-bio { text-shadow: 0 2px 28px rgba(0,0,0,.55); }
+#about .pull-word { opacity: 0; transform: translateY(20px); }
+#about .fade-up { opacity: 0; transform: translateY(14px); filter: blur(8px); }
+#about.is-in .pull-word { animation: word-pull-up .55s var(--ease-out) forwards; }
+#about.is-in .fade-up { animation: fade-up .7s var(--ease-out) forwards; }
+@media (prefers-reduced-motion: reduce) {
+  #about .pull-word, #about .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+}
+/* the card's thumbnail: a dark blur with an eye on it until the card is hovered (or tapped, or focused) */
+#about .face-thumb {
+  filter: blur(7px) grayscale(1) brightness(.35); transform: scale(1.2);
+  transition: filter 700ms var(--ease-out), transform 700ms var(--ease-out);
+}
+#about .face-thumb-hint { transition: opacity var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out); }
+#about .face-card:hover .face-thumb, #about .face-card:focus-within .face-thumb { filter: saturate(.85) contrast(1.1); transform: scale(1); }
+#about .face-card:hover .face-thumb-hint, #about .face-card:focus-within .face-thumb-hint { opacity: 0; transform: scale(.6); }
+
+/* ==========================================================================
+   Top bar + menu (spec 1). Landscape: absolute measured layout in --u units.
+   ========================================================================== */
+.topbar { pointer-events: none; }
+.topbar::before {
+  content: ""; position: absolute; inset: 0 0 -4rem; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(5,5,5,.9), rgba(5,5,5,.55) 50%, transparent);
+}
+.topbar-inner { position: relative; height: calc(104 * var(--u)); min-height: 4.25rem; }
+.topbar-inner > * { pointer-events: auto; }
+.brand {
+  position: absolute; left: var(--gutter); top: calc(27 * var(--u));
+  display: block; width: calc(31.5 * var(--u)); height: calc(48.5 * var(--u));
+  min-width: 22px; min-height: 34px;
+}
+.brand-mark { display: block; width: 100%; height: 100%; }
+.links {
+  position: absolute; left: 50%; top: calc(51 * var(--u));
+  transform: translate(-50%, -50%);
+  display: flex; align-items: center; gap: calc(24.5 * var(--u));
+  white-space: nowrap;
+}
+.brand-mark { transition: transform var(--dur-hover) var(--ease-out), filter var(--dur-hover) var(--ease-out); }
+.link { font-size: clamp(0.9rem, calc(19 * var(--u)), 1.19rem); font-weight: 400; color: var(--nav); }
+.link.is-active { color: var(--fg); }
+/* the active section keeps a small lit dot under its link */
+.link.is-active::after { transform: scaleX(0.18); transform-origin: center; background: var(--fg); }
+/* (these sit outside the utilities layer, like the rules they override, so they restate the .hue-text hover) */
+@media (hover: hover) {
+  .brand:hover .brand-mark { transform: rotate(-8deg) scale(1.06); filter: drop-shadow(0 0 10px rgba(255, 179, 92, .55)) drop-shadow(0 0 22px rgba(255, 93, 143, .35)); }
+  .link:hover { color: transparent; background-position: 100% 50%; }
+  .link.is-active:hover::after { transform: scaleX(1); background: var(--spectrum); }
+  .burger:hover { border-color: color-mix(in srgb, var(--hue-rose) 55%, transparent); box-shadow: var(--hue-glow); }
+  .menu-list a:hover > span { color: transparent; background-position: 100% 50%; transform: translateX(.5rem); }
+  .menu-list a:hover::after { color: var(--hue-rose); transform: translateX(-.35rem); }
+}
+.pill-nav {
+  position: absolute; right: var(--gutter); top: calc(27 * var(--u));
+  height: calc(49 * var(--u)); min-height: 2.5rem; padding: 0 calc(28 * var(--u));
+  font-size: clamp(0.85rem, calc(20.6 * var(--u)), 1.29rem);
+}
+.burger {
+  display: none; position: absolute; right: var(--gutter); top: calc(27 * var(--u));
+  width: 3rem; height: 3rem; border-radius: 999px;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  align-items: center; justify-content: center; flex-direction: column; gap: 6px;
+  transition: border-color var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out);
+}
+.burger i { display: block; width: 18px; height: 1.5px; background: var(--fg); transition: transform .35s var(--ease-out); }
+.is-open .burger i:first-child { transform: translateY(3.75px) rotate(45deg); }
+.is-open .burger i:last-child  { transform: translateY(-3.75px) rotate(-45deg); }
+
+.menu {
+  position: fixed; inset: 0; z-index: 30;
+  background: linear-gradient(180deg, rgba(5,5,5,.94), rgba(5,5,5,.98));
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .42s var(--ease-out), visibility .42s;
+}
+.is-open .menu { opacity: 1; visibility: visible; pointer-events: auto; }
+.menu-inner {
+  height: 100%; display: flex; flex-direction: column; justify-content: center;
+  padding: max(6rem, env(safe-area-inset-top)) var(--gutter) max(2.5rem, env(safe-area-inset-bottom));
+}
+.menu-eyebrow, .menu-list li, .menu-foot {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .5s var(--ease-out), transform .5s var(--ease-out);
+}
+.menu-eyebrow { transition-delay: .06s; }
+.is-open .menu-eyebrow, .is-open .menu-list li, .is-open .menu-foot { opacity: 1; transform: none; }
+.menu-list { margin-top: 1rem; display: flex; flex-direction: column; }
+.menu-list a {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 0; border-top: 1px solid var(--line);
+  font-size: max(25px, calc(31 * var(--u))); font-weight: 400; color: var(--fg); line-height: 1.1;
+}
+.menu-list a > span { transition: color var(--dur-hover) var(--ease-out), background-position 900ms var(--ease-out), transform var(--dur-hover) var(--ease-out); }
+.menu-list a::after {
+  content: "›"; color: var(--fg-subtle); font-size: 1.2em;
+  transition: color var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out);
+}
+.menu-list li:last-child a { border-bottom: 1px solid var(--line); }
+.menu-foot { margin-top: 2rem; display: flex; align-items: center; gap: 1.5rem; }
+
+/* portrait / narrow: hide links + pill, show burger */
+@media (max-aspect-ratio: 11/10) {
+  .links, .pill-nav { display: none; }
+  .burger { display: flex; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu, .menu-eyebrow, .menu-list li, .menu-foot, .burger i { transition-duration: .001s !important; }
+}
+
+/* ==========================================================================
+   Hero composition (spec 1). Landscape: measured absolute layout in --u/--h.
+   ========================================================================== */
+.hero-panel { position: absolute; inset: 0; }
+/* scrim behind the copy: the doorway light sits centre-frame, so the copy's side of the room stays in shadow.
+   It lives on the panel, so it fades with the panel. Panel 1 is on the closed door and only needs a touch. */
+.hero-panel::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(5,5,7,.82) 0%, rgba(5,5,7,.6) 28%, rgba(5,5,7,.22) 48%, rgba(5,5,7,0) 62%);
+}
+.hero-panel[data-scrim="soft"]::before { opacity: .4; }
+/* the name's type size: the spec headline size, capped so the one line (≈6.8em) always fits gutter to gutter, scrollbar included */
+#home { --name-fs: min(calc(72 * var(--h)), calc((100vw - 2 * var(--gutter)) / 7.2)); }
+/* one row at the headline's height; a size container, so the name can centre itself with cqw (Home → Name) */
+.hero-name {
+  position: absolute; left: var(--gutter); right: var(--gutter); top: calc(230.5 * var(--u));
+  container-type: inline-size; pointer-events: none;
+}
+.hero-name h1 { position: relative; width: max-content; }
+/* the real text: sizes the row to the name and is what is read out; the particles draw it */
+.hero-name-text {
+  display: block; font-size: var(--name-fs); font-weight: 700; line-height: 1;
+  letter-spacing: 0; white-space: nowrap; color: transparent;
+}
+/* the particle canvas bleeds past the text so the scatter has room; the text stays centred in it.
+   It takes the pointer (repel), so the bleed stops short of the CTAs under the name. */
+.hero-name-canvas {
+  position: absolute; pointer-events: auto;
+  inset: calc(-1.1 * var(--name-fs)) calc(-1.5 * var(--name-fs));
+}
+/* the panels' copy starts under the name */
+.hero-copy { position: absolute; left: var(--gutter); top: calc(230.5 * var(--u) + var(--name-fs) + 44 * var(--h)); max-width: min(46rem, calc(100vw - 2 * var(--gutter))); }
+.hero-copy[data-align="center"] { left: 50%; transform: translateX(-50%); text-align: center; }
+.hero-copy[data-align="center"] .actions { justify-content: center; }
+.headline {
+  font-size: calc(71.6 * var(--h)); line-height: calc(80.5 * var(--h)); font-weight: 400;
+  letter-spacing: calc(0.3 * var(--h)); color: var(--fg); white-space: nowrap;
+  text-shadow: 0 2px 28px rgba(0,0,0,.55);
+}
+.headline > span { display: block; }
+.headline-sm { font-size: calc(58 * var(--h)); line-height: calc(66 * var(--h)); }
+.sub {
+  margin-top: calc(28 * var(--h)); font-size: calc(20.7 * var(--h)); line-height: calc(23.5 * var(--h));
+  font-weight: 400; word-spacing: calc(1.8 * var(--h)); color: var(--fg-muted); white-space: nowrap;
+  text-shadow: 0 1px 18px rgba(0,0,0,.6);
+}
+.sub > span { display: block; }
+.actions { margin-top: calc(34 * var(--h)); display: flex; align-items: center; gap: calc(45 * var(--h)); }
+.pill-cta { height: calc(50 * var(--h)); min-height: 2.75rem; padding: 0 calc(30 * var(--h)); font-size: calc(20.6 * var(--h)); }
+.actions .ghost { font-size: calc(20.6 * var(--h)); letter-spacing: calc(0.12 * var(--h)); }
+
+.logos {
+  position: absolute; left: 50%; top: calc(995 * var(--u)); width: calc(741 * var(--u));
+  transform: translateX(calc(-50% + 20 * var(--u)));
+  display: flex; justify-content: space-between; align-items: center; color: var(--fg-subtle);
+  pointer-events: none;
+}
+.lg { display: flex; align-items: center; gap: calc(7 * var(--u)); }
+.lg svg { width: calc(29 * var(--u)); height: calc(29 * var(--u)); flex: none; }
+.lg-word { font-weight: 700; font-size: calc(17.5 * var(--u)); letter-spacing: -0.01em; }
+
+/* portrait / narrow: flow layout */
+@media (max-aspect-ratio: 11/10) {
+  /* the frame is cropped to the doorway here, so the scrim is a horizontal band behind the centred copy */
+  .hero-panel::before {
+    background: linear-gradient(180deg, rgba(5,5,7,.1) 0%, rgba(5,5,7,.8) 30%, rgba(5,5,7,.8) 70%, rgba(5,5,7,.2) 100%);
+  }
+  .hero-copy { position: static; margin: auto var(--gutter); }
+  .hero-copy[data-align="center"] { transform: none; }
+  .hero-name { top: max(6rem, env(safe-area-inset-top)); }
+  /* the flow starts under the name */
+  .hero-panel {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: calc(max(6rem, env(safe-area-inset-top)) + var(--name-fs) + 1.5rem) 0 max(9rem, env(safe-area-inset-bottom));
+  }
+  .headline { white-space: normal; font-size: clamp(2.2rem, calc(52 * var(--u)), 3.6rem); line-height: 1.08; }
+  .headline > span { display: inline; }
+  .headline > span + span::before { content: " "; }
+  .headline-sm { font-size: clamp(1.8rem, calc(44 * var(--u)), 3rem); }
+  .sub { white-space: normal; font-size: clamp(1rem, calc(18 * var(--u)), 1.2rem); line-height: 1.5; }
+  .sub > span { display: inline; }
+  .sub > span + span::before { content: " "; }
+  .actions { flex-wrap: wrap; gap: 1.25rem 1.75rem; }
+  .logos {
+    width: auto; left: var(--gutter); right: var(--gutter); top: auto; bottom: calc(52 * var(--u));
+    transform: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem;
+  }
+  .lg svg { width: 1.6rem; height: 1.6rem; }
+  .lg-word { font-size: 0.95rem; }
+}
+@media (max-aspect-ratio: 11/10) and (min-width: 600px) {
+  .headline > span { display: block; }
+  .headline > span + span::before { content: none; }
+  .logos { display: flex; }
+}
+@media (max-aspect-ratio: 11/10) { .portrait-hide { display: none; } }
+
+/* ==========================================================================
+   Breakpoints: challenge → solution cards. Monochrome at rest; under the
+   pointer a wash of light follows the cursor (--mx/--my, set in
+   BreakpointList), the edge takes the spectrum, the challenge side lights
+   rose and the solution side teal. Only opacity/transform/colour animate.
+   ========================================================================== */
+.bp-card {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line); border-radius: var(--radius-xl);
+  background: rgba(11, 11, 11, .72);
+  transition: border-color var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out);
+}
+.bp-card::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(460px circle at var(--mx, 30%) var(--my, 0%), rgba(255, 93, 143, .15), rgba(155, 123, 255, .08) 45%, transparent 72%);
+  opacity: 0; transition: opacity 600ms var(--ease-out);
+}
+.bp-card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: var(--spectrum);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity 600ms var(--ease-out);
+}
+.bp-card:has(a:focus-visible) { outline: 2px solid var(--accent); outline-offset: 4px; }
+.bp-side { position: relative; padding-left: 1rem; border-left: 1px solid var(--line); transition: border-color var(--dur-hover) var(--ease-out); }
+.bp-side[data-side="challenge"] { --lit: var(--hue-rose); }
+.bp-side[data-side="solution"] { --lit: var(--hue-teal); }
+.bp-label {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-size: .72rem; font-weight: 500; letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  color: var(--fg-subtle); transition: color var(--dur-hover) var(--ease-out);
+}
+.bp-label i { width: .45rem; height: .45rem; border-radius: 999px; background: currentColor; transition: box-shadow var(--dur-hover) var(--ease-out); }
+.bp-arrow { align-self: center; color: var(--fg-subtle); font-size: 1.25rem; transition: color var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out); }
+@media (hover: hover) {
+  .bp-card:hover { border-color: transparent; transform: translateY(-3px); box-shadow: 0 34px 70px -40px rgba(155, 123, 255, .5); }
+  .bp-card:hover::before, .bp-card:hover::after { opacity: 1; }
+  .bp-card:hover .bp-side { border-color: color-mix(in srgb, var(--lit) 60%, transparent); }
+  .bp-card:hover .bp-label { color: var(--lit); }
+  .bp-card:hover .bp-label i { box-shadow: 0 0 12px 1px var(--lit); }
+  .bp-card:hover .bp-arrow { color: var(--hue-violet); transform: translateX(4px); }
+}
+
+/* ==========================================================================
+   About portrait hint (drawn by the stage, on the figure's face): a pulsing
+   ring and a label until the spotlight is found. The element is a point on
+   the face; its children centre on it. Transform/opacity only.
+   ========================================================================== */
+.portrait-hint { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+.portrait-hint-ring {
+  position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; border-radius: 999px;
+  border: 1px solid rgba(255, 179, 92, .85);
+  box-shadow: 0 0 18px rgba(255, 179, 92, .35), inset 0 0 14px rgba(255, 93, 143, .3);
+}
+.portrait-hint-ring::before, .portrait-hint-ring::after {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit;
+  border: 1px solid var(--hue-rose);
+  animation: hint-ping 2.4s var(--ease-out) infinite;
+}
+.portrait-hint-ring::after { animation-delay: 1.2s; border-color: var(--hue-violet); }
+@keyframes hint-ping { from { transform: scale(1); opacity: .9; } to { transform: scale(2.3); opacity: 0; } }
+.portrait-hint-label {
+  position: absolute; top: 36px; left: 0; transform: translateX(-50%);
+  white-space: nowrap; padding: .38rem .8rem; border-radius: 999px;
+  background: rgba(5, 5, 5, .62); border: 1px solid rgba(255, 255, 255, .14);
+  font-size: .68rem; font-weight: 500; letter-spacing: var(--tracking-wide); text-transform: uppercase; color: var(--fg);
+}
+.hint-touch { display: none; }
+@media (hover: none) {
+  .hint-hover { display: none; }
+  .hint-touch { display: inline; }
+}
+/* phones: the face sits just above the copy, so the label goes beside the ring rather than under it */
+@media (max-width: 640px) {
+  .portrait-hint-ring { left: -18px; top: -18px; width: 36px; height: 36px; }
+  .portrait-hint-label { top: -13px; left: 28px; transform: none; font-size: .62rem; padding: .3rem .65rem; }
 }

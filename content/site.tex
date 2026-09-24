@@ -1,0 +1,197 @@
+%-------------------------
+% ATS-Friendly Resume
+% Gowni Vamshi
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage[normalem]{ulem}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-7pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-9pt}]
+
+\pdfgentounicode=1
+
+%-------------------------
+% Custom Commands
+\newcommand{\resumeItem}[1]{
+  \item\small{#1\vspace{-1pt}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+  \textbf{\Huge \scshape Gowni Vamshi} \\ \vspace{5pt}
+  \small
+  Bengaluru \;\textbar\;
+  \faPhone\ 6301675616 \;\textbar\;
+  \faEnvelope\ \href{mailto:vamshigowniv26@gmail.com}{\dotuline{vamshigowniv26@gmail.com}} \;\textbar\;
+  \faLinkedin\ \href{https://www.linkedin.com/in/vamshi-gowni-8bba28322}{\dotuline{LinkedIn}} \;\textbar\;
+  \faGithub\ \href{https://github.com/vamshiG24}{\dotuline{GitHub}} \;\textbar\;
+  \faGlobe\ \href{https://portfolio-seven-chi-z8v6hmlert.vercel.app/}{\dotuline{Portfolio}}
+\end{center}
+
+%-----------PROFILE SUMMARY-----------
+\section{Profile Summary}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \item{
+Computer Science undergraduate building full-stack web applications and LLM-powered systems, with a focus on secure backend design, service architecture, and reliable AI integration. Research Intern at \textbf{IIT Madras} working on LLM watermarking via Pseudorandom Codes. GATE (CSE) qualified.
+  }
+\end{itemize}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+\resumeSubHeadingListStart
+
+\resumeSubheading
+{Indian Institute of Technology Madras}{Chennai, India}
+{B.Tech Final Year Exchange Program (MoU)}{2026 -- 2027}
+
+\resumeSubheading
+{Indian Institute of Information Technology Manipur}{Manipur, India}
+{B.Tech in Computer Science and Engineering (AI \& Data Science) -- CPI: 8.10}{2023 -- 2027}
+
+\resumeSubheading
+{Sri Chaitanya Junior College}{Vijayawada, Andhra Pradesh}
+{Intermediate (Class XII) -- Percentage: 97\%}{2021 -- 2023}
+
+\resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+\resumeSubHeadingListStart
+
+\resumeSubheading
+{Research Intern --- Study of LLM Watermarking via Pseudorandom Codes.}{May 2026 -- Jul 2026}
+{\textbf{Indian Institute of Technology Madras}}{Chennai, India}
+\resumeItemListStart
+
+  \resumeItem{Researched watermarking of Large Language Model output using Pseudorandom Codes (PRCs), focusing on secure and robust text watermarking techniques.}
+
+  \resumeItem{Studied Reed--Solomon and Folded Reed--Solomon codes, list recovery algorithms, and cryptographic security proofs covering soundness, undetectability, and adaptive robustness.}
+
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+
+
+%-----------KEY PROJECTS-----------
+\section{Key Projects}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+  {\textbf{Secure Digital Evidence} $|$
+   \emph{React, Node.js, MongoDB, Redis, Docker, Nginx, Gemini API} $|$
+   \href{https://github.com/vamshiG24/secure-digital-evidence}{\dotuline{GitHub}} $|$
+   \href{https://secure-digital-evidence.vercel.app}{\dotuline{Live}}}{}
+\resumeItemListStart
+  \resumeItem{Built an evidence management platform as five Express microservices behind an Nginx reverse proxy, containerized with Docker Compose over MongoDB and Redis.}
+  \resumeItem{Implemented a tamper-evident chain of custody: a hash-linked audit ledger where each entry embeds the previous entry's hash, plus SHA-256 checksums on upload, RBAC, and email OTP 2FA.}
+  \resumeItem{Integrated a Gemini multimodal RAG service over case documents and PDFs for evidence Q\&A, entity and timeline extraction, and court dossier export.}
+\resumeItemListEnd
+
+
+\resumeProjectHeading
+  {\textbf{Agentic RAG} $|$
+   \emph{LangGraph, FastAPI, Qdrant, LiteLLM, React, Vite} $|$
+   \href{https://github.com/vamshiG24/agentic-rag}{\dotuline{GitHub}}}{}
+\resumeItemListStart
+  \resumeItem{Designed a multi-agent RAG system on LangGraph and FastAPI with a supervisor routing to Retriever, Researcher, Analyst, Critic, and Writer agents, streamed to a React/Vite client over SSE, with Qdrant and bge-m3 embeddings for retrieval.}
+  \resumeItem{Implemented a role-based LLM router across five free-tier providers (Gemini, Groq, OpenRouter, Cerebras, Mistral) with ordered fallback chains, failover on rate limits and timeouts, and per-model cooldowns so free quotas stack rather than block.}
+\resumeItemListEnd
+
+
+\resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \item{
+    \small
+    \textbf{Languages:} Python, C++, JavaScript \\[2pt]
+    \textbf{Web:} React.js, Node.js, Express.js, FastAPI, MongoDB, Supabase (PostgreSQL), Tailwind CSS \\[2pt]
+    \textbf{Backend \& Architecture:} REST APIs, Microservices, WebSockets, JWT, 2FA, RBAC, ABAC \\[2pt]
+    \textbf{AI \& ML:} Gemini API, RAG, LangGraph, Vector Databases (Qdrant), Prompt Engineering, TensorFlow, Keras \\[2pt]
+    \textbf{DevOps \& Tools:} Docker, Nginx, Redis, Git, GitHub Actions, n8n
+  }
+\end{itemize}
+\vspace{2pt}
+
+%-----------ACHIEVEMENTS \& CERTIFICATIONS-----------
+\section{Achievements \& Certifications}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+  {\textbf{GATE Qualified} $|$ \emph{Computer Science \& Engineering}
+  $|$ \href{https://drive.google.com/file/d/18Qm-6iXfkg0gXYS5jLaWOfxoju0GXJxX/view?usp=drive_link}{\dotuline{View Proof}}}{}
+
+\resumeProjectHeading
+  {\textbf{Research Internship Certificate} $|$ \emph{IIT Madras}
+   $|$ \href{https://drive.google.com/file/d/1BPo9zB2vY3gcm5fuC1HL5trjYJcy7Ls2/view?usp=drive_link}{\dotuline{View Certificate}}}{}
+
+\resumeProjectHeading
+  {\textbf{Python \& C++ Certifications} $|$ \emph{Spoken Tutorial, IIT Bombay}
+   $|$ \href{https://drive.google.com/file/d/1B-ugd1JLz8kTLnvBM1YXPJjGEwdbVfrt/view?usp=drivesdk}{\dotuline{Python}}
+   $|$ \href{https://drive.google.com/file/d/1v4IqAtm-2CU2NrHLrqj3hvQVUFG9HRU3/view?usp=drivesdk}{\dotuline{C++}}}{}
+
+\resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}

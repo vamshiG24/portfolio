@@ -1,0 +1,14 @@
+---
+date: "2026-06-02"
+title: "Evidence Q&A over case PDFs with Gemini"
+tags: ["ai", "rag", "gemini"]
+challenge: "Investigators needed answers from case PDFs, but nothing in a court dossier can be unattributed, and evidence files can't leave the authenticated store."
+solution: "Multimodal RAG where every answer cites its source chunk. The AI service fetches files through the same signed-URL path the UI uses."
+---
+
+Added a multimodal RAG service: case documents and PDFs are chunked and embedded, and
+investigators can ask questions, pull out entities and build a timeline, then export a court
+dossier. Answers cite the source chunk so nothing in the dossier is unattributed.
+
+Files never leave the authenticated store — the AI service fetches them through the same
+signed-URL path the UI uses.

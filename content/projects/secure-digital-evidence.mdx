@@ -1,0 +1,26 @@
+---
+title: "Secure Digital Evidence"
+slug: "secure-digital-evidence"
+blurb: "Tamper-evident evidence management for investigators: hash-linked chain of custody, RBAC, email-OTP 2FA and a Gemini RAG layer over case files."
+stack: ["React 19", "Node.js", "Express", "MongoDB", "Redis", "Docker", "Nginx", "Gemini API"]
+role: "Design + build"
+period: "Feb — Sep 2026"
+repo: "https://github.com/vamshiG24/secure-digital-evidence"
+demo: "https://secure-digital-evidence.vercel.app"
+cover: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80" # TODO replace with a real screenshot
+featured: true
+---
+
+An evidence management platform for law-enforcement and DFIR teams, built as five Express
+microservices behind an Nginx reverse proxy and containerised with Docker Compose over MongoDB
+and Redis.
+
+Integrity is the product: every upload gets a SHA-256 checksum, and custody is a hash-linked
+ledger where each block covers its index, the previous hash, the action, custodian, notes,
+timestamp and the file hash — verification recomputes every block, so editing any field in the
+database is detected, not just a broken link. Access is RBAC (Admin / Investigator / Analyst)
+with mandatory email-OTP 2FA, and files live as authenticated Cloudinary assets reachable only
+through short-lived signed URLs.
+
+A Gemini multimodal RAG service reads case documents and PDFs for evidence Q&A, entity and
+timeline extraction, and court-dossier export.

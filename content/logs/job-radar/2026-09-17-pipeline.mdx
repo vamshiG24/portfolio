@@ -1,0 +1,15 @@
+---
+date: "2026-09-17"
+title: "Scoring jobs against a resume, every morning"
+tags: ["n8n", "gemini", "supabase"]
+challenge: "A long unattended pipeline (fetch, score, rewrite the résumé, compile the PDF) where a failed step just left a silent gap."
+solution: "Every step writes to a pipeline_events table the dashboard reads in realtime, so a failed compile shows up as a red line in the feed instead of a missing job."
+---
+
+The whole pipeline is one n8n workflow: fetch from four boards, skip anything already in
+Supabase, filter by title and seniority, then per job ask Gemini for an ATS score and gap notes.
+Above 50 it rewrites the base LaTeX résumé for that job description and a tiny Express + TeX Live
+container compiles it to PDF.
+
+Everything logs to a `pipeline_events` table, which the dashboard reads in realtime — so a
+failed compile shows up as a red line in the feed, not a silent gap.

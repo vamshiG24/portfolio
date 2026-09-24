@@ -1,0 +1,11 @@
+---
+date: "2026-04-20"
+title: "Which factors does a role need?"
+tags: ["biometrics", "rules"]
+challenge: "Different doors need different levels of proof. An admin door and a visitor door shouldn't demand the same checks."
+solution: "Face, hand and voice each live in their own module behind the Flask API. A small rules file maps roles to the factors they must pass, and every decision is appended to an access log."
+---
+
+Face, hand and voice each live in their own module behind the Flask API; a small rules file
+maps roles to the factors they must pass, so an admin door can demand face + voice while a
+visitor door takes face alone. Every decision is appended to an access log.
