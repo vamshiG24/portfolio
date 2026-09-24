@@ -2,8 +2,6 @@
 @import "../styles/tokens.css";
 @import "lenis/dist/lenis.css";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 /* Map tokens → Tailwind utilities (bg-bg, text-fg-muted, font-display, rounded-lg…) */
 @theme inline {
   --color-bg: var(--bg);
@@ -16,7 +14,6 @@
   --color-line-strong: var(--line-strong);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
-  --color-accent-soft: var(--accent-soft);
   --color-danger: var(--danger);
   --color-hue-amber: var(--hue-amber);
   --color-hue-rose: var(--hue-rose);
@@ -35,16 +32,10 @@
   --text-xl: var(--text-xl);
   --text-2xl: var(--text-2xl);
   --text-3xl: var(--text-3xl);
-  --text-4xl: var(--text-4xl);
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
-
-  --shadow-sm: var(--shadow-sm);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
 
   --ease-out: var(--ease-out);
   --ease-in-out: var(--ease-in-out);
@@ -284,10 +275,11 @@
 }
 .topbar-inner { position: relative; height: calc(104 * var(--u)); min-height: 4.25rem; }
 .topbar-inner > * { pointer-events: auto; }
+/* the mark is square and centred on the links' line (51u) */
 .brand {
-  position: absolute; left: var(--gutter); top: calc(27 * var(--u));
-  display: block; width: calc(31.5 * var(--u)); height: calc(48.5 * var(--u));
-  min-width: 22px; min-height: 34px;
+  position: absolute; left: var(--gutter); top: calc(28 * var(--u));
+  display: block; width: calc(46 * var(--u)); height: calc(46 * var(--u));
+  min-width: 34px; min-height: 34px;
 }
 .brand-mark { display: block; width: 100%; height: 100%; }
 .links {
@@ -296,14 +288,22 @@
   display: flex; align-items: center; gap: calc(24.5 * var(--u));
   white-space: nowrap;
 }
-.brand-mark { transition: transform var(--dur-hover) var(--ease-out), filter var(--dur-hover) var(--ease-out); }
+/* hover: the leaves part like the intro's doors and the seam fills with the spectrum */
+.brand-mark { overflow: visible; transition: filter var(--dur-hover) var(--ease-out); }
+.brand-mark .bm-leaf { transition: transform var(--dur-hover) var(--ease-out); }
+.brand-mark .bm-seam { transition: opacity var(--dur-hover) var(--ease-out); }
+.brand-mark .bm-light { opacity: 0; transform: scaleY(.4); transform-origin: 20px 34px; transition: opacity var(--dur-hover) var(--ease-out), transform 650ms var(--ease-out); }
 .link { font-size: clamp(0.9rem, calc(19 * var(--u)), 1.19rem); font-weight: 400; color: var(--nav); }
 .link.is-active { color: var(--fg); }
 /* the active section keeps a small lit dot under its link */
 .link.is-active::after { transform: scaleX(0.18); transform-origin: center; background: var(--fg); }
 /* (these sit outside the utilities layer, like the rules they override, so they restate the .hue-text hover) */
 @media (hover: hover) {
-  .brand:hover .brand-mark { transform: rotate(-8deg) scale(1.06); filter: drop-shadow(0 0 10px rgba(255, 179, 92, .55)) drop-shadow(0 0 22px rgba(255, 93, 143, .35)); }
+  .brand:hover .brand-mark { filter: drop-shadow(0 0 8px rgba(255, 179, 92, .45)) drop-shadow(0 0 18px rgba(255, 93, 143, .3)); }
+  .brand:hover .bm-leaf-l { transform: translateX(-1.4px); }
+  .brand:hover .bm-leaf-r { transform: translateX(1.4px); }
+  .brand:hover .bm-seam { opacity: 0; }
+  .brand:hover .bm-light { opacity: 1; transform: none; }
   .link:hover { color: transparent; background-position: 100% 50%; }
   .link.is-active:hover::after { transform: scaleX(1); background: var(--spectrum); }
   .burger:hover { border-color: color-mix(in srgb, var(--hue-rose) 55%, transparent); box-shadow: var(--hue-glow); }

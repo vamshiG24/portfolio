@@ -14,8 +14,3 @@ export const bgStore = {
   /** 0→1 footage preload progress (1 = ready to scrub). */
   introLoad: motionValue(0),
 };
-
-// Dev aid: inspect the channel from DevTools (`__bgStore`). Stripped in production builds.
-if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
-  (window as unknown as { __bgStore: typeof bgStore }).__bgStore = bgStore;
-}

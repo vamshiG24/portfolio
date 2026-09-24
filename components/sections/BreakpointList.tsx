@@ -48,7 +48,7 @@ function Breakpoint({ item, index }: { item: BreakpointItem; index: number }) {
   const date = new Date(item.date + "T00:00:00");
 
   return (
-    <motion.li ref={ref} style={curve.style}>
+    <motion.li ref={ref} style={curve}>
       <article onPointerMove={trackLight} className="bp-card hue-group">
         <header className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <span aria-hidden className="hue-text hue-in font-mono text-xs text-fg-subtle">

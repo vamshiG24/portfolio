@@ -1,4 +1,4 @@
-/** Site-wide identity — filled from content/site.tex (resume) and GitHub. */
+/** Site-wide identity — copy from the résumé and GitHub. */
 export const site = {
   name: "Gowni Vamshi",
   role: "Full-stack & AI systems engineer",
@@ -16,7 +16,7 @@ export const site = {
     /** Three short display lines (word-by-word pull-up). */
     lines: ["Secure backends //", "Reliable AI", "systems"],
     bio: "Computer Science undergraduate at IIIT Manipur, now on a final-year exchange at IIT Madras, where I interned on LLM watermarking via pseudorandom codes. I care about backends that hold up under scrutiny — chain-of-custody ledgers, RBAC, 2FA — and AI integrations that fail over gracefully instead of falling over.",
-    /** The card thumbnail, kept blurred until hovered (the full photo lives in assets/photo, the source of the reveal below). */
+    /** The card thumbnail, kept blurred until hovered. */
     portrait: { thumb: "/myimage/vamshi-thumb.jpg", alt: "Portrait of Gowni Vamshi" },
     /**
      * The portrait cut out and composited onto the intro figure in the clip's
@@ -41,5 +41,3 @@ export const site = {
     { id: "contact", label: "Contact" },
   ],
 } as const;
-
-export type NavId = (typeof site.nav)[number]["id"];

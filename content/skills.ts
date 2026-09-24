@@ -6,7 +6,7 @@ export type Skill = {
   weight: 1 | 2 | 3;
 };
 
-/** From content/site.tex — Technical Skills. ~24–36 entries reads best on the sphere. */
+/** From the résumé's Technical Skills. ~24–36 entries reads best on the sphere. */
 export const skills: Skill[] = [
   // Languages
   { name: "Python", group: "languages", weight: 3 },

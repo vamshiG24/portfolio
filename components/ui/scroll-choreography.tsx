@@ -21,7 +21,6 @@ export type ChoreoFrame = {
 };
 
 interface ScrollChoreographyProps {
-  className?: string;
   /** Exactly four: [topLeft, topRight (hero), bottomLeft, bottomRight]. */
   frames: [ChoreoFrame, ChoreoFrame, ChoreoFrame, ChoreoFrame];
   /** Copy shown while the frames are still apart. */
@@ -35,8 +34,7 @@ const Y_T = "-16vh";
 const Y_B = "16vh";
 const KEYS = [0, 0.3, 0.35, 0.65, 1];
 
-
-export function ScrollChoreography({ className, frames, title, kicker }: ScrollChoreographyProps) {
+export function ScrollChoreography({ frames, title, kicker }: ScrollChoreographyProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mounted = useMounted();
   // Only branch to the static grid after hydration; the server always renders the choreography.
@@ -66,7 +64,7 @@ export function ScrollChoreography({ className, frames, title, kicker }: ScrollC
 
   if (reduced) {
     return (
-      <div className={cn("grid grid-cols-2 gap-4", className)}>
+      <div className="grid grid-cols-2 gap-4">
         {frames.map((f, i) => (
           <Frame key={`${f.src}-${i}`} frame={f} className="relative aspect-[3/2] w-full" />
         ))}
@@ -78,7 +76,7 @@ export function ScrollChoreography({ className, frames, title, kicker }: ScrollC
     "absolute left-1/2 top-1/2 h-[26vh] w-[38vw] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md bg-bg-elev will-change-transform";
 
   return (
-    <div ref={containerRef} className={cn("relative w-full", className)} style={{ height: `${CHOREO.heightVh}vh` }}>
+    <div ref={containerRef} className="relative w-full" style={{ height: `${CHOREO.heightVh}vh` }}>
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {(title || kicker) && (
           <motion.div className="absolute inset-x-0 top-1/2 z-0 -translate-y-1/2 px-(--gutter) text-center" style={{ opacity: copyOpacity }}>
@@ -151,5 +149,3 @@ function Frame({
     <div className={cn("h-full w-full", className)}>{inner}</div>
   );
 }
-
-export default ScrollChoreography;

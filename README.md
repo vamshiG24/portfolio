@@ -17,7 +17,8 @@ npm run lint
 
 ## Assets
 
-Served files are in `public/`; their sources are in `assets/` (not deployed):
+Everything served is in `public/`:
 
-- `public/video/intro*.{mp4,jpg}` from `assets/video/…mp4` — re-encode with `keyint=4`, no B-frames, `+faststart` (flags documented on `INTRO` in `config/motion.ts`).
-- `public/myimage/about-reveal.png` — the portrait cut out and composited into the clip's frame space; `vamshi-thumb.jpg` for the About card. Source: `assets/photo/`.
+- `public/video/intro*.{mp4,jpg}` — the intro clip, encoded for scrubbing (`keyint=4`, no B-frames, `+faststart`; see `INTRO` in `config/motion.ts`).
+- `public/myimage/about-reveal.png` — the portrait cut out and composited into the clip's frame space; `vamshi-thumb.jpg` for the About card.
+- `app/icon.svg` — the favicon; the same mark as `components/layout/BrandMark.tsx`.

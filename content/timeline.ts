@@ -11,7 +11,7 @@ export type TimelineEntry = {
   kind: "work" | "education" | "milestone";
 };
 
-/** Newest first. From content/site.tex. */
+/** Newest first. From the résumé. */
 export const timeline: TimelineEntry[] = [
   {
     id: "iitm-exchange",

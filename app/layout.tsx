@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${geistMono.variable} dark h-full antialiased`}>
+    <html lang="en" className={`${manrope.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <ScrollProvider>
           {/* z-0 background, z-10 content, z-40 nav */}

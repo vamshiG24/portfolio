@@ -1,18 +1,20 @@
 "use client";
 
-import { motion, useScroll, useSpring, useTransform } from "motion/react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef } from "react";
 import { CURVE_PERSPECTIVE_PX, SECTION_SPRING, TIMELINE } from "@/config/motion";
 import { timeline, type TimelineEntry as Entry } from "@/content/timeline";
 import { useCurvePath } from "@/hooks/useCurvePath";
-import { useSectionProgress } from "@/hooks/useSectionProgress";
 import { Section } from "./Section";
 
 export function Timeline() {
   const ref = useRef<HTMLDivElement>(null);
-  // Spine draws from when the section top hits 75% of the viewport until its bottom reaches 40%.
-  const { progress } = useSectionProgress(ref, { offset: ["start 0.75", "end 0.4"] });
-  const pathLength = useTransform(progress, [0, 1], [0, 1]);
+  // Spine draws from when the section top hits 75% of the viewport until its bottom reaches 40%
+  // (sprung, except under reduced motion).
+  const reduced = useReducedMotion() ?? false;
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.75", "end 0.4"] });
+  const sprung = useSpring(scrollYProgress, SECTION_SPRING);
+  const pathLength = reduced ? scrollYProgress : sprung;
 
   return (
     <Section id="timeline" eyebrow="02 — Timeline" title="Where I've been">
@@ -90,7 +92,7 @@ function TimelineEntry({ entry, index }: { entry: Entry; index: number }) {
         "relative pl-12 md:grid md:grid-cols-2 md:gap-16 md:pl-0",
         right ? "md:[&>article]:col-start-2" : "",
       ].join(" ")}
-      style={curve.style}
+      style={curve}
     >
       {/* node on the spine */}
       <motion.span

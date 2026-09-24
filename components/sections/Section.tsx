@@ -5,19 +5,18 @@ type Props = {
   eyebrow?: string;
   title: string;
   children?: ReactNode;
-  className?: string;
 };
 
 /**
  * Semantic section shell used by every page section. Heading levels: the hero
  * owns the h1; everything else is an h2.
  */
-export function Section({ id, eyebrow, title, children, className = "" }: Props) {
+export function Section({ id, eyebrow, title, children }: Props) {
   return (
     <section
       id={id}
       aria-labelledby={`${id}-title`}
-      className={`relative z-10 scroll-mt-24 py-(--space-24) md:py-(--space-32) ${className}`}
+      className="relative z-10 scroll-mt-24 py-(--space-24) md:py-(--space-32)"
     >
       <div className="container-page">
         <div className="rule pt-6 md:grid md:grid-cols-[14rem_1fr] md:gap-12">

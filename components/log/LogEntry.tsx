@@ -27,7 +27,7 @@ export function LogEntry({ id, date, title, tags, children }: Props) {
   const d = new Date(date + "T00:00:00");
 
   return (
-    <motion.article ref={ref} id={id} style={curve.style} className="scroll-mt-28 border-t border-line py-10 first:border-t-0 first:pt-0">
+    <motion.article ref={ref} id={id} style={curve} className="scroll-mt-28 border-t border-line py-10 first:border-t-0 first:pt-0">
       <header>
         <p className="eyebrow">
           <time dateTime={date}>{d.toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" })}</time>

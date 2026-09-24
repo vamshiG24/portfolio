@@ -1,24 +1,33 @@
-/** Abstract angular "S" / bolt mark (spec 1 geometry). */
+/**
+ * The mark: a V (Vamshi) cut from two door leaves with a seam of light between
+ * them — the intro's closed doors. At rest it is brushed silver with a faint
+ * white seam; on hover (see .brand in globals.css) the leaves part and the
+ * seam fills with the spectrum. app/icon.svg is the same drawing on a tile.
+ */
 export function BrandMark({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 31.5 48.5" className={className} aria-hidden focusable="false">
+    <svg viewBox="0 0 40 40" className={className} aria-hidden focusable="false">
       <defs>
-        <linearGradient id="bg1" gradientUnits="userSpaceOnUse" x1="8" y1="0" x2="34.1" y2="28.9">
-          <stop offset="0" stopColor="#9e9e9e" />
-          <stop offset=".28" stopColor="#a6a6a6" />
-          <stop offset=".34" stopColor="#a3a3a3" />
-          <stop offset=".40" stopColor="#3a3a3a" />
-          <stop offset=".55" stopColor="#414141" />
-          <stop offset=".60" stopColor="#7a7a7a" />
-          <stop offset=".68" stopColor="#8e8e8e" />
-          <stop offset=".80" stopColor="#a9a9a9" />
-          <stop offset=".95" stopColor="#c4c4c4" />
-          <stop offset="1" stopColor="#cccccc" />
+        <linearGradient id="bm-metal" x1="0" y1="6" x2="0" y2="34" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#ededed" />
+          <stop offset=".55" stopColor="#b4b4b4" />
+          <stop offset="1" stopColor="#6c6c6c" />
+        </linearGradient>
+        <linearGradient id="bm-seam" x1="0" y1="9" x2="0" y2="34" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#fff" stopOpacity="0" />
+          <stop offset="1" stopColor="#fff" />
+        </linearGradient>
+        <linearGradient id="bm-light" x1="0" y1="11" x2="0" y2="34" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#4cc9f0" stopOpacity="0" />
+          <stop offset=".3" stopColor="#9b7bff" />
+          <stop offset=".65" stopColor="#ff5d8f" />
+          <stop offset="1" stopColor="#ffb35c" />
         </linearGradient>
       </defs>
-      <path d="M21.5 0 L21.5 19.5 L31.5 19.5 L31.5 29 L10 48.5 L10 28.5 L0.5 28.5 L0.5 18.5 Z" fill="url(#bg1)" />
-      <rect x="0.5" y="18.5" width="9" height="10" fill="#fdfdfd" />
-      <rect x="22" y="19.5" width="9.5" height="9.5" fill="#fdfdfd" />
+      <rect className="bm-seam" x="19.55" y="9" width="0.9" height="25" fill="url(#bm-seam)" />
+      <rect className="bm-light" x="19.1" y="11" width="1.8" height="23" rx="0.9" fill="url(#bm-light)" />
+      <path className="bm-leaf bm-leaf-l" d="M3 6h8.5l7.75 18v10Z" fill="url(#bm-metal)" />
+      <path className="bm-leaf bm-leaf-r" d="M37 6h-8.5l-7.75 18v10Z" fill="url(#bm-metal)" />
     </svg>
   );
 }

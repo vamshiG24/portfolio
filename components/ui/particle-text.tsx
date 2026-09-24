@@ -2,10 +2,11 @@
 
 /*
  * ParticleText — from React Bits (https://reactbits.dev), JS + CSS variant,
- * typed for this project. Behaviour is unchanged from upstream.
+ * typed for this project and trimmed to what the hero uses (no replay
+ * triggers; the hero's h1 carries the readable text, so no hidden copy here).
  */
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef } from "react";
 import "./particle-text.css";
 
 type Rgb = { r: number; g: number; b: number };
@@ -74,7 +75,7 @@ const waitForFonts = async (font: string) => {
 
 export type ParticleTextProps = {
   /** The words sampled into particle targets. */
-  text?: string;
+  text: string;
   /** Rendered size of each particle in CSS pixels. */
   particleSize?: number;
   /** Pixel sampling step for the offscreen glyph canvas. Lower values create more particles. */
@@ -95,8 +96,6 @@ export type ParticleTextProps = {
   repelRadius?: number;
   /** Subtle resting motion after the text has formed. */
   idleDrift?: number;
-  /** How the scatter-and-reform sequence can replay after the first formation. */
-  trigger?: "mount" | "hover" | "click";
   /** Canvas text size used for glyph sampling. Numbers are pixels. */
   fontSize?: number | string;
   fontWeight?: number | string;
@@ -104,12 +103,10 @@ export type ParticleTextProps = {
   fontFamily?: string;
   /** Adds a soft particle bloom in the highlight colour. */
   glow?: boolean;
-  className?: string;
-  style?: CSSProperties;
 };
 
 export function ParticleText({
-  text = "React Bits",
+  text,
   particleSize = 2,
   density = 4,
   color = "#ffffff",
@@ -120,13 +117,10 @@ export function ParticleText({
   pointerRepel = 40,
   repelRadius = 120,
   idleDrift = 0.7,
-  trigger = "mount",
   fontSize = "clamp(3rem, 12vw, 8rem)",
   fontWeight = 800,
   fontFamily = "inherit",
   glow = true,
-  className = "",
-  style,
 }: ParticleTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -160,20 +154,12 @@ export function ParticleText({
       smoothY: 0,
     };
 
-    const startGather = (fromScatter = true) => {
+    const startGather = () => {
       if (!particles.length) return;
 
       const now = performance.now();
-      const spread = reducedMotion ? 0 : scatter;
 
       particles.forEach((particle) => {
-        if (fromScatter) {
-          const angle = particle.seed * Math.PI * 2;
-          const distance = spread * (0.35 + particle.depth * 0.75);
-          particle.x = particle.targetX + Math.cos(angle) * distance + (particle.depth - 0.5) * spread * 0.55;
-          particle.y = particle.targetY + Math.sin(angle) * distance + (particle.seed - 0.5) * spread * 0.55;
-        }
-
         particle.startX = particle.x;
         particle.startY = particle.y;
         particle.delay = reducedMotion ? 0 : particle.seed * stagger;
@@ -386,7 +372,7 @@ export function ParticleText({
         });
         gathering = false;
       } else {
-        startGather(false);
+        startGather();
       }
 
       ensureRenderLoop();
@@ -408,15 +394,6 @@ export function ParticleText({
       pointer.active = false;
     };
 
-    const handlePointerEnter = (event: PointerEvent) => {
-      handlePointerMove(event);
-      if (trigger === "hover") startGather(true);
-    };
-
-    const handleClick = () => {
-      if (trigger === "click") startGather(true);
-    };
-
     const reduceMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)");
     const handleReduceMotionChange = (event: MediaQueryListEvent) => {
       reducedMotion = event.matches;
@@ -424,10 +401,8 @@ export function ParticleText({
     };
 
     reduceMotionQuery?.addEventListener("change", handleReduceMotionChange);
-    canvas.addEventListener("pointerenter", handlePointerEnter);
     canvas.addEventListener("pointermove", handlePointerMove);
     canvas.addEventListener("pointerleave", handlePointerLeave);
-    canvas.addEventListener("click", handleClick);
 
     const resizeObserver = new ResizeObserver(queueSample);
     resizeObserver.observe(container);
@@ -437,10 +412,8 @@ export function ParticleText({
       buildId += 1;
       resizeObserver.disconnect();
       reduceMotionQuery?.removeEventListener("change", handleReduceMotionChange);
-      canvas.removeEventListener("pointerenter", handlePointerEnter);
       canvas.removeEventListener("pointermove", handlePointerMove);
       canvas.removeEventListener("pointerleave", handlePointerLeave);
-      canvas.removeEventListener("click", handleClick);
 
       if (animationFrame !== null) window.cancelAnimationFrame(animationFrame);
       if (resizeFrame !== null) window.cancelAnimationFrame(resizeFrame);
@@ -457,7 +430,6 @@ export function ParticleText({
     pointerRepel,
     repelRadius,
     idleDrift,
-    trigger,
     fontSize,
     fontWeight,
     fontFamily,
@@ -465,9 +437,8 @@ export function ParticleText({
   ]);
 
   return (
-    <div ref={containerRef} className={`particle-text ${className}`} style={style} aria-label={text}>
-      <canvas ref={canvasRef} className="particle-text__canvas" aria-hidden="true" />
-      <span className="particle-text__sr">{text}</span>
+    <div ref={containerRef} className="particle-text">
+      <canvas ref={canvasRef} className="particle-text__canvas" />
     </div>
   );
 }

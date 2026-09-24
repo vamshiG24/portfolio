@@ -8,12 +8,10 @@ import { site } from "@/content/site";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { useMounted } from "@/hooks/useMounted";
 import { bgStore } from "@/lib/bgStore";
-import { clamp } from "@/lib/rig";
+import { clamp, smoothstep } from "@/lib/rig";
 import { useScrollContext } from "@/providers/ScrollProvider";
 
-const smooth = (t: number) => t * t * (3 - 2 * t);
-/** smoothstep ramp; a zero-width ramp is a hard step. */
-const ramp = (p: number, a: number, b: number) => (b <= a ? (p >= b ? 1 : 0) : smooth(clamp((p - a) / (b - a), 0, 1)));
+const ramp = (p: number, a: number, b: number) => smoothstep(a, b, p);
 
 /* The pinned track is the intro plus the hand-off; both run 0→1 over their own stretch of it. */
 const TRACK_VH = INTRO.heightVh + INTRO.handoffVh;
@@ -187,8 +185,6 @@ function Name({ progress, exit }: { progress: MotionValue<number>; exit: MotionV
               fontWeight={700}
               // The per-particle shadow blur is the costly part: skip it on phones and low-end machines.
               glow={!tier.mobile && !tier.lowEnd}
-              // Fill the bleed box, and let a vertical swipe on the name still scroll the page.
-              style={{ minHeight: 0, touchAction: "pan-y" }}
             />
           </div>
         )}

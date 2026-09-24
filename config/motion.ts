@@ -14,18 +14,8 @@
 /** Lenis interpolation. Lower = floatier. 0.08 ≈ ~200ms settle at 60fps. */
 export const LENIS_LERP = 0.08;
 
-/** Spring applied to page scrollYProgress so motion trails the scroll. */
-export const SCROLL_SPRING = { stiffness: 90, damping: 24, mass: 0.6 } as const;
-
-/** Spring applied to each section's local progress (same feel, tweak separately if needed). */
+/** Spring applied to each section's local scroll progress, so motion trails the scroll. */
 export const SECTION_SPRING = { stiffness: 90, damping: 24, mass: 0.6 } as const;
-
-/**
- * Default offset for useSectionProgress: progress 0 when the section's top
- * enters the viewport bottom, 1 when its bottom leaves the viewport top.
- * (motion's `useScroll` offset syntax.)
- */
-export const SECTION_OFFSET: SectionOffset = ["start end", "end start"];
 
 /** Subset of motion's (unexported) ScrollOffset type that we use: "<edge> <edge>" where edge is a name or a 0–1 fraction. */
 type Edge = "start" | "end" | "center" | `${number}`;
@@ -39,7 +29,7 @@ export type SectionOffset = `${Edge} ${Edge}`[];
  * cracks and the leaves swing open (1.9–5 s) → a backlit figure walks through
  * toward the camera (3–10 s). 1280×720 @ 24 fps, 10 s, silent.
  *
- * Encoded for scrubbing (source in assets/video): keyint=4, no B-frames, so a
+ * Encoded for scrubbing: keyint=4, no B-frames, so a
  * seek decodes at most three extra frames; +faststart; watermark removed.
  * Re-encode with the same flags if the clip changes.
  */
@@ -93,7 +83,7 @@ export const INTRO = {
     particles: { size: 2, density: 2, scatter: 64, gatherMs: 1600, stagger: 420, repel: 26, repelRadius: 90, drift: 0.6 },
   },
   /** Pointer parallax on the plate: scale-up that leaves room to drift, and max drift (fraction of the viewport). */
-  parallax: { scale: 1.06, x: 0.018, y: 0.012, damp: 3.5 },
+  parallax: { scale: 1.06, x: 0.018, y: 0.012 },
   /** Give up on the blob preload after this many ms and stream instead. */
   preloadTimeoutMs: 15000,
 } as const;
@@ -121,9 +111,8 @@ export const PORTRAIT = {
   close: 5,
   /** Touch has no hover: the light follows the finger and lingers this long (ms) after it lifts. */
   touchLingerMs: 1200,
-  /** Word pull-up stagger (s) and fade-up duration (s). */
+  /** Word pull-up stagger (s). */
   wordStagger: 0.08,
-  fadeUp: 0.7,
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -136,7 +125,7 @@ export const CURVE_BEND_DEFAULT = 0.6;
 /** Opacity finishes fading in at this fraction of the path. */
 export const CURVE_OPACITY_END = 0.3;
 
-export const CURVE_ROTATE_Z: [number, number] = [-8, 0];  // deg (the spring overshoots past 0 on its own)
+export const CURVE_ROTATE_Z: [number, number] = [-8, 0]; // deg
 export const CURVE_SCALE: [number, number] = [0.85, 1];
 export const CURVE_TRANSLATE_Z: [number, number] = [-240, 0]; // px, needs parent perspective
 export const CURVE_PERSPECTIVE_PX = 1200;

@@ -110,7 +110,7 @@ function ProjectCard({ project, index }: { project: ProjectCardData; index: numb
   };
 
   return (
-    <motion.article ref={ref} style={curve.style} className="will-change-transform">
+    <motion.article ref={ref} style={curve} className="will-change-transform">
       <motion.div
         onPointerMove={onMove}
         onPointerEnter={onEnter}
