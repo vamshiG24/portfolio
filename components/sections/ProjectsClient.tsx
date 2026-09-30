@@ -55,13 +55,15 @@ export function ProjectsClient({ projects }: { projects: ProjectCardData[] }) {
 }
 
 /**
- * The project cards, pinned and run sideways: scrolling down carries them
- * right → left across the stage. Each card swings, sinks and dims by its
- * distance from the centre, the rail leans into fast scrolls, and a stroked
- * title drifts behind at a slower rate. Reduced motion gets the plain grid.
+ * The project cards as a staircase, pinned: each card sits half a card below
+ * the one before, and scrolling down carries the whole flight right → left
+ * and up, so the view travels down the diagonal and the next card rises in
+ * from the bottom right. Each card swings, sinks and dims by its distance from
+ * the centre, the flight leans into fast scrolls, and a stroked title drifts
+ * behind at a slower rate. Reduced motion gets the plain grid.
  */
 function ProjectRail({ projects }: { projects: ProjectCardData[] }) {
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
   const mounted = useMounted();
@@ -70,10 +72,13 @@ function ProjectRail({ projects }: { projects: ProjectCardData[] }) {
   // Covers off to the side sit outside the clipped stage, where lazy loading would hold them back.
   const near = useInView(containerRef, { once: true, margin: "100% 0px" });
 
-  // How far the track travels (px) and the stage width; `travel` also sizes the scroll runway.
+  // Horizontal travel (px), stage width, and the drop from one card to the next (px).
+  // `travel` also sizes the scroll runway.
   const distance = useMotionValue(0);
   const stageW = useMotionValue(0);
+  const step = useMotionValue(0);
   const [travel, setTravel] = useState<number | null>(null);
+  const count = projects.length;
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -81,8 +86,10 @@ function ProjectRail({ projects }: { projects: ProjectCardData[] }) {
     if (!stage || !track) return;
     const measure = () => {
       const d = Math.max(0, track.offsetWidth - stage.clientWidth);
+      const card = track.firstElementChild as HTMLElement | null;
       distance.set(d);
       stageW.set(stage.clientWidth);
+      step.set((card?.offsetHeight ?? 0) * PROJECT_RAIL.step);
       setTravel(d);
     };
     measure();
@@ -90,9 +97,9 @@ function ProjectRail({ projects }: { projects: ProjectCardData[] }) {
     ro.observe(stage);
     ro.observe(track);
     return () => ro.disconnect();
-  }, [reduced, distance, stageW]);
+  }, [reduced, distance, stageW, step]);
 
-  // p: 0 → 1 while pinned. rise: 0 → 1 while the section comes up into view.
+  // p: 0 → 1 while pinned. rise: 0 → 1 while the stage comes up into view.
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
   const { scrollYProgress: riseRaw } = useScroll({ target: containerRef, offset: ["start end", "start start"] });
   const p = useSpring(scrollYProgress, PROJECT_RAIL.spring);
@@ -101,6 +108,8 @@ function ProjectRail({ projects }: { projects: ProjectCardData[] }) {
     [p, rise, distance, stageW],
     ([p, r, d, w]: number[]) => -clamp(p, 0, 1) * d + (1 - clamp(r, 0, 1)) * w * PROJECT_RAIL.enter,
   );
+  // Climb one step per card, so whichever card is centred across is centred down too.
+  const y = useTransform([p, step], ([p, s]: number[]) => -clamp(p, 0, 1) * s * (count - 1));
 
   const skewX = useSpring(
     useTransform(useVelocity(x), (v) =>
@@ -109,8 +118,8 @@ function ProjectRail({ projects }: { projects: ProjectCardData[] }) {
     PROJECT_RAIL.skewSpring,
   );
   const backdropX = useTransform(x, (v) => v * PROJECT_RAIL.backdropRate);
+  const backdropY = useTransform(y, (v) => v * PROJECT_RAIL.backdropRate * 0.6);
   const bar = useTransform(p, (v) => clamp(v, 0, 1));
-  const count = projects.length;
   const active = useTransform(bar, (v) => pad(Math.round(v * (count - 1)) + 1));
   const hint = useTransform(bar, (v) => 1 - clamp(v / 0.06, 0, 1));
 
@@ -138,54 +147,55 @@ function ProjectRail({ projects }: { projects: ProjectCardData[] }) {
   }
 
   return (
-    <section
-      ref={containerRef}
-      id="projects-grid"
-      aria-labelledby="projects-grid-title"
-      className="relative z-10"
-      // Until measured, a runway of roughly the right length.
-      style={{ height: travel === null ? `${100 + count * 60}vh` : `calc(100vh + ${Math.round(travel * PROJECT_RAIL.pace)}px)` }}
-    >
-      <div ref={stageRef} className="rail-stage sticky top-0 flex h-screen w-full flex-col overflow-clip">
-        <motion.p aria-hidden className="rail-backdrop" style={{ x: backdropX }}>
-          Selected work — Selected work — Selected work —
-        </motion.p>
-
-        <div className="container-page relative pt-[max(5.5rem,calc(104*var(--u)+1.5rem))]">
-          <div className="rule flex items-end justify-between gap-6 pt-6">
-            <div className="flex-1 md:grid md:grid-cols-[14rem_1fr] md:gap-12">
-              <p className="eyebrow mb-3 md:mb-0">04 — Projects</p>
-              <h2 id="projects-grid-title" className="text-3xl">
-                Selected work
-              </h2>
-            </div>
-            <p className="eyebrow shrink-0 tabular-nums" aria-hidden>
-              <motion.span className="text-fg">{active}</motion.span> / {pad(count)}
-            </p>
-          </div>
+    <section id="projects-grid" aria-labelledby="projects-grid-title" className="relative z-10">
+      <div className="container-page pt-(--space-24) md:pt-(--space-32)">
+        <div className="rule pt-6 md:grid md:grid-cols-[14rem_1fr] md:gap-12">
+          <p className="eyebrow mb-3 md:mb-0">04 — Projects</p>
+          <h2 id="projects-grid-title" className="text-3xl">
+            Selected work
+          </h2>
         </div>
+      </div>
 
-        <div className="relative min-h-0 flex-1 py-6 md:py-8" style={{ perspective: PROJECT_RAIL.perspectivePx }}>
-          <motion.ul
-            ref={trackRef}
-            aria-label="Projects"
-            onFocus={onFocus}
-            style={{ x, skewX, transformStyle: "preserve-3d" }}
-            className="relative flex h-full w-max items-center gap-(--rail-gap) px-[calc(50%-var(--card-w)/2)] will-change-transform"
-          >
-            {projects.map((p) => (
-              <RailCard key={p.slug} project={p} x={x} stageW={stageW} eager={near} />
-            ))}
-          </motion.ul>
-        </div>
-
-        <div className="container-page relative pb-6 md:pb-8">
-          <div className="relative h-px bg-line">
-            <motion.div className="absolute inset-0 origin-left bg-fg/70" style={{ scaleX: bar }} />
-          </div>
-          <motion.p className="eyebrow mt-3" style={{ opacity: hint }} aria-hidden>
-            Keep scrolling — the work slides by →
+      <div
+        ref={containerRef}
+        className="relative"
+        // Until measured, a runway of roughly the right length.
+        style={{ height: travel === null ? `${100 + count * 60}vh` : `calc(100vh + ${Math.round(travel * PROJECT_RAIL.pace)}px)` }}
+      >
+        <div ref={stageRef} className="rail-stage sticky top-0 h-screen w-full overflow-clip">
+          <motion.p aria-hidden className="rail-backdrop" style={{ x: backdropX, y: backdropY }}>
+            Selected work — Selected work — Selected work —
           </motion.p>
+
+          <div className="rail-view absolute inset-0" style={{ perspective: PROJECT_RAIL.perspectivePx }}>
+            <motion.ul
+              ref={trackRef}
+              aria-label="Projects"
+              onFocus={onFocus}
+              style={{ x, y, skewX, transformStyle: "preserve-3d" }}
+              className="rail-track absolute left-0 flex w-max items-start gap-(--rail-gap) px-[calc(50%-var(--card-w)/2)] will-change-transform"
+            >
+              {projects.map((p, i) => (
+                <RailCard key={p.slug} project={p} index={i} x={x} stageW={stageW} step={step} eager={near} />
+              ))}
+            </motion.ul>
+          </div>
+
+          {/* Bottom-left: the one corner the staircase never passes through. */}
+          <div className="container-page pointer-events-none absolute inset-x-0 bottom-0 pb-6 md:pb-8">
+            <div className="flex w-56 items-center gap-4">
+              <p className="eyebrow shrink-0 tabular-nums" aria-hidden>
+                <motion.span className="text-fg">{active}</motion.span> / {pad(count)}
+              </p>
+              <div className="relative h-px flex-1 bg-line">
+                <motion.div className="absolute inset-0 origin-left bg-fg/70" style={{ scaleX: bar }} />
+              </div>
+            </div>
+            <motion.p className="eyebrow mt-3 whitespace-nowrap" style={{ opacity: hint }} aria-hidden>
+              Keep scrolling — the work steps down ↘
+            </motion.p>
+          </div>
         </div>
       </div>
     </section>
@@ -194,13 +204,17 @@ function ProjectRail({ projects }: { projects: ProjectCardData[] }) {
 
 function RailCard({
   project,
+  index,
   x,
   stageW,
+  step,
   eager,
 }: {
   project: ProjectCardData;
+  index: number;
   x: MotionValue<number>;
   stageW: MotionValue<number>;
+  step: MotionValue<number>;
   eager: boolean;
 }) {
   const ref = useRef<HTMLLIElement>(null);
@@ -224,7 +238,8 @@ function RailCard({
   );
   const rotateY = useTransform(n, (v) => v * PROJECT_RAIL.swingDeg);
   const z = useTransform(n, (v) => -Math.abs(v) * PROJECT_RAIL.depthPx);
-  const y = useTransform(n, (v) => v * v * PROJECT_RAIL.dipPx);
+  // The staircase: each card one step below the last.
+  const y = useTransform(step, (s) => index * s);
   const dim = useTransform(n, (v) => 1 - Math.min(1, Math.abs(v)) * PROJECT_RAIL.dim);
 
   return (
@@ -232,7 +247,7 @@ function RailCard({
       ref={ref}
       data-rail-card
       style={{ rotateY, z, y, transformStyle: "preserve-3d" }}
-      className="h-full max-h-[calc(var(--card-w)*0.625+19rem)] w-(--card-w) shrink-0 will-change-transform"
+      className="h-(--card-h) w-(--card-w) shrink-0 will-change-transform"
     >
       <ProjectCard project={project} rail={{ drift: n, dim, eager }} />
     </motion.li>

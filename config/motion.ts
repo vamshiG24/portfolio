@@ -199,10 +199,11 @@ export const PROJECT_CARD = {
 } as const;
 
 /**
- * Projects rail: the cards pinned and run sideways, so scrolling down carries
- * them right → left across the stage. A card's pose comes from n, its centre's
- * distance from the stage centre in half-stage widths (0 = centred, ±1 = at an
- * edge): it swings (rotateY), sinks back (translateZ), dips (y) and dims.
+ * Projects rail: the cards pinned as a staircase, each `step` of a card's
+ * height below the one before, so scrolling down carries them right → left
+ * and up the diagonal. A card's pose comes from n, its centre's distance from
+ * the stage centre in half-stage widths (0 = centred, ±1 = at an edge): it
+ * swings (rotateY), sinks back (translateZ) and dims.
  */
 export const PROJECT_RAIL = {
   /** Vertical scroll per px of horizontal travel. 1 = the cards move as far as the page scrolls. */
@@ -211,10 +212,11 @@ export const PROJECT_RAIL = {
   spring: { stiffness: 140, damping: 28, mass: 0.5, restDelta: 0.0005 },
   /** The rail slides in from the right while the section rises into view (fraction of the stage width). */
   enter: 0.35,
+  /** How far each card sits below the previous one, as a fraction of a card's height. */
+  step: 0.5,
   /** Pose at |n| = 1. */
   swingDeg: 30,
   depthPx: 240,
-  dipPx: 34,
   /** How far an off-centre card fades (0–1) at |n| = 1. */
   dim: 0.6,
   /** The pose stops changing past this |n|. */
