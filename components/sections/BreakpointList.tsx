@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useRef, type PointerEvent as ReactPointerEvent } from "react";
 import { CURVE_PERSPECTIVE_PX, LOG_ENTRY } from "@/config/motion";
 import { useCurvePath } from "@/hooks/useCurvePath";
+import { useMounted } from "@/hooks/useMounted";
+import { BreakpointRun } from "./breakpoints/BreakpointRun";
 
 export type BreakpointItem = {
   slug: string;
@@ -17,7 +19,13 @@ export type BreakpointItem = {
   solution: string;
 };
 
+/** The pinned run (see BreakpointRun); under reduced motion, a plain list of cards. */
 export function BreakpointList({ items }: { items: BreakpointItem[] }) {
+  const mounted = useMounted();
+  // Only branch to the static list after hydration; the server always renders the run.
+  const reduced = (useReducedMotion() ?? false) && mounted;
+  if (!reduced && items.length) return <BreakpointRun items={items} />;
+
   return (
     <ol className="mt-12 grid gap-5 md:gap-6" style={{ perspective: CURVE_PERSPECTIVE_PX }}>
       {items.map((item, i) => (

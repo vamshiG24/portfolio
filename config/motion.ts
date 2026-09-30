@@ -236,6 +236,62 @@ export const CHOREO = {
   spring: { stiffness: 400, damping: 50, mass: 1.2, restDelta: 0.001 },
 } as const;
 
+/**
+ * Breakpoints run: the section pins and plays each breakpoint as a failure
+ * and a recovery. A heartbeat trace runs along the bottom; the challenge text
+ * glitches, dissolves into particles, and they stream through the gate to
+ * write the solution while the trace flatlines, then a shock restarts it.
+ *
+ * `phase` marks are fractions of one breakpoint's stretch of scroll (s, 0 → 1).
+ */
+export const BREAKPOINT_RUN = {
+  /** Scroll given to each breakpoint (vh). */
+  segmentVh: 130,
+  spring: { stiffness: 120, damping: 26, mass: 0.5, restDelta: 0.0005 },
+  phase: {
+    /** Trace turns erratic, challenge text tints and glitches. */
+    exception: 0.08,
+    /** Trace flatlines. */
+    flatline: 0.34,
+    /** Challenge text hands over to its particles (crossfade). */
+    dissolve: [0.36, 0.4] as [number, number],
+    /** Particles travel from the challenge to the solution. */
+    morph: [0.4, 0.7] as [number, number],
+    /** Particles hand over to the solution text (crossfade). */
+    land: [0.7, 0.73] as [number, number],
+    /** Defibrillator spike. */
+    shock: 0.72,
+    /** Healthy rhythm again; the challenge returns as a ghost. */
+    resolved: 0.78,
+    /** Crossfade to the next breakpoint. */
+    exit: 0.95,
+  },
+  particles: {
+    /** Glyph sampling step (px): lower = more particles. */
+    step: 2,
+    max: 2600,
+    maxMobile: 1400,
+    /** Particle size (CSS px) at rest; grows by `flare` mid-flight. */
+    size: 1.7,
+    flare: 0.7,
+    /** Share of the morph spent staggering departures in reading order. */
+    stagger: 0.45,
+    /** Particles funnel through the gate within this radius (px), and wobble this far in flight. */
+    funnel: 46,
+    swirl: 16,
+  },
+  pulse: {
+    /** Stretch of the run shown on the monitor, in breakpoints. */
+    window: 0.5,
+    /** Where the write head sits across the monitor (fraction of its width). */
+    head: 0.8,
+    /** One heartbeat, in breakpoints. */
+    beat: 0.055,
+    /** Trace amplitude as a fraction of the monitor height. */
+    amp: 0.3,
+  },
+} as const;
+
 /** Build-log entries: subtle curve. */
 export const LOG_ENTRY = { bend: 0.25 } as const;
 

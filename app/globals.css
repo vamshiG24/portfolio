@@ -540,6 +540,83 @@
 }
 
 /* ==========================================================================
+   Breakpoints run (BreakpointRun): the pinned stage. Slides stack in one grid
+   cell; each slide's data-state (running → exception → flatline → patching →
+   restart → resolved) drives its labels, gate and glitch. The monitor along
+   the bottom bleeds to the viewport edges. Colour here is the story: rose is
+   the fault, teal the fix.
+   ========================================================================== */
+.bp-slide { grid-area: 1 / 1; }
+.bp-text { font-size: var(--text-base); line-height: 1.6; transition: text-shadow 500ms var(--ease-out); }
+@media (min-width: 48rem) { .bp-text { font-size: var(--text-lg); } }
+.bp-slide .bp-side, .bp-slide .bp-label, .bp-slide .bp-label i { transition-duration: 500ms; }
+
+.bp-slide:is([data-state="exception"], [data-state="flatline"], [data-state="patching"]) [data-side="challenge"] { border-color: color-mix(in srgb, var(--hue-rose) 60%, transparent); }
+.bp-slide:is([data-state="exception"], [data-state="flatline"], [data-state="patching"]) [data-side="challenge"] .bp-label { color: var(--hue-rose); }
+.bp-slide:is([data-state="exception"], [data-state="flatline"], [data-state="patching"]) [data-side="challenge"] .bp-label i { box-shadow: 0 0 12px 1px var(--hue-rose); }
+.bp-slide:is([data-state="restart"], [data-state="resolved"]) [data-side="solution"] { border-color: color-mix(in srgb, var(--hue-teal) 60%, transparent); }
+.bp-slide:is([data-state="restart"], [data-state="resolved"]) [data-side="solution"] .bp-label { color: var(--hue-teal); }
+.bp-slide:is([data-state="restart"], [data-state="resolved"]) [data-side="solution"] .bp-label i { box-shadow: 0 0 12px 1px var(--hue-teal); }
+.bp-slide[data-state="resolved"] [data-side="challenge"] .bp-label { text-decoration: line-through; }
+.bp-slide[data-state="restart"] [data-text="solution"] { text-shadow: 0 0 22px rgba(94, 234, 212, .55); }
+
+/* the fault: chromatic splits and small jumps, in bursts */
+.bp-slide[data-state="exception"] [data-text="challenge"] { animation: bp-glitch 1.6s steps(1, end) infinite; }
+@keyframes bp-glitch {
+  0%, 100% { text-shadow: none; translate: 0 0; }
+  6% { text-shadow: 2px 0 rgba(255, 93, 143, .6), -2px 0 rgba(76, 201, 240, .5); translate: -1px 0; }
+  9% { text-shadow: none; translate: 0 0; }
+  41% { text-shadow: -3px 0 rgba(255, 93, 143, .55), 2px 0 rgba(76, 201, 240, .45); translate: 2px 0; }
+  44% { text-shadow: none; translate: 0 0; }
+  73% { text-shadow: 1px 0 rgba(255, 93, 143, .5), -1px 0 rgba(76, 201, 240, .4); translate: -2px 0; }
+  75% { text-shadow: none; translate: 0 0; }
+}
+
+/* the gate the particles squeeze through: a hairline across (phones) or down (desktop), with a node */
+.bp-gate { position: relative; min-height: 1.5rem; }
+.bp-gate::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
+  background: var(--line); transition: background-color 500ms var(--ease-out);
+}
+@media (min-width: 48rem) { .bp-gate::before { left: 50%; right: auto; top: 0; bottom: 0; width: 1px; height: auto; } }
+.bp-gate i {
+  position: absolute; left: 50%; top: 50%; width: .6rem; height: .6rem; margin: -.3rem 0 0 -.3rem;
+  border-radius: 999px; border: 1px solid var(--line-strong); background: var(--bg);
+  transition: background-color 400ms var(--ease-out), border-color 400ms var(--ease-out), box-shadow 400ms var(--ease-out);
+}
+.bp-slide[data-state="exception"] .bp-gate i { border-color: var(--hue-rose); box-shadow: 0 0 12px 1px var(--hue-rose); }
+.bp-slide:is([data-state="flatline"], [data-state="patching"]) .bp-gate::before { background-color: rgba(255, 255, 255, .3); }
+.bp-slide:is([data-state="flatline"], [data-state="patching"]) .bp-gate i {
+  border-color: transparent; background: var(--fg);
+  box-shadow: 0 0 18px 4px rgba(255, 93, 143, .55), 0 0 34px 10px rgba(94, 234, 212, .3);
+}
+.bp-slide[data-state="restart"] .bp-gate i { border-color: transparent; background: var(--hue-teal); box-shadow: 0 0 26px 8px rgba(94, 234, 212, .7); }
+.bp-slide[data-state="resolved"] .bp-gate i { border-color: color-mix(in srgb, var(--hue-teal) 70%, transparent); }
+
+/* the heartbeat monitor */
+.bp-monitor { position: relative; flex-shrink: 0; height: clamp(5.5rem, 13vh, 8rem); }
+.bp-monitor-bleed { position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; translate: -50% 0; }
+.bp-monitor-head {
+  position: absolute; left: 0; top: 0; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 999px;
+  color: var(--fg); background: currentColor; box-shadow: 0 0 10px 2px currentColor;
+}
+.bp-monitor-head::after {
+  content: ""; position: absolute; inset: -5px; border-radius: inherit; border: 1px solid currentColor;
+  animation: hint-ping 1.4s var(--ease-out) infinite;
+}
+.bp-monitor-readout {
+  position: absolute; left: 0; right: 0; top: .5rem; display: flex; justify-content: space-between; gap: 1rem;
+  font-size: .7rem; font-weight: 500; letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  color: var(--fg-subtle); font-variant-numeric: tabular-nums;
+}
+.bp-status { display: inline-flex; align-items: center; gap: .5rem; transition: color 400ms var(--ease-out); }
+.bp-status::before { content: ""; width: .42rem; height: .42rem; border-radius: 999px; background: currentColor; }
+.bp-status:is([data-state="exception"], [data-state="flatline"], [data-state="patching"]),
+.bp-monitor-head:is([data-state="exception"], [data-state="flatline"], [data-state="patching"]) { color: var(--hue-rose); }
+.bp-status:is([data-state="restart"], [data-state="resolved"]),
+.bp-monitor-head:is([data-state="restart"], [data-state="resolved"]) { color: var(--hue-teal); }
+
+/* ==========================================================================
    About portrait hint (drawn by the stage, on the figure's face): a pulsing
    ring and a label until the spotlight is found. The element is a point on
    the face; its children centre on it. Transform/opacity only.
