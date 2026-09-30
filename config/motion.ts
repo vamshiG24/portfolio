@@ -190,13 +190,42 @@ export const SKILLS_CLUSTER = {
   labelAlpha: [0.28, 1] as [number, number],
 } as const;
 
-/** Project cards. */
+/** Project cards. `coverParallaxPx`: how far the cover drifts inside its frame as the card crosses the rail. */
 export const PROJECT_CARD = {
-  bend: 0.85,
   tiltDeg: 10,
   tiltSpring: { stiffness: 220, damping: 22, mass: 0.6 },
-  coverParallaxPx: 28,
+  coverParallaxPx: 34,
   hoverLift: -10,
+} as const;
+
+/**
+ * Projects rail: the cards pinned and run sideways, so scrolling down carries
+ * them right → left across the stage. A card's pose comes from n, its centre's
+ * distance from the stage centre in half-stage widths (0 = centred, ±1 = at an
+ * edge): it swings (rotateY), sinks back (translateZ), dips (y) and dims.
+ */
+export const PROJECT_RAIL = {
+  /** Vertical scroll per px of horizontal travel. 1 = the cards move as far as the page scrolls. */
+  pace: 1,
+  /** Spring on the rail's progress, on top of Lenis. */
+  spring: { stiffness: 140, damping: 28, mass: 0.5, restDelta: 0.0005 },
+  /** The rail slides in from the right while the section rises into view (fraction of the stage width). */
+  enter: 0.35,
+  /** Pose at |n| = 1. */
+  swingDeg: 30,
+  depthPx: 240,
+  dipPx: 34,
+  /** How far an off-centre card fades (0–1) at |n| = 1. */
+  dim: 0.6,
+  /** The pose stops changing past this |n|. */
+  maxN: 1.6,
+  /** Lean into fast scrolls: skew (deg) per 1000 px/s of rail speed, capped, sprung back upright. */
+  skewPerKpx: 1.6,
+  maxSkewDeg: 6,
+  skewSpring: { stiffness: 200, damping: 28, mass: 0.6 },
+  /** The stroked title behind the cards travels at this fraction of their speed. */
+  backdropRate: 0.35,
+  perspectivePx: 1300,
 } as const;
 
 /** Scroll choreography (featured covers) — how tall the pinned section is, in vh. */

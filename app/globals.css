@@ -511,6 +511,27 @@
 }
 
 /* ==========================================================================
+   Projects rail: the pinned stage the cards run across (ProjectRail). A pool
+   of light sits behind the centre slot; a stroked title drifts behind the
+   cards at a slower rate. Card width and gap are set here so the track's
+   padding can centre the first and last card.
+   ========================================================================== */
+.rail-stage {
+  --card-w: min(30rem, 80vw);
+  --rail-gap: clamp(1.25rem, 4vw, 4rem);
+}
+.rail-stage::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 34% 42% at 50% 56%, rgba(255, 255, 255, .06), transparent 70%);
+}
+.rail-backdrop {
+  position: absolute; left: 0; top: 50%; translate: 0 -50%;
+  white-space: nowrap; pointer-events: none; user-select: none;
+  font-family: var(--font-display); font-size: clamp(7rem, 21vw, 19rem); line-height: 1; letter-spacing: -0.01em;
+  color: transparent; -webkit-text-stroke: 1px var(--line);
+}
+
+/* ==========================================================================
    About portrait hint (drawn by the stage, on the figure's face): a pulsing
    ring and a label until the spotlight is found. The element is a point on
    the face; its children centre on it. Transform/opacity only.
