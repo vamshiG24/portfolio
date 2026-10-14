@@ -15,6 +15,20 @@ npm run lint
 - **Content** — `content/` (site copy, skills, timeline, projects and build logs as MDX). A log whose frontmatter has `challenge` and `solution` also appears in the home page's Breakpoints section.
 - **Tunables** — every number lives in `config/motion.ts`; colours in `styles/tokens.css`.
 
+## Personal AI
+
+The chat in the hero's bottom-right corner (`components/chat/PersonalAI.tsx`) talks to a small Python server, `ai/server.py` (FastAPI + Google's `google-genai` SDK, Gemini free tier). It only talks about who Vamshi is and Vamshi's work, from the site's own `content/` files (read at startup, so editing the content updates what it knows), and hands out the GitHub, LinkedIn, email and project links. Next.js proxies `/api/chat` to it (`next.config.ts`). It tries `gemini-3.8-flash` first and falls back to `gemini-3.5-flash-lite` when that model's free quota runs out.
+
+```bash
+cd ai
+python -m venv .venv
+.venv\Scripts\activate          # macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn server:app --port 8000 --reload
+```
+
+Put `GEMINI_API_KEY=...` in `ai/.env` (git-ignored); get a free key at https://aistudio.google.com/apikey. Free-tier limits are shown in AI Studio, and Google may use free-tier prompts to improve its products. Without the server or a key, the chat still opens and says it's offline, with your email. In production, deploy `ai/` anywhere that runs Python, start it with `--forwarded-allow-ips="*"` so the per-visitor rate limit works behind the proxy, and set `AI_SERVER_URL` for the Next.js build.
+
 ## Assets
 
 Everything served is in `public/`:

@@ -466,6 +466,162 @@
 @media (max-aspect-ratio: 11/10) { .portrait-hide { display: none; } }
 
 /* ==========================================================================
+   Personal AI (components/chat/PersonalAI.tsx): a launcher in the hero's
+   bottom-right corner and a chat panel that opens like the intro's doors —
+   a seam of light rises, splits, and the halves carry the panel's edges out
+   (.ai-edge; timings in AI_CHAT). Each AI reply hangs off a seam of its own,
+   lit while the reply comes through.
+   ========================================================================== */
+.ai {
+  position: absolute; right: var(--gutter); bottom: max(1.25rem, calc(40 * var(--u)), env(safe-area-inset-bottom));
+  z-index: 20; display: flex; flex-direction: column; align-items: flex-end; gap: .75rem;
+  pointer-events: none;
+}
+.ai > * { pointer-events: auto; }
+
+.ai-launch {
+  display: inline-flex; align-items: center; gap: .55rem;
+  height: 3rem; padding: 0 1.15rem 0 .8rem; border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: rgba(10, 10, 11, .62); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
+  color: var(--fg); font-size: .92rem; font-weight: 500; white-space: nowrap;
+}
+.ai-launch .brand-mark { width: 1.7rem; height: 1.7rem; overflow: visible; }
+.ai .bm-leaf { transition: transform var(--dur-hover) var(--ease-out); }
+.ai .bm-seam { transition: opacity var(--dur-hover) var(--ease-out); }
+.ai .bm-light { transform-origin: 20px 34px; transition: opacity var(--dur-hover) var(--ease-out), transform 650ms var(--ease-out); }
+/* at rest the seam breathes: light rising under the closed leaves, to say someone is in */
+.ai-launch .bm-light { animation: ai-breathe 3.4s var(--ease-in-out) infinite; }
+@keyframes ai-breathe {
+  0%, 100% { opacity: .15; transform: scaleY(.35); }
+  50%      { opacity: .95; transform: scaleY(1); }
+}
+/* open (and on hover) the leaves part and the seam stays lit; the head mark is always open */
+.ai-launch[aria-expanded="true"] .bm-light, .ai-head-mark .bm-light { animation: none; opacity: 1; transform: none; }
+.ai-launch[aria-expanded="true"] .bm-seam, .ai-head-mark .bm-seam { opacity: 0; }
+.ai-launch[aria-expanded="true"] .bm-leaf-l, .ai-head-mark .bm-leaf-l { transform: translateX(-1.4px); }
+.ai-launch[aria-expanded="true"] .bm-leaf-r, .ai-head-mark .bm-leaf-r { transform: translateX(1.4px); }
+@media (hover: hover) {
+  .ai-launch:hover .bm-light { animation: none; opacity: 1; transform: none; }
+  .ai-launch:hover .bm-seam { opacity: 0; }
+  .ai-launch:hover .bm-leaf-l { transform: translateX(-1.4px); }
+  .ai-launch:hover .bm-leaf-r { transform: translateX(1.4px); }
+}
+
+/* the door: the panel (clipped open from its centre) and the two edge lights that travel with the clip */
+.ai-door { position: relative; }
+.ai-panel {
+  display: flex; flex-direction: column;
+  width: min(24rem, calc(100vw - 2 * var(--gutter)));
+  height: min(34rem, calc(100svh - 11rem));
+  border: 1px solid var(--line-strong); border-radius: var(--radius-xl);
+  background: rgba(9, 9, 10, .88); -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .9);
+  overflow: hidden;
+}
+.ai-edge {
+  position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; pointer-events: none;
+  border-radius: 1px; transform-origin: 50% 100%;
+  background: linear-gradient(0deg, var(--hue-amber), var(--hue-rose) 35%, var(--hue-violet) 70%, rgba(76, 201, 240, 0));
+  box-shadow: 0 0 14px rgba(255, 93, 143, .55), 0 0 30px rgba(155, 123, 255, .35);
+}
+
+.ai-head { display: flex; align-items: center; gap: .75rem; padding: .85rem .85rem .85rem 1.1rem; border-bottom: 1px solid var(--line); }
+.ai-head-mark { width: 1.9rem; height: 1.9rem; flex: none; overflow: visible; filter: drop-shadow(0 0 8px rgba(255, 179, 92, .35)); }
+.ai-title { font-size: .95rem; font-weight: 600; line-height: 1.2; color: var(--fg); }
+.ai-meta { margin-top: .15rem; font-size: .72rem; line-height: 1.2; color: var(--fg-subtle); }
+.ai-icon-btn {
+  flex: none; display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 999px;
+  border: 1px solid var(--line-strong); color: var(--fg-muted);
+}
+.ai-icon-btn:disabled { opacity: .35; }
+@media (hover: hover) {
+  .ai-icon-btn:disabled:hover { transform: none; box-shadow: none; color: var(--fg-muted); border-color: var(--line-strong); background: none; }
+  .ai-icon-btn:disabled:hover::before { opacity: 0; }
+}
+
+.ai-log {
+  flex: 1; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: .95rem; padding: 1.1rem 1.1rem .75rem;
+  scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent;
+}
+.ai-msg { font-size: .9rem; line-height: 1.55; overflow-wrap: anywhere; color: var(--fg); }
+.ai-msg[data-role="user"] {
+  align-self: flex-end; max-width: 85%; padding: .55rem .85rem; white-space: pre-wrap;
+  border: 1px solid var(--line); border-radius: var(--radius-xl); background: var(--bg-elev-2);
+}
+/* a reply's structure (PersonalAI → Reply): paragraphs, and lists whose items lead with a bold name and keep their links on a quieter line beneath */
+.ai-msg > * + * { margin-top: .65rem; }
+.ai-list { display: grid; gap: .7rem; }
+.ai-list > li { position: relative; padding-left: 1.1rem; color: var(--fg-muted); }
+.ai-list > li strong { color: var(--fg); font-weight: 600; }
+ul.ai-list > li::before {
+  content: ""; position: absolute; left: .15rem; top: .62em; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--fg-muted);
+}
+ol.ai-list { counter-reset: ai-item; }
+ol.ai-list > li { counter-increment: ai-item; padding-left: 1.45rem; }
+ol.ai-list > li::before { content: counter(ai-item) "."; position: absolute; left: 0; color: var(--fg-subtle); font-weight: 600; font-variant-numeric: tabular-nums; }
+.ai-sub { display: block; margin-top: .2rem; font-size: .8rem; line-height: 1.45; color: var(--fg-subtle); }
+.ai-msg a { color: var(--fg); text-decoration: underline 1px var(--line-strong); text-underline-offset: 3px; }
+@media (hover: hover) { .ai-msg a:hover { text-decoration-color: var(--hue-rose); } }
+/* the AI's replies hang off a seam: a hairline at rest, the spectrum while a reply comes through */
+.ai-msg[data-role="assistant"] { position: relative; max-width: 96%; padding-left: .9rem; }
+.ai-msg[data-role="assistant"]::before {
+  content: ""; position: absolute; left: 0; top: .25em; bottom: .25em; width: 1px;
+  background: var(--line-strong); transform-origin: 50% 100%;
+}
+.ai-msg[data-state="streaming"]::before {
+  width: 2px; left: -.5px;
+  background: linear-gradient(0deg, var(--hue-amber), var(--hue-rose) 40%, var(--hue-violet) 80%, rgba(76, 201, 240, .2));
+  box-shadow: 0 0 10px rgba(255, 93, 143, .5);
+}
+/* no words yet: the seam pulses, light gathering behind the door */
+.ai-msg[data-state="streaming"]:not(:has(.ai-caret)) { min-height: 1.55em; }
+.ai-msg[data-state="streaming"]:not(:has(.ai-caret))::before { animation: ai-gather 1.1s var(--ease-in-out) infinite; }
+@keyframes ai-gather {
+  0%, 100% { transform: scaleY(.3); opacity: .5; }
+  50%      { transform: scaleY(1);  opacity: 1; }
+}
+.ai-msg[data-state="note"] { color: var(--fg-muted); }
+.ai-caret {
+  display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; vertical-align: -.15em; border-radius: 1px;
+  background: linear-gradient(0deg, var(--hue-amber), var(--hue-rose), var(--hue-violet));
+  animation: ai-blink 1s steps(2, jump-none) infinite;
+}
+@keyframes ai-blink { 50% { opacity: 0; } }
+
+.ai-suggest { display: flex; flex-wrap: wrap; gap: .5rem; padding-left: .9rem; }
+.ai-suggest .chip { border: 1px solid var(--line-strong); border-radius: 999px; color: var(--fg-muted); }
+.ai-suggest button { padding: .4rem .8rem; font-size: .8rem; line-height: 1.3; text-align: left; color: inherit; }
+
+.ai-form { display: flex; align-items: flex-end; gap: .65rem; padding: .7rem .85rem .85rem 1.1rem; border-top: 1px solid var(--line); }
+.ai-input {
+  flex: 1; min-width: 0; max-height: 7.5rem; resize: none;
+  border: 0; border-bottom: 1px solid var(--line-strong); border-radius: 0; background: transparent;
+  padding: .45rem 0; font-size: .9rem; line-height: 1.45; color: var(--fg);
+}
+@media (pointer: coarse) { .ai-input { font-size: 16px; } } /* under 16px, iOS zooms the page on focus */
+.ai-input::placeholder { color: var(--fg-subtle); }
+.ai-input:focus-visible { outline: none; }
+.ai-send { color: var(--fg); }
+
+/* portrait / narrow: the panel spans the screen, the launcher keeps to the gutter, and the logo strip makes room for it */
+@media (max-aspect-ratio: 11/10) {
+  .ai { left: .75rem; right: .75rem; }
+  .ai-launch { margin-right: calc(var(--gutter) - .75rem); }
+  .ai-door, .ai-panel { width: 100%; }
+  .ai-panel { height: min(36rem, calc(100svh - 9.5rem)); }
+  .logos { right: calc(var(--gutter) + 9.5rem); }
+}
+/* phones: the launcher is just the mark */
+@media (max-aspect-ratio: 11/10) and (max-width: 599px) {
+  .ai-launch { width: 3rem; padding: 0; justify-content: center; }
+  .ai-launch-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .logos { right: calc(var(--gutter) + 3.75rem); }
+}
+
+/* ==========================================================================
    Breakpoints: challenge → solution cards. Monochrome at rest; under the
    pointer a wash of light follows the cursor (--mx/--my, set in
    BreakpointList), the edge takes the spectrum, the challenge side lights

@@ -297,3 +297,14 @@ export const LOG_ENTRY = { bend: 0.25 } as const;
 
 /** Magnetic CTA. */
 export const MAGNET = { radius: 140, strength: 0.45, spring: { stiffness: 260, damping: 18, mass: 0.5 } } as const;
+
+/* ------------------------------------------------------------------ */
+/* 6. Personal AI (hero, bottom right)                                  */
+/* ------------------------------------------------------------------ */
+/**
+ * The chat panel opens like the intro's doors: a seam of light rises from
+ * the floor (`rise`), splits, and its two halves carry the panel's edges
+ * outward (`part`), then fade (`fade`). Closing runs it back: the edges meet
+ * (`shut`) and the seam sinks (`sink`). Seconds.
+ */
+export const AI_CHAT = { rise: 0.3, part: 0.65, fade: 0.4, shut: 0.45, sink: 0.25 } as const;

@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { PersonalAI } from "@/components/chat/PersonalAI";
 import { ParticleText } from "@/components/ui/particle-text";
 import { INTRO, SCROLL_CUE } from "@/config/motion";
 import { site } from "@/content/site";
@@ -25,8 +26,9 @@ const handoffOf = (p: number) => clamp((p * (TRACK_VH - 100) - (INTRO.heightVh -
  * walk-in — and the panels cross-fade under the name in the dead zones between
  * those beats (INTRO.cues). The name starts centred and slides left as the
  * doors open (INTRO.name). A last pinned stretch (INTRO.handoffVh) carries the
- * figure into the About plate while the name and the final panel fade. The h1
- * is the LCP element and always in the DOM.
+ * figure into the About plate while the name and the final panel fade. The
+ * personal AI waits in the bottom-right corner throughout. The h1 is the LCP
+ * element and always in the DOM.
  */
 export function Home() {
   const track = useRef<HTMLElement>(null);
@@ -91,6 +93,7 @@ export function Home() {
         <LogoStrip progress={intro} />
         <Loader />
         <ScrollCue progress={intro} />
+        <PersonalAI />
       </div>
     </section>
   );
